@@ -1,0 +1,10 @@
+<module name="rampart" class="edu.purdue.cs.absoa.ABInterceptorModule">
+
+    <Description>Active Bundle Interceptor</Description>
+	    
+    <InFlow>
+        <handler name="ABHandler" class="edu.purdue.cs.absoa.ABHandler">
+            <order phase="Security" phaseLast="true"/>
+        </handler>        
+    </InFlow>
+</module>

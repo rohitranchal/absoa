@@ -1,0 +1,3 @@
+rm -rf axis2_server
+curl http://mirrors.ibiblio.org/apache//axis/axis2/java/core/1.6.2/axis2-1.6.2-bin.zip -o axis2.zip
+unzip axis2.zip -d axis2_server

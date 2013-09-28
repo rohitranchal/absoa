@@ -1,0 +1,2 @@
+cp ../target/ab_module-1.0-SNAPSHOT.mar axis2_server/axis2-1.6.2/
+sh axis2_server/axis2-1.6.2/bin/axis2server.sh
