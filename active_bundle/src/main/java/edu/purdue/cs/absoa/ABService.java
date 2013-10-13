@@ -36,17 +36,21 @@ public class ABService {
 
   public interface Iface {
 
-    public String authenticate(String str) throws org.apache.thrift.TException;
+    public String authenticateChallenge() throws org.apache.thrift.TException;
 
-    public String hello(String str) throws org.apache.thrift.TException;
+    public String authenticateResponse(String signedChallenge, String certificate) throws org.apache.thrift.TException;
+
+    public String getValue(String sessionID, String key) throws org.apache.thrift.TException;
 
   }
 
   public interface AsyncIface {
 
-    public void authenticate(String str, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
+    public void authenticateChallenge(org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
-    public void hello(String str, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
+    public void authenticateResponse(String signedChallenge, String certificate, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
+
+    public void getValue(String sessionID, String key, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -70,50 +74,74 @@ public class ABService {
       super(iprot, oprot);
     }
 
-    public String authenticate(String str) throws org.apache.thrift.TException
+    public String authenticateChallenge() throws org.apache.thrift.TException
     {
-      send_authenticate(str);
-      return recv_authenticate();
+      send_authenticateChallenge();
+      return recv_authenticateChallenge();
     }
 
-    public void send_authenticate(String str) throws org.apache.thrift.TException
+    public void send_authenticateChallenge() throws org.apache.thrift.TException
     {
-      authenticate_args args = new authenticate_args();
-      args.setStr(str);
-      sendBase("authenticate", args);
+      authenticateChallenge_args args = new authenticateChallenge_args();
+      sendBase("authenticateChallenge", args);
     }
 
-    public String recv_authenticate() throws org.apache.thrift.TException
+    public String recv_authenticateChallenge() throws org.apache.thrift.TException
     {
-      authenticate_result result = new authenticate_result();
-      receiveBase(result, "authenticate");
+      authenticateChallenge_result result = new authenticateChallenge_result();
+      receiveBase(result, "authenticateChallenge");
       if (result.isSetSuccess()) {
         return result.success;
       }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "authenticate failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "authenticateChallenge failed: unknown result");
     }
 
-    public String hello(String str) throws org.apache.thrift.TException
+    public String authenticateResponse(String signedChallenge, String certificate) throws org.apache.thrift.TException
     {
-      send_hello(str);
-      return recv_hello();
+      send_authenticateResponse(signedChallenge, certificate);
+      return recv_authenticateResponse();
     }
 
-    public void send_hello(String str) throws org.apache.thrift.TException
+    public void send_authenticateResponse(String signedChallenge, String certificate) throws org.apache.thrift.TException
     {
-      hello_args args = new hello_args();
-      args.setStr(str);
-      sendBase("hello", args);
+      authenticateResponse_args args = new authenticateResponse_args();
+      args.setSignedChallenge(signedChallenge);
+      args.setCertificate(certificate);
+      sendBase("authenticateResponse", args);
     }
 
-    public String recv_hello() throws org.apache.thrift.TException
+    public String recv_authenticateResponse() throws org.apache.thrift.TException
     {
-      hello_result result = new hello_result();
-      receiveBase(result, "hello");
+      authenticateResponse_result result = new authenticateResponse_result();
+      receiveBase(result, "authenticateResponse");
       if (result.isSetSuccess()) {
         return result.success;
       }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "hello failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "authenticateResponse failed: unknown result");
+    }
+
+    public String getValue(String sessionID, String key) throws org.apache.thrift.TException
+    {
+      send_getValue(sessionID, key);
+      return recv_getValue();
+    }
+
+    public void send_getValue(String sessionID, String key) throws org.apache.thrift.TException
+    {
+      getValue_args args = new getValue_args();
+      args.setSessionID(sessionID);
+      args.setKey(key);
+      sendBase("getValue", args);
+    }
+
+    public String recv_getValue() throws org.apache.thrift.TException
+    {
+      getValue_result result = new getValue_result();
+      receiveBase(result, "getValue");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getValue failed: unknown result");
     }
 
   }
@@ -134,24 +162,21 @@ public class ABService {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void authenticate(String str, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
+    public void authenticateChallenge(org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      authenticate_call method_call = new authenticate_call(str, resultHandler, this, ___protocolFactory, ___transport);
+      authenticateChallenge_call method_call = new authenticateChallenge_call(resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class authenticate_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private String str;
-      public authenticate_call(String str, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+    public static class authenticateChallenge_call extends org.apache.thrift.async.TAsyncMethodCall {
+      public authenticateChallenge_call(org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.str = str;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("authenticate", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        authenticate_args args = new authenticate_args();
-        args.setStr(str);
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("authenticateChallenge", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        authenticateChallenge_args args = new authenticateChallenge_args();
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -162,28 +187,31 @@ public class ABService {
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_authenticate();
+        return (new Client(prot)).recv_authenticateChallenge();
       }
     }
 
-    public void hello(String str, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
+    public void authenticateResponse(String signedChallenge, String certificate, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      hello_call method_call = new hello_call(str, resultHandler, this, ___protocolFactory, ___transport);
+      authenticateResponse_call method_call = new authenticateResponse_call(signedChallenge, certificate, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class hello_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private String str;
-      public hello_call(String str, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+    public static class authenticateResponse_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private String signedChallenge;
+      private String certificate;
+      public authenticateResponse_call(String signedChallenge, String certificate, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.str = str;
+        this.signedChallenge = signedChallenge;
+        this.certificate = certificate;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("hello", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        hello_args args = new hello_args();
-        args.setStr(str);
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("authenticateResponse", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        authenticateResponse_args args = new authenticateResponse_args();
+        args.setSignedChallenge(signedChallenge);
+        args.setCertificate(certificate);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -194,7 +222,42 @@ public class ABService {
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_hello();
+        return (new Client(prot)).recv_authenticateResponse();
+      }
+    }
+
+    public void getValue(String sessionID, String key, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      getValue_call method_call = new getValue_call(sessionID, key, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class getValue_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private String sessionID;
+      private String key;
+      public getValue_call(String sessionID, String key, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.sessionID = sessionID;
+        this.key = key;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getValue", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getValue_args args = new getValue_args();
+        args.setSessionID(sessionID);
+        args.setKey(key);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public String getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_getValue();
       }
     }
 
@@ -211,47 +274,68 @@ public class ABService {
     }
 
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
-      processMap.put("authenticate", new authenticate());
-      processMap.put("hello", new hello());
+      processMap.put("authenticateChallenge", new authenticateChallenge());
+      processMap.put("authenticateResponse", new authenticateResponse());
+      processMap.put("getValue", new getValue());
       return processMap;
     }
 
-    public static class authenticate<I extends Iface> extends org.apache.thrift.ProcessFunction<I, authenticate_args> {
-      public authenticate() {
-        super("authenticate");
+    public static class authenticateChallenge<I extends Iface> extends org.apache.thrift.ProcessFunction<I, authenticateChallenge_args> {
+      public authenticateChallenge() {
+        super("authenticateChallenge");
       }
 
-      public authenticate_args getEmptyArgsInstance() {
-        return new authenticate_args();
+      public authenticateChallenge_args getEmptyArgsInstance() {
+        return new authenticateChallenge_args();
       }
 
       protected boolean isOneway() {
         return false;
       }
 
-      public authenticate_result getResult(I iface, authenticate_args args) throws org.apache.thrift.TException {
-        authenticate_result result = new authenticate_result();
-        result.success = iface.authenticate(args.str);
+      public authenticateChallenge_result getResult(I iface, authenticateChallenge_args args) throws org.apache.thrift.TException {
+        authenticateChallenge_result result = new authenticateChallenge_result();
+        result.success = iface.authenticateChallenge();
         return result;
       }
     }
 
-    public static class hello<I extends Iface> extends org.apache.thrift.ProcessFunction<I, hello_args> {
-      public hello() {
-        super("hello");
+    public static class authenticateResponse<I extends Iface> extends org.apache.thrift.ProcessFunction<I, authenticateResponse_args> {
+      public authenticateResponse() {
+        super("authenticateResponse");
       }
 
-      public hello_args getEmptyArgsInstance() {
-        return new hello_args();
+      public authenticateResponse_args getEmptyArgsInstance() {
+        return new authenticateResponse_args();
       }
 
       protected boolean isOneway() {
         return false;
       }
 
-      public hello_result getResult(I iface, hello_args args) throws org.apache.thrift.TException {
-        hello_result result = new hello_result();
-        result.success = iface.hello(args.str);
+      public authenticateResponse_result getResult(I iface, authenticateResponse_args args) throws org.apache.thrift.TException {
+        authenticateResponse_result result = new authenticateResponse_result();
+        result.success = iface.authenticateResponse(args.signedChallenge, args.certificate);
+        return result;
+      }
+    }
+
+    public static class getValue<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getValue_args> {
+      public getValue() {
+        super("getValue");
+      }
+
+      public getValue_args getEmptyArgsInstance() {
+        return new getValue_args();
+      }
+
+      protected boolean isOneway() {
+        return false;
+      }
+
+      public getValue_result getResult(I iface, getValue_args args) throws org.apache.thrift.TException {
+        getValue_result result = new getValue_result();
+        result.success = iface.getValue(args.sessionID, args.key);
         return result;
       }
     }
@@ -269,25 +353,26 @@ public class ABService {
     }
 
     private static <I extends AsyncIface> Map<String,  org.apache.thrift.AsyncProcessFunction<I, ? extends  org.apache.thrift.TBase,?>> getProcessMap(Map<String,  org.apache.thrift.AsyncProcessFunction<I, ? extends  org.apache.thrift.TBase, ?>> processMap) {
-      processMap.put("authenticate", new authenticate());
-      processMap.put("hello", new hello());
+      processMap.put("authenticateChallenge", new authenticateChallenge());
+      processMap.put("authenticateResponse", new authenticateResponse());
+      processMap.put("getValue", new getValue());
       return processMap;
     }
 
-    public static class authenticate<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, authenticate_args, String> {
-      public authenticate() {
-        super("authenticate");
+    public static class authenticateChallenge<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, authenticateChallenge_args, String> {
+      public authenticateChallenge() {
+        super("authenticateChallenge");
       }
 
-      public authenticate_args getEmptyArgsInstance() {
-        return new authenticate_args();
+      public authenticateChallenge_args getEmptyArgsInstance() {
+        return new authenticateChallenge_args();
       }
 
       public AsyncMethodCallback<String> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
         final org.apache.thrift.AsyncProcessFunction fcall = this;
         return new AsyncMethodCallback<String>() { 
           public void onComplete(String o) {
-            authenticate_result result = new authenticate_result();
+            authenticateChallenge_result result = new authenticateChallenge_result();
             result.success = o;
             try {
               fcall.sendResponse(fb,result, org.apache.thrift.protocol.TMessageType.REPLY,seqid);
@@ -300,7 +385,7 @@ public class ABService {
           public void onError(Exception e) {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
-            authenticate_result result = new authenticate_result();
+            authenticateChallenge_result result = new authenticateChallenge_result();
             {
               msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
               msg = (org.apache.thrift.TBase)new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
@@ -320,25 +405,25 @@ public class ABService {
         return false;
       }
 
-      public void start(I iface, authenticate_args args, org.apache.thrift.async.AsyncMethodCallback<String> resultHandler) throws TException {
-        iface.authenticate(args.str,resultHandler);
+      public void start(I iface, authenticateChallenge_args args, org.apache.thrift.async.AsyncMethodCallback<String> resultHandler) throws TException {
+        iface.authenticateChallenge(resultHandler);
       }
     }
 
-    public static class hello<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, hello_args, String> {
-      public hello() {
-        super("hello");
+    public static class authenticateResponse<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, authenticateResponse_args, String> {
+      public authenticateResponse() {
+        super("authenticateResponse");
       }
 
-      public hello_args getEmptyArgsInstance() {
-        return new hello_args();
+      public authenticateResponse_args getEmptyArgsInstance() {
+        return new authenticateResponse_args();
       }
 
       public AsyncMethodCallback<String> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
         final org.apache.thrift.AsyncProcessFunction fcall = this;
         return new AsyncMethodCallback<String>() { 
           public void onComplete(String o) {
-            hello_result result = new hello_result();
+            authenticateResponse_result result = new authenticateResponse_result();
             result.success = o;
             try {
               fcall.sendResponse(fb,result, org.apache.thrift.protocol.TMessageType.REPLY,seqid);
@@ -351,7 +436,7 @@ public class ABService {
           public void onError(Exception e) {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
-            hello_result result = new hello_result();
+            authenticateResponse_result result = new authenticateResponse_result();
             {
               msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
               msg = (org.apache.thrift.TBase)new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
@@ -371,29 +456,78 @@ public class ABService {
         return false;
       }
 
-      public void start(I iface, hello_args args, org.apache.thrift.async.AsyncMethodCallback<String> resultHandler) throws TException {
-        iface.hello(args.str,resultHandler);
+      public void start(I iface, authenticateResponse_args args, org.apache.thrift.async.AsyncMethodCallback<String> resultHandler) throws TException {
+        iface.authenticateResponse(args.signedChallenge, args.certificate,resultHandler);
+      }
+    }
+
+    public static class getValue<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, getValue_args, String> {
+      public getValue() {
+        super("getValue");
+      }
+
+      public getValue_args getEmptyArgsInstance() {
+        return new getValue_args();
+      }
+
+      public AsyncMethodCallback<String> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
+        final org.apache.thrift.AsyncProcessFunction fcall = this;
+        return new AsyncMethodCallback<String>() { 
+          public void onComplete(String o) {
+            getValue_result result = new getValue_result();
+            result.success = o;
+            try {
+              fcall.sendResponse(fb,result, org.apache.thrift.protocol.TMessageType.REPLY,seqid);
+              return;
+            } catch (Exception e) {
+              LOGGER.error("Exception writing to internal frame buffer", e);
+            }
+            fb.close();
+          }
+          public void onError(Exception e) {
+            byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
+            org.apache.thrift.TBase msg;
+            getValue_result result = new getValue_result();
+            {
+              msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+              msg = (org.apache.thrift.TBase)new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
+            }
+            try {
+              fcall.sendResponse(fb,msg,msgType,seqid);
+              return;
+            } catch (Exception ex) {
+              LOGGER.error("Exception writing to internal frame buffer", ex);
+            }
+            fb.close();
+          }
+        };
+      }
+
+      protected boolean isOneway() {
+        return false;
+      }
+
+      public void start(I iface, getValue_args args, org.apache.thrift.async.AsyncMethodCallback<String> resultHandler) throws TException {
+        iface.getValue(args.sessionID, args.key,resultHandler);
       }
     }
 
   }
 
-  public static class authenticate_args implements org.apache.thrift.TBase<authenticate_args, authenticate_args._Fields>, java.io.Serializable, Cloneable, Comparable<authenticate_args>   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("authenticate_args");
+  public static class authenticateChallenge_args implements org.apache.thrift.TBase<authenticateChallenge_args, authenticateChallenge_args._Fields>, java.io.Serializable, Cloneable, Comparable<authenticateChallenge_args>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("authenticateChallenge_args");
 
-    private static final org.apache.thrift.protocol.TField STR_FIELD_DESC = new org.apache.thrift.protocol.TField("str", org.apache.thrift.protocol.TType.STRING, (short)1);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
-      schemes.put(StandardScheme.class, new authenticate_argsStandardSchemeFactory());
-      schemes.put(TupleScheme.class, new authenticate_argsTupleSchemeFactory());
+      schemes.put(StandardScheme.class, new authenticateChallenge_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new authenticateChallenge_argsTupleSchemeFactory());
     }
 
-    public String str; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      STR((short)1, "str");
+;
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -408,8 +542,6 @@ public class ABService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // STR
-            return STR;
           default:
             return null;
         }
@@ -448,87 +580,37 @@ public class ABService {
         return _fieldName;
       }
     }
-
-    // isset id assignments
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.STR, new org.apache.thrift.meta_data.FieldMetaData("str", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(authenticate_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(authenticateChallenge_args.class, metaDataMap);
     }
 
-    public authenticate_args() {
-    }
-
-    public authenticate_args(
-      String str)
-    {
-      this();
-      this.str = str;
+    public authenticateChallenge_args() {
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public authenticate_args(authenticate_args other) {
-      if (other.isSetStr()) {
-        this.str = other.str;
-      }
+    public authenticateChallenge_args(authenticateChallenge_args other) {
     }
 
-    public authenticate_args deepCopy() {
-      return new authenticate_args(this);
+    public authenticateChallenge_args deepCopy() {
+      return new authenticateChallenge_args(this);
     }
 
     @Override
     public void clear() {
-      this.str = null;
-    }
-
-    public String getStr() {
-      return this.str;
-    }
-
-    public authenticate_args setStr(String str) {
-      this.str = str;
-      return this;
-    }
-
-    public void unsetStr() {
-      this.str = null;
-    }
-
-    /** Returns true if field str is set (has been assigned a value) and false otherwise */
-    public boolean isSetStr() {
-      return this.str != null;
-    }
-
-    public void setStrIsSet(boolean value) {
-      if (!value) {
-        this.str = null;
-      }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case STR:
-        if (value == null) {
-          unsetStr();
-        } else {
-          setStr((String)value);
-        }
-        break;
-
       }
     }
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case STR:
-        return getStr();
-
       }
       throw new IllegalStateException();
     }
@@ -540,8 +622,6 @@ public class ABService {
       }
 
       switch (field) {
-      case STR:
-        return isSetStr();
       }
       throw new IllegalStateException();
     }
@@ -550,23 +630,14 @@ public class ABService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof authenticate_args)
-        return this.equals((authenticate_args)that);
+      if (that instanceof authenticateChallenge_args)
+        return this.equals((authenticateChallenge_args)that);
       return false;
     }
 
-    public boolean equals(authenticate_args that) {
+    public boolean equals(authenticateChallenge_args that) {
       if (that == null)
         return false;
-
-      boolean this_present_str = true && this.isSetStr();
-      boolean that_present_str = true && that.isSetStr();
-      if (this_present_str || that_present_str) {
-        if (!(this_present_str && that_present_str))
-          return false;
-        if (!this.str.equals(that.str))
-          return false;
-      }
 
       return true;
     }
@@ -577,23 +648,13 @@ public class ABService {
     }
 
     @Override
-    public int compareTo(authenticate_args other) {
+    public int compareTo(authenticateChallenge_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
 
-      lastComparison = Boolean.valueOf(isSetStr()).compareTo(other.isSetStr());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetStr()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.str, other.str);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
       return 0;
     }
 
@@ -611,16 +672,9 @@ public class ABService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("authenticate_args(");
+      StringBuilder sb = new StringBuilder("authenticateChallenge_args(");
       boolean first = true;
 
-      sb.append("str:");
-      if (this.str == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.str);
-      }
-      first = false;
       sb.append(")");
       return sb.toString();
     }
@@ -646,15 +700,15 @@ public class ABService {
       }
     }
 
-    private static class authenticate_argsStandardSchemeFactory implements SchemeFactory {
-      public authenticate_argsStandardScheme getScheme() {
-        return new authenticate_argsStandardScheme();
+    private static class authenticateChallenge_argsStandardSchemeFactory implements SchemeFactory {
+      public authenticateChallenge_argsStandardScheme getScheme() {
+        return new authenticateChallenge_argsStandardScheme();
       }
     }
 
-    private static class authenticate_argsStandardScheme extends StandardScheme<authenticate_args> {
+    private static class authenticateChallenge_argsStandardScheme extends StandardScheme<authenticateChallenge_args> {
 
-      public void read(org.apache.thrift.protocol.TProtocol iprot, authenticate_args struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol iprot, authenticateChallenge_args struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TField schemeField;
         iprot.readStructBegin();
         while (true)
@@ -664,14 +718,6 @@ public class ABService {
             break;
           }
           switch (schemeField.id) {
-            case 1: // STR
-              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-                struct.str = iprot.readString();
-                struct.setStrIsSet(true);
-              } else { 
-                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-              }
-              break;
             default:
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
           }
@@ -683,64 +729,46 @@ public class ABService {
         struct.validate();
       }
 
-      public void write(org.apache.thrift.protocol.TProtocol oprot, authenticate_args struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol oprot, authenticateChallenge_args struct) throws org.apache.thrift.TException {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
-        if (struct.str != null) {
-          oprot.writeFieldBegin(STR_FIELD_DESC);
-          oprot.writeString(struct.str);
-          oprot.writeFieldEnd();
-        }
         oprot.writeFieldStop();
         oprot.writeStructEnd();
       }
 
     }
 
-    private static class authenticate_argsTupleSchemeFactory implements SchemeFactory {
-      public authenticate_argsTupleScheme getScheme() {
-        return new authenticate_argsTupleScheme();
+    private static class authenticateChallenge_argsTupleSchemeFactory implements SchemeFactory {
+      public authenticateChallenge_argsTupleScheme getScheme() {
+        return new authenticateChallenge_argsTupleScheme();
       }
     }
 
-    private static class authenticate_argsTupleScheme extends TupleScheme<authenticate_args> {
+    private static class authenticateChallenge_argsTupleScheme extends TupleScheme<authenticateChallenge_args> {
 
       @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, authenticate_args struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol prot, authenticateChallenge_args struct) throws org.apache.thrift.TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
-        BitSet optionals = new BitSet();
-        if (struct.isSetStr()) {
-          optionals.set(0);
-        }
-        oprot.writeBitSet(optionals, 1);
-        if (struct.isSetStr()) {
-          oprot.writeString(struct.str);
-        }
       }
 
       @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, authenticate_args struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol prot, authenticateChallenge_args struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
-        BitSet incoming = iprot.readBitSet(1);
-        if (incoming.get(0)) {
-          struct.str = iprot.readString();
-          struct.setStrIsSet(true);
-        }
       }
     }
 
   }
 
-  public static class authenticate_result implements org.apache.thrift.TBase<authenticate_result, authenticate_result._Fields>, java.io.Serializable, Cloneable, Comparable<authenticate_result>   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("authenticate_result");
+  public static class authenticateChallenge_result implements org.apache.thrift.TBase<authenticateChallenge_result, authenticateChallenge_result._Fields>, java.io.Serializable, Cloneable, Comparable<authenticateChallenge_result>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("authenticateChallenge_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRING, (short)0);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
-      schemes.put(StandardScheme.class, new authenticate_resultStandardSchemeFactory());
-      schemes.put(TupleScheme.class, new authenticate_resultTupleSchemeFactory());
+      schemes.put(StandardScheme.class, new authenticateChallenge_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new authenticateChallenge_resultTupleSchemeFactory());
     }
 
     public String success; // required
@@ -810,13 +838,13 @@ public class ABService {
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(authenticate_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(authenticateChallenge_result.class, metaDataMap);
     }
 
-    public authenticate_result() {
+    public authenticateChallenge_result() {
     }
 
-    public authenticate_result(
+    public authenticateChallenge_result(
       String success)
     {
       this();
@@ -826,14 +854,14 @@ public class ABService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public authenticate_result(authenticate_result other) {
+    public authenticateChallenge_result(authenticateChallenge_result other) {
       if (other.isSetSuccess()) {
         this.success = other.success;
       }
     }
 
-    public authenticate_result deepCopy() {
-      return new authenticate_result(this);
+    public authenticateChallenge_result deepCopy() {
+      return new authenticateChallenge_result(this);
     }
 
     @Override
@@ -845,7 +873,7 @@ public class ABService {
       return this.success;
     }
 
-    public authenticate_result setSuccess(String success) {
+    public authenticateChallenge_result setSuccess(String success) {
       this.success = success;
       return this;
     }
@@ -904,12 +932,12 @@ public class ABService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof authenticate_result)
-        return this.equals((authenticate_result)that);
+      if (that instanceof authenticateChallenge_result)
+        return this.equals((authenticateChallenge_result)that);
       return false;
     }
 
-    public boolean equals(authenticate_result that) {
+    public boolean equals(authenticateChallenge_result that) {
       if (that == null)
         return false;
 
@@ -931,7 +959,7 @@ public class ABService {
     }
 
     @Override
-    public int compareTo(authenticate_result other) {
+    public int compareTo(authenticateChallenge_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
@@ -965,7 +993,7 @@ public class ABService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("authenticate_result(");
+      StringBuilder sb = new StringBuilder("authenticateChallenge_result(");
       boolean first = true;
 
       sb.append("success:");
@@ -1000,15 +1028,15 @@ public class ABService {
       }
     }
 
-    private static class authenticate_resultStandardSchemeFactory implements SchemeFactory {
-      public authenticate_resultStandardScheme getScheme() {
-        return new authenticate_resultStandardScheme();
+    private static class authenticateChallenge_resultStandardSchemeFactory implements SchemeFactory {
+      public authenticateChallenge_resultStandardScheme getScheme() {
+        return new authenticateChallenge_resultStandardScheme();
       }
     }
 
-    private static class authenticate_resultStandardScheme extends StandardScheme<authenticate_result> {
+    private static class authenticateChallenge_resultStandardScheme extends StandardScheme<authenticateChallenge_result> {
 
-      public void read(org.apache.thrift.protocol.TProtocol iprot, authenticate_result struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol iprot, authenticateChallenge_result struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TField schemeField;
         iprot.readStructBegin();
         while (true)
@@ -1037,7 +1065,7 @@ public class ABService {
         struct.validate();
       }
 
-      public void write(org.apache.thrift.protocol.TProtocol oprot, authenticate_result struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol oprot, authenticateChallenge_result struct) throws org.apache.thrift.TException {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
@@ -1052,16 +1080,16 @@ public class ABService {
 
     }
 
-    private static class authenticate_resultTupleSchemeFactory implements SchemeFactory {
-      public authenticate_resultTupleScheme getScheme() {
-        return new authenticate_resultTupleScheme();
+    private static class authenticateChallenge_resultTupleSchemeFactory implements SchemeFactory {
+      public authenticateChallenge_resultTupleScheme getScheme() {
+        return new authenticateChallenge_resultTupleScheme();
       }
     }
 
-    private static class authenticate_resultTupleScheme extends TupleScheme<authenticate_result> {
+    private static class authenticateChallenge_resultTupleScheme extends TupleScheme<authenticateChallenge_result> {
 
       @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, authenticate_result struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol prot, authenticateChallenge_result struct) throws org.apache.thrift.TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
         BitSet optionals = new BitSet();
         if (struct.isSetSuccess()) {
@@ -1074,7 +1102,7 @@ public class ABService {
       }
 
       @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, authenticate_result struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol prot, authenticateChallenge_result struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
@@ -1086,22 +1114,25 @@ public class ABService {
 
   }
 
-  public static class hello_args implements org.apache.thrift.TBase<hello_args, hello_args._Fields>, java.io.Serializable, Cloneable, Comparable<hello_args>   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("hello_args");
+  public static class authenticateResponse_args implements org.apache.thrift.TBase<authenticateResponse_args, authenticateResponse_args._Fields>, java.io.Serializable, Cloneable, Comparable<authenticateResponse_args>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("authenticateResponse_args");
 
-    private static final org.apache.thrift.protocol.TField STR_FIELD_DESC = new org.apache.thrift.protocol.TField("str", org.apache.thrift.protocol.TType.STRING, (short)1);
+    private static final org.apache.thrift.protocol.TField SIGNED_CHALLENGE_FIELD_DESC = new org.apache.thrift.protocol.TField("signedChallenge", org.apache.thrift.protocol.TType.STRING, (short)1);
+    private static final org.apache.thrift.protocol.TField CERTIFICATE_FIELD_DESC = new org.apache.thrift.protocol.TField("certificate", org.apache.thrift.protocol.TType.STRING, (short)2);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
-      schemes.put(StandardScheme.class, new hello_argsStandardSchemeFactory());
-      schemes.put(TupleScheme.class, new hello_argsTupleSchemeFactory());
+      schemes.put(StandardScheme.class, new authenticateResponse_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new authenticateResponse_argsTupleSchemeFactory());
     }
 
-    public String str; // required
+    public String signedChallenge; // required
+    public String certificate; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      STR((short)1, "str");
+      SIGNED_CHALLENGE((short)1, "signedChallenge"),
+      CERTIFICATE((short)2, "certificate");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -1116,8 +1147,10 @@ public class ABService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // STR
-            return STR;
+          case 1: // SIGNED_CHALLENGE
+            return SIGNED_CHALLENGE;
+          case 2: // CERTIFICATE
+            return CERTIFICATE;
           default:
             return null;
         }
@@ -1161,71 +1194,111 @@ public class ABService {
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.STR, new org.apache.thrift.meta_data.FieldMetaData("str", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+      tmpMap.put(_Fields.SIGNED_CHALLENGE, new org.apache.thrift.meta_data.FieldMetaData("signedChallenge", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      tmpMap.put(_Fields.CERTIFICATE, new org.apache.thrift.meta_data.FieldMetaData("certificate", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(hello_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(authenticateResponse_args.class, metaDataMap);
     }
 
-    public hello_args() {
+    public authenticateResponse_args() {
     }
 
-    public hello_args(
-      String str)
+    public authenticateResponse_args(
+      String signedChallenge,
+      String certificate)
     {
       this();
-      this.str = str;
+      this.signedChallenge = signedChallenge;
+      this.certificate = certificate;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public hello_args(hello_args other) {
-      if (other.isSetStr()) {
-        this.str = other.str;
+    public authenticateResponse_args(authenticateResponse_args other) {
+      if (other.isSetSignedChallenge()) {
+        this.signedChallenge = other.signedChallenge;
+      }
+      if (other.isSetCertificate()) {
+        this.certificate = other.certificate;
       }
     }
 
-    public hello_args deepCopy() {
-      return new hello_args(this);
+    public authenticateResponse_args deepCopy() {
+      return new authenticateResponse_args(this);
     }
 
     @Override
     public void clear() {
-      this.str = null;
+      this.signedChallenge = null;
+      this.certificate = null;
     }
 
-    public String getStr() {
-      return this.str;
+    public String getSignedChallenge() {
+      return this.signedChallenge;
     }
 
-    public hello_args setStr(String str) {
-      this.str = str;
+    public authenticateResponse_args setSignedChallenge(String signedChallenge) {
+      this.signedChallenge = signedChallenge;
       return this;
     }
 
-    public void unsetStr() {
-      this.str = null;
+    public void unsetSignedChallenge() {
+      this.signedChallenge = null;
     }
 
-    /** Returns true if field str is set (has been assigned a value) and false otherwise */
-    public boolean isSetStr() {
-      return this.str != null;
+    /** Returns true if field signedChallenge is set (has been assigned a value) and false otherwise */
+    public boolean isSetSignedChallenge() {
+      return this.signedChallenge != null;
     }
 
-    public void setStrIsSet(boolean value) {
+    public void setSignedChallengeIsSet(boolean value) {
       if (!value) {
-        this.str = null;
+        this.signedChallenge = null;
+      }
+    }
+
+    public String getCertificate() {
+      return this.certificate;
+    }
+
+    public authenticateResponse_args setCertificate(String certificate) {
+      this.certificate = certificate;
+      return this;
+    }
+
+    public void unsetCertificate() {
+      this.certificate = null;
+    }
+
+    /** Returns true if field certificate is set (has been assigned a value) and false otherwise */
+    public boolean isSetCertificate() {
+      return this.certificate != null;
+    }
+
+    public void setCertificateIsSet(boolean value) {
+      if (!value) {
+        this.certificate = null;
       }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case STR:
+      case SIGNED_CHALLENGE:
         if (value == null) {
-          unsetStr();
+          unsetSignedChallenge();
         } else {
-          setStr((String)value);
+          setSignedChallenge((String)value);
+        }
+        break;
+
+      case CERTIFICATE:
+        if (value == null) {
+          unsetCertificate();
+        } else {
+          setCertificate((String)value);
         }
         break;
 
@@ -1234,8 +1307,11 @@ public class ABService {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case STR:
-        return getStr();
+      case SIGNED_CHALLENGE:
+        return getSignedChallenge();
+
+      case CERTIFICATE:
+        return getCertificate();
 
       }
       throw new IllegalStateException();
@@ -1248,8 +1324,10 @@ public class ABService {
       }
 
       switch (field) {
-      case STR:
-        return isSetStr();
+      case SIGNED_CHALLENGE:
+        return isSetSignedChallenge();
+      case CERTIFICATE:
+        return isSetCertificate();
       }
       throw new IllegalStateException();
     }
@@ -1258,21 +1336,30 @@ public class ABService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof hello_args)
-        return this.equals((hello_args)that);
+      if (that instanceof authenticateResponse_args)
+        return this.equals((authenticateResponse_args)that);
       return false;
     }
 
-    public boolean equals(hello_args that) {
+    public boolean equals(authenticateResponse_args that) {
       if (that == null)
         return false;
 
-      boolean this_present_str = true && this.isSetStr();
-      boolean that_present_str = true && that.isSetStr();
-      if (this_present_str || that_present_str) {
-        if (!(this_present_str && that_present_str))
+      boolean this_present_signedChallenge = true && this.isSetSignedChallenge();
+      boolean that_present_signedChallenge = true && that.isSetSignedChallenge();
+      if (this_present_signedChallenge || that_present_signedChallenge) {
+        if (!(this_present_signedChallenge && that_present_signedChallenge))
           return false;
-        if (!this.str.equals(that.str))
+        if (!this.signedChallenge.equals(that.signedChallenge))
+          return false;
+      }
+
+      boolean this_present_certificate = true && this.isSetCertificate();
+      boolean that_present_certificate = true && that.isSetCertificate();
+      if (this_present_certificate || that_present_certificate) {
+        if (!(this_present_certificate && that_present_certificate))
+          return false;
+        if (!this.certificate.equals(that.certificate))
           return false;
       }
 
@@ -1285,19 +1372,29 @@ public class ABService {
     }
 
     @Override
-    public int compareTo(hello_args other) {
+    public int compareTo(authenticateResponse_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
 
-      lastComparison = Boolean.valueOf(isSetStr()).compareTo(other.isSetStr());
+      lastComparison = Boolean.valueOf(isSetSignedChallenge()).compareTo(other.isSetSignedChallenge());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetStr()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.str, other.str);
+      if (isSetSignedChallenge()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.signedChallenge, other.signedChallenge);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetCertificate()).compareTo(other.isSetCertificate());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetCertificate()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.certificate, other.certificate);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -1319,14 +1416,22 @@ public class ABService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("hello_args(");
+      StringBuilder sb = new StringBuilder("authenticateResponse_args(");
       boolean first = true;
 
-      sb.append("str:");
-      if (this.str == null) {
+      sb.append("signedChallenge:");
+      if (this.signedChallenge == null) {
         sb.append("null");
       } else {
-        sb.append(this.str);
+        sb.append(this.signedChallenge);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("certificate:");
+      if (this.certificate == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.certificate);
       }
       first = false;
       sb.append(")");
@@ -1354,15 +1459,15 @@ public class ABService {
       }
     }
 
-    private static class hello_argsStandardSchemeFactory implements SchemeFactory {
-      public hello_argsStandardScheme getScheme() {
-        return new hello_argsStandardScheme();
+    private static class authenticateResponse_argsStandardSchemeFactory implements SchemeFactory {
+      public authenticateResponse_argsStandardScheme getScheme() {
+        return new authenticateResponse_argsStandardScheme();
       }
     }
 
-    private static class hello_argsStandardScheme extends StandardScheme<hello_args> {
+    private static class authenticateResponse_argsStandardScheme extends StandardScheme<authenticateResponse_args> {
 
-      public void read(org.apache.thrift.protocol.TProtocol iprot, hello_args struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol iprot, authenticateResponse_args struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TField schemeField;
         iprot.readStructBegin();
         while (true)
@@ -1372,10 +1477,18 @@ public class ABService {
             break;
           }
           switch (schemeField.id) {
-            case 1: // STR
+            case 1: // SIGNED_CHALLENGE
               if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-                struct.str = iprot.readString();
-                struct.setStrIsSet(true);
+                struct.signedChallenge = iprot.readString();
+                struct.setSignedChallengeIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            case 2: // CERTIFICATE
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+                struct.certificate = iprot.readString();
+                struct.setCertificateIsSet(true);
               } else { 
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
@@ -1391,13 +1504,18 @@ public class ABService {
         struct.validate();
       }
 
-      public void write(org.apache.thrift.protocol.TProtocol oprot, hello_args struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol oprot, authenticateResponse_args struct) throws org.apache.thrift.TException {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
-        if (struct.str != null) {
-          oprot.writeFieldBegin(STR_FIELD_DESC);
-          oprot.writeString(struct.str);
+        if (struct.signedChallenge != null) {
+          oprot.writeFieldBegin(SIGNED_CHALLENGE_FIELD_DESC);
+          oprot.writeString(struct.signedChallenge);
+          oprot.writeFieldEnd();
+        }
+        if (struct.certificate != null) {
+          oprot.writeFieldBegin(CERTIFICATE_FIELD_DESC);
+          oprot.writeString(struct.certificate);
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -1406,49 +1524,59 @@ public class ABService {
 
     }
 
-    private static class hello_argsTupleSchemeFactory implements SchemeFactory {
-      public hello_argsTupleScheme getScheme() {
-        return new hello_argsTupleScheme();
+    private static class authenticateResponse_argsTupleSchemeFactory implements SchemeFactory {
+      public authenticateResponse_argsTupleScheme getScheme() {
+        return new authenticateResponse_argsTupleScheme();
       }
     }
 
-    private static class hello_argsTupleScheme extends TupleScheme<hello_args> {
+    private static class authenticateResponse_argsTupleScheme extends TupleScheme<authenticateResponse_args> {
 
       @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, hello_args struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol prot, authenticateResponse_args struct) throws org.apache.thrift.TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
         BitSet optionals = new BitSet();
-        if (struct.isSetStr()) {
+        if (struct.isSetSignedChallenge()) {
           optionals.set(0);
         }
-        oprot.writeBitSet(optionals, 1);
-        if (struct.isSetStr()) {
-          oprot.writeString(struct.str);
+        if (struct.isSetCertificate()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
+        if (struct.isSetSignedChallenge()) {
+          oprot.writeString(struct.signedChallenge);
+        }
+        if (struct.isSetCertificate()) {
+          oprot.writeString(struct.certificate);
         }
       }
 
       @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, hello_args struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol prot, authenticateResponse_args struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
-        BitSet incoming = iprot.readBitSet(1);
+        BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
-          struct.str = iprot.readString();
-          struct.setStrIsSet(true);
+          struct.signedChallenge = iprot.readString();
+          struct.setSignedChallengeIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.certificate = iprot.readString();
+          struct.setCertificateIsSet(true);
         }
       }
     }
 
   }
 
-  public static class hello_result implements org.apache.thrift.TBase<hello_result, hello_result._Fields>, java.io.Serializable, Cloneable, Comparable<hello_result>   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("hello_result");
+  public static class authenticateResponse_result implements org.apache.thrift.TBase<authenticateResponse_result, authenticateResponse_result._Fields>, java.io.Serializable, Cloneable, Comparable<authenticateResponse_result>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("authenticateResponse_result");
 
     private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRING, (short)0);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
-      schemes.put(StandardScheme.class, new hello_resultStandardSchemeFactory());
-      schemes.put(TupleScheme.class, new hello_resultTupleSchemeFactory());
+      schemes.put(StandardScheme.class, new authenticateResponse_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new authenticateResponse_resultTupleSchemeFactory());
     }
 
     public String success; // required
@@ -1518,13 +1646,13 @@ public class ABService {
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(hello_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(authenticateResponse_result.class, metaDataMap);
     }
 
-    public hello_result() {
+    public authenticateResponse_result() {
     }
 
-    public hello_result(
+    public authenticateResponse_result(
       String success)
     {
       this();
@@ -1534,14 +1662,14 @@ public class ABService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public hello_result(hello_result other) {
+    public authenticateResponse_result(authenticateResponse_result other) {
       if (other.isSetSuccess()) {
         this.success = other.success;
       }
     }
 
-    public hello_result deepCopy() {
-      return new hello_result(this);
+    public authenticateResponse_result deepCopy() {
+      return new authenticateResponse_result(this);
     }
 
     @Override
@@ -1553,7 +1681,7 @@ public class ABService {
       return this.success;
     }
 
-    public hello_result setSuccess(String success) {
+    public authenticateResponse_result setSuccess(String success) {
       this.success = success;
       return this;
     }
@@ -1612,12 +1740,12 @@ public class ABService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof hello_result)
-        return this.equals((hello_result)that);
+      if (that instanceof authenticateResponse_result)
+        return this.equals((authenticateResponse_result)that);
       return false;
     }
 
-    public boolean equals(hello_result that) {
+    public boolean equals(authenticateResponse_result that) {
       if (that == null)
         return false;
 
@@ -1639,7 +1767,7 @@ public class ABService {
     }
 
     @Override
-    public int compareTo(hello_result other) {
+    public int compareTo(authenticateResponse_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
@@ -1673,7 +1801,7 @@ public class ABService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("hello_result(");
+      StringBuilder sb = new StringBuilder("authenticateResponse_result(");
       boolean first = true;
 
       sb.append("success:");
@@ -1708,15 +1836,15 @@ public class ABService {
       }
     }
 
-    private static class hello_resultStandardSchemeFactory implements SchemeFactory {
-      public hello_resultStandardScheme getScheme() {
-        return new hello_resultStandardScheme();
+    private static class authenticateResponse_resultStandardSchemeFactory implements SchemeFactory {
+      public authenticateResponse_resultStandardScheme getScheme() {
+        return new authenticateResponse_resultStandardScheme();
       }
     }
 
-    private static class hello_resultStandardScheme extends StandardScheme<hello_result> {
+    private static class authenticateResponse_resultStandardScheme extends StandardScheme<authenticateResponse_result> {
 
-      public void read(org.apache.thrift.protocol.TProtocol iprot, hello_result struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol iprot, authenticateResponse_result struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TField schemeField;
         iprot.readStructBegin();
         while (true)
@@ -1745,7 +1873,7 @@ public class ABService {
         struct.validate();
       }
 
-      public void write(org.apache.thrift.protocol.TProtocol oprot, hello_result struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol oprot, authenticateResponse_result struct) throws org.apache.thrift.TException {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
@@ -1760,16 +1888,16 @@ public class ABService {
 
     }
 
-    private static class hello_resultTupleSchemeFactory implements SchemeFactory {
-      public hello_resultTupleScheme getScheme() {
-        return new hello_resultTupleScheme();
+    private static class authenticateResponse_resultTupleSchemeFactory implements SchemeFactory {
+      public authenticateResponse_resultTupleScheme getScheme() {
+        return new authenticateResponse_resultTupleScheme();
       }
     }
 
-    private static class hello_resultTupleScheme extends TupleScheme<hello_result> {
+    private static class authenticateResponse_resultTupleScheme extends TupleScheme<authenticateResponse_result> {
 
       @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, hello_result struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol prot, authenticateResponse_result struct) throws org.apache.thrift.TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
         BitSet optionals = new BitSet();
         if (struct.isSetSuccess()) {
@@ -1782,7 +1910,815 @@ public class ABService {
       }
 
       @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, hello_result struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol prot, authenticateResponse_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.success = iprot.readString();
+          struct.setSuccessIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class getValue_args implements org.apache.thrift.TBase<getValue_args, getValue_args._Fields>, java.io.Serializable, Cloneable, Comparable<getValue_args>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getValue_args");
+
+    private static final org.apache.thrift.protocol.TField SESSION_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("sessionID", org.apache.thrift.protocol.TType.STRING, (short)1);
+    private static final org.apache.thrift.protocol.TField KEY_FIELD_DESC = new org.apache.thrift.protocol.TField("key", org.apache.thrift.protocol.TType.STRING, (short)2);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new getValue_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new getValue_argsTupleSchemeFactory());
+    }
+
+    public String sessionID; // required
+    public String key; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SESSION_ID((short)1, "sessionID"),
+      KEY((short)2, "key");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // SESSION_ID
+            return SESSION_ID;
+          case 2: // KEY
+            return KEY;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SESSION_ID, new org.apache.thrift.meta_data.FieldMetaData("sessionID", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      tmpMap.put(_Fields.KEY, new org.apache.thrift.meta_data.FieldMetaData("key", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getValue_args.class, metaDataMap);
+    }
+
+    public getValue_args() {
+    }
+
+    public getValue_args(
+      String sessionID,
+      String key)
+    {
+      this();
+      this.sessionID = sessionID;
+      this.key = key;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getValue_args(getValue_args other) {
+      if (other.isSetSessionID()) {
+        this.sessionID = other.sessionID;
+      }
+      if (other.isSetKey()) {
+        this.key = other.key;
+      }
+    }
+
+    public getValue_args deepCopy() {
+      return new getValue_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.sessionID = null;
+      this.key = null;
+    }
+
+    public String getSessionID() {
+      return this.sessionID;
+    }
+
+    public getValue_args setSessionID(String sessionID) {
+      this.sessionID = sessionID;
+      return this;
+    }
+
+    public void unsetSessionID() {
+      this.sessionID = null;
+    }
+
+    /** Returns true if field sessionID is set (has been assigned a value) and false otherwise */
+    public boolean isSetSessionID() {
+      return this.sessionID != null;
+    }
+
+    public void setSessionIDIsSet(boolean value) {
+      if (!value) {
+        this.sessionID = null;
+      }
+    }
+
+    public String getKey() {
+      return this.key;
+    }
+
+    public getValue_args setKey(String key) {
+      this.key = key;
+      return this;
+    }
+
+    public void unsetKey() {
+      this.key = null;
+    }
+
+    /** Returns true if field key is set (has been assigned a value) and false otherwise */
+    public boolean isSetKey() {
+      return this.key != null;
+    }
+
+    public void setKeyIsSet(boolean value) {
+      if (!value) {
+        this.key = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SESSION_ID:
+        if (value == null) {
+          unsetSessionID();
+        } else {
+          setSessionID((String)value);
+        }
+        break;
+
+      case KEY:
+        if (value == null) {
+          unsetKey();
+        } else {
+          setKey((String)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SESSION_ID:
+        return getSessionID();
+
+      case KEY:
+        return getKey();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SESSION_ID:
+        return isSetSessionID();
+      case KEY:
+        return isSetKey();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getValue_args)
+        return this.equals((getValue_args)that);
+      return false;
+    }
+
+    public boolean equals(getValue_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_sessionID = true && this.isSetSessionID();
+      boolean that_present_sessionID = true && that.isSetSessionID();
+      if (this_present_sessionID || that_present_sessionID) {
+        if (!(this_present_sessionID && that_present_sessionID))
+          return false;
+        if (!this.sessionID.equals(that.sessionID))
+          return false;
+      }
+
+      boolean this_present_key = true && this.isSetKey();
+      boolean that_present_key = true && that.isSetKey();
+      if (this_present_key || that_present_key) {
+        if (!(this_present_key && that_present_key))
+          return false;
+        if (!this.key.equals(that.key))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    @Override
+    public int compareTo(getValue_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+
+      lastComparison = Boolean.valueOf(isSetSessionID()).compareTo(other.isSetSessionID());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSessionID()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.sessionID, other.sessionID);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetKey()).compareTo(other.isSetKey());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetKey()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.key, other.key);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getValue_args(");
+      boolean first = true;
+
+      sb.append("sessionID:");
+      if (this.sessionID == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.sessionID);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("key:");
+      if (this.key == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.key);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+      // check for sub-struct validity
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class getValue_argsStandardSchemeFactory implements SchemeFactory {
+      public getValue_argsStandardScheme getScheme() {
+        return new getValue_argsStandardScheme();
+      }
+    }
+
+    private static class getValue_argsStandardScheme extends StandardScheme<getValue_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getValue_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // SESSION_ID
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+                struct.sessionID = iprot.readString();
+                struct.setSessionIDIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            case 2: // KEY
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+                struct.key = iprot.readString();
+                struct.setKeyIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getValue_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.sessionID != null) {
+          oprot.writeFieldBegin(SESSION_ID_FIELD_DESC);
+          oprot.writeString(struct.sessionID);
+          oprot.writeFieldEnd();
+        }
+        if (struct.key != null) {
+          oprot.writeFieldBegin(KEY_FIELD_DESC);
+          oprot.writeString(struct.key);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class getValue_argsTupleSchemeFactory implements SchemeFactory {
+      public getValue_argsTupleScheme getScheme() {
+        return new getValue_argsTupleScheme();
+      }
+    }
+
+    private static class getValue_argsTupleScheme extends TupleScheme<getValue_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, getValue_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSessionID()) {
+          optionals.set(0);
+        }
+        if (struct.isSetKey()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
+        if (struct.isSetSessionID()) {
+          oprot.writeString(struct.sessionID);
+        }
+        if (struct.isSetKey()) {
+          oprot.writeString(struct.key);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, getValue_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(2);
+        if (incoming.get(0)) {
+          struct.sessionID = iprot.readString();
+          struct.setSessionIDIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.key = iprot.readString();
+          struct.setKeyIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class getValue_result implements org.apache.thrift.TBase<getValue_result, getValue_result._Fields>, java.io.Serializable, Cloneable, Comparable<getValue_result>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getValue_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRING, (short)0);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new getValue_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new getValue_resultTupleSchemeFactory());
+    }
+
+    public String success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getValue_result.class, metaDataMap);
+    }
+
+    public getValue_result() {
+    }
+
+    public getValue_result(
+      String success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getValue_result(getValue_result other) {
+      if (other.isSetSuccess()) {
+        this.success = other.success;
+      }
+    }
+
+    public getValue_result deepCopy() {
+      return new getValue_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public String getSuccess() {
+      return this.success;
+    }
+
+    public getValue_result setSuccess(String success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((String)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getValue_result)
+        return this.equals((getValue_result)that);
+      return false;
+    }
+
+    public boolean equals(getValue_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    @Override
+    public int compareTo(getValue_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getValue_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+      // check for sub-struct validity
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class getValue_resultStandardSchemeFactory implements SchemeFactory {
+      public getValue_resultStandardScheme getScheme() {
+        return new getValue_resultStandardScheme();
+      }
+    }
+
+    private static class getValue_resultStandardScheme extends StandardScheme<getValue_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getValue_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+                struct.success = iprot.readString();
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getValue_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          oprot.writeString(struct.success);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class getValue_resultTupleSchemeFactory implements SchemeFactory {
+      public getValue_resultTupleScheme getScheme() {
+        return new getValue_resultTupleScheme();
+      }
+    }
+
+    private static class getValue_resultTupleScheme extends TupleScheme<getValue_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, getValue_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSuccess()) {
+          oprot.writeString(struct.success);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, getValue_result struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {

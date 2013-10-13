@@ -8,7 +8,7 @@ import org.apache.thrift.server.TThreadPoolServer;
 import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TTransportException;
 
-import edu.purdue.cs.absoa.ABService.Processor;
+//import edu.purdue.cs.absoa.ABService.Processor;
 import edu.purdue.cs.absoa.ABService;
 
 public class Server 
@@ -17,9 +17,7 @@ public class Server
 	{
 		try {
 			TServerSocket serverTransport = new TServerSocket(5555);
-
 			ABService.Processor processor = new ABService.Processor(new ABServiceHandler());
-
 			TServer server = new TThreadPoolServer(new TThreadPoolServer.Args(serverTransport).
 					processor(processor));
 			System.out.println("Starting server on port 5555 ...");
