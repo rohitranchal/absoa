@@ -1,0 +1,41 @@
+Domain Authentication with AB
+===============================================================================
+The AB needs to know its execution environment.
+Steps:
+
+- Environment (E) asks to be challenged
+- AB returns a random string
+- E signs the random string with its private key and return the signature and the certificate
+- AB verifies the signature using the certificate
+- AB checks its black lists and white lists for any rules about the domain using the certificate DN
+- Returns a session ID
+
+AB interceptor will add the session ID to the message/message context of the request so that it can be collected at the service.
+
+
+
+Service Requesting Values from AB
+===============================================================================
+- Service extends the ABCommunicator
+- ABCommunicator : getValue()
+- Service implementation will call getValue() as required
+- getValue() implementation in ABCommunicator will invoke the AB, to obtain values.
+
+
+
+Data in Active Bundles
+===============================================================================
+Main data structure is a table:
+
++---------------+-------+
+| Key           | Value |
++---------------+-------+
+| ab.user.name  | Alice |
+| ab.user.zip   | 47906 |
+| com.foo.bar   | mar   |
++---------------+-------+
+
+
+Active Bundle API
+===============================================================================
+
