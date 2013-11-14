@@ -1,0 +1,6 @@
+<service>
+	<parameter name="$org.ruchith.tools.Service" locked="false">Service</parameter>
+	<operation name="operation">
+		<messageReceiver class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+	</operation>    
+</service>
