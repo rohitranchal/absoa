@@ -1,4 +1,4 @@
-<module name="rampart" class="edu.purdue.cs.absoa.ABInterceptorModule">
+<module name="ab_axis2_module" class="edu.purdue.cs.absoa.ABInterceptorModule">
 
     <Description>Active Bundle Interceptor</Description>
 	    
