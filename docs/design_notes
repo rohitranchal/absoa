@@ -43,4 +43,11 @@ The Active Bundle will offer these functions
 - String authenticateChallenge() // returns a random string
 - String authenticateResponse(String signedChallenge, String certificate) // return a session id
 - String getValue(String certificate, String sessionID, String key) // returns the value for the key if the session id is correct
+- VerifyIntegrity() // check AB integrity 
+ 
+AB should have a CA's cert which is the trust root of all certificates 
+AB will verify the received cert such that it leads to CA chain
+AB should also receive the token back in the authchallenge()
+Use set for tokens to lookup token
 
+Use sessionID as value and certificate as key

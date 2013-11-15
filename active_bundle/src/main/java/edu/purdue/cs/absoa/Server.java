@@ -1,6 +1,7 @@
 package edu.purdue.cs.absoa;
 
 import java.io.IOException;
+
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TBinaryProtocol.Factory;
 import org.apache.thrift.server.TServer;
@@ -8,7 +9,6 @@ import org.apache.thrift.server.TThreadPoolServer;
 import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TTransportException;
 
-//import edu.purdue.cs.absoa.ABService.Processor;
 import edu.purdue.cs.absoa.ABService;
 
 public class Server 
