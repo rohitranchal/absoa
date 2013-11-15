@@ -1,0 +1,12 @@
+Simple service and client
+
+Steps to run the scenario:
+
+1.) To build the service run the following from the "service" directory:
+mvn clean install
+
+2.) Setup an axis2 instance by running "scripts/setup" of the "service" directory.
+
+3.) Build ab_axis2_module project and copy "ab_axis2_module-1.0-SNAPSHOT.mar" from "target" directory into "service/scripts/axis2_server/axis2-1.6.2/repository/modules/"
+
+4.) Run edu.purdue.cs.absoa.samples.simple.App in "client" project.

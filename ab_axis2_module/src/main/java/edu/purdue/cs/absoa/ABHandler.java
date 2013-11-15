@@ -2,30 +2,16 @@ package edu.purdue.cs.absoa;
 
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.context.MessageContext;
-import org.apache.axis2.description.HandlerDescription;
 import org.apache.axis2.description.Parameter;
 import org.apache.axis2.engine.Handler;
+import org.apache.axis2.handlers.AbstractHandler;
 
-public class ABHandler implements Handler {
+public class ABHandler extends AbstractHandler implements Handler {
 
-	public void cleanup() {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void flowComplete(MessageContext arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public HandlerDescription getHandlerDesc() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	private String name = "ABHandler";
 
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.name;
 	}
 
 	public Parameter getParameter(String arg0) {
@@ -33,14 +19,12 @@ public class ABHandler implements Handler {
 		return null;
 	}
 
-	public void init(HandlerDescription arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
 	public InvocationResponse invoke(MessageContext arg0) throws AxisFault {
 		System.out.println("Testing");
-		return null;
+		return InvocationResponse.CONTINUE;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
 }

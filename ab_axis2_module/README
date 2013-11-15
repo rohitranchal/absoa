@@ -1,0 +1,4 @@
+To build this project:
+
+mvn compile axis2-mar:mar 
+
