@@ -36,22 +36,28 @@ public class ABClient
 			System.out.println("Decoded token: " + strTok);
 
 			String signedChall = signData(strTok);
-		//	System.out.println("Signed token: " + signedChall);			
+			//	System.out.println("Signed token: " + signedChall);			
 			String encodeChall = dataEncode(signedChall);
 			System.out.println("Encoded Signed token: " + encodeChall);
-			
+
 			String storePath = "/Users/rohitranchal/Dropbox/Developer/workspace/absoa/keys/service1/abstore.ks";			
 			String serviceCert = loadCertificateStore(storePath);
-		//	System.out.println("Certificate: " + serviceCert);			
+			//	System.out.println("Certificate: " + serviceCert);			
 			String encodeCert = dataEncode(serviceCert);
-		//	System.out.println("Encoded Certificate: " + encodeCert);
-			
+			//	System.out.println("Encoded Certificate: " + encodeCert);
+
 			String encodedSessionID = client.authenticateResponse(encodedMsg, encodeChall, encodeCert);
 			if(encodedSessionID != null) {
 				String sessionID = dataDecode(encodedSessionID);
-				System.out.println("Session ID received on Service: " + sessionID);
+				if (sessionID != null) {
+					System.out.println("Session ID received on Service: " + sessionID);
+					String abName = client.getValue(encodedSessionID, dataEncode("ab.user.name"));
+					String abZip = client.getValue(encodedSessionID, dataEncode("ab.user.zip"));
+					String abData = client.getValue(encodedSessionID, dataEncode("ab.user.data"));
+					System.out.println("AB Data Name: " + abName + " Zip: " + abZip + " Data: " + abData);
+				}
 			} else 	System.out.println("Null Session ID received on Service ");
-		
+
 			transport.close();
 		} catch (TTransportException e) {
 			e.printStackTrace();
@@ -67,14 +73,14 @@ public class ABClient
 		String storePass = "absoa1";
 		kStore.load(storeFile, storePass.toCharArray());
 		X509Certificate serviceCert = (X509Certificate)kStore.getCertificate("service1");
-		
+
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		ObjectOutputStream out = new ObjectOutputStream(bos);   
 		out.writeObject(serviceCert);
 		byte[] data = bos.toByteArray(); 
 		bos.close();		
 		String strCert = new String(data);		
-		
+
 		return strCert;		
 	}
 
@@ -109,7 +115,7 @@ public class ABClient
 		byte[] byteMsg = new BASE64Decoder().decodeBuffer(strData);
 		return new String(byteMsg, "UTF8");		
 	}
-	
+
 	public static void main(String[] args) throws Exception 
 	{
 		ABClient abClient = new ABClient();		

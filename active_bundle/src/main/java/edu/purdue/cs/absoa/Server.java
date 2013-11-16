@@ -29,7 +29,17 @@ public class Server
 
 	public static void main(String[] args) 
 	{
+		if(args.length != 0) {
+			ABServiceHandler.setABData("ab.user.name", args[0]);
+			ABServiceHandler.setABData("ab.user.zip", args[1]);
+			ABServiceHandler.setABData("ab.user.data", args[2]);
+		} else {
+			ABServiceHandler.setABData("ab.user.name", "ABOwner");
+			ABServiceHandler.setABData("ab.user.zip", "47906");
+			ABServiceHandler.setABData("ab.user.data", "AB sensitive data");
+		}
 		Server srv = new Server();
 		srv.start();
+
 	}
 }
