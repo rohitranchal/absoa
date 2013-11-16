@@ -4,6 +4,18 @@
 	<groupId>edu.purdue.cs.absoa.samples.simple</groupId>
 	<artifactId>service</artifactId>
 	<version>1.0-SNAPSHOT</version>
+	
+	<repositories>
+		<repository>
+			<id>mvn-repo</id>
+			<url>http://anon-idm.googlecode.com/svn/trunk/maven_repo/</url>
+		</repository>
+		<repository>
+			<id>repo2</id>
+			<url>http://repo1.maven.org/maven2/</url>
+		</repository>
+	</repositories>
+	
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -21,6 +33,11 @@
 			<artifactId>axis2-aar-maven-plugin</artifactId>
 			<version>1.6.2</version>
 			<type>maven-plugin</type>
+		</dependency>
+		<dependency>
+			<groupId>edu.purdue.cs.absoa</groupId>
+			<artifactId>active_bundle</artifactId>
+			<version>1.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	<build>

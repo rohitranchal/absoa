@@ -35,4 +35,5 @@
   <classpathentry kind="var" path="M2_REPO/org/apache/woden/woden-impl-commons/1.0M9/woden-impl-commons-1.0M9.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/axis2/axis2-transport-http/1.6.2/axis2-transport-http-1.6.2.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/httpcomponents/httpcore/4.0/httpcore-4.0.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-io/commons-io/1.3.2/commons-io-1.3.2.jar"/>
 </classpath>
