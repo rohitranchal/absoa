@@ -1,12 +1,15 @@
 package edu.purdue.cs.absoa;
 import java.io.ByteArrayOutputStream;
-import java.io.ObjectOutputStream;
 import java.io.FileInputStream;
-import java.net.SocketException;
+import java.io.InputStream;
+import java.io.ObjectOutputStream;
+import java.security.Key;
+import java.security.KeyStore;
+import java.security.PrivateKey;
+import java.security.Signature;
+import java.security.cert.X509Certificate;
 
-import java.security.*;
-import java.security.cert.*;
-import javax.crypto.*;
+import javax.crypto.Cipher;
 
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -15,10 +18,8 @@ import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
 
-import sun.misc.BASE64Encoder;
 import sun.misc.BASE64Decoder;
-
-import edu.purdue.cs.absoa.ABService;
+import sun.misc.BASE64Encoder;
 
 public class ABClient 
 {
@@ -41,7 +42,10 @@ public class ABClient
 			String encodeChall = dataEncode(signedChall);
 			System.out.println("Encoded Signed token: " + encodeChall);
 
-			String storePath = "/Users/rohitranchal/Dropbox/Developer/workspace/absoa/keys/service1/abstore.ks";			
+			
+			
+			
+			String storePath = "service1/abstore.ks";			
 			String serviceCert = loadCertificateStore(storePath);
 			//	System.out.println("Certificate: " + serviceCert);			
 			String encodeCert = dataEncode(serviceCert);
@@ -51,10 +55,16 @@ public class ABClient
 
 			KeyStore kStore = KeyStore.getInstance(KeyStore.getDefaultType());
 			char[] password = "absoa1".toCharArray();
-			FileInputStream fStream;
-			fStream = new FileInputStream(storePath);
-			kStore.load(fStream, password);
-			fStream.close();
+			
+			InputStream fStream;			
+			try {
+				fStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("service1/abstore.ks");
+				kStore.load(fStream, password);
+				fStream.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}			
+			
 			Key myKey =  kStore.getKey("service1", password);
 			PrivateKey myPrivateKey = (PrivateKey)myKey;
 
@@ -83,13 +93,14 @@ public class ABClient
 		} catch (TException e) {
 			e.printStackTrace();
 		}
-	}
-
-	
+	}	
 	
 	private String loadCertificateStore(String path) throws Exception
 	{
-		final FileInputStream storeFile = new FileInputStream(path);
+		//final FileInputStream storeFile = new FileInputStream(path);		
+		final InputStream storeFile;			
+		storeFile = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
+		
 		final KeyStore kStore = KeyStore.getInstance("JKS");
 		String storePass = "absoa1";
 		kStore.load(storeFile, storePass.toCharArray());
@@ -110,19 +121,26 @@ public class ABClient
 		// Specify the Keystore of the Service 
 		KeyStore kStore = KeyStore.getInstance(KeyStore.getDefaultType());
 		char[] password = "absoa1".toCharArray();
-		FileInputStream fStream;
-		fStream = new FileInputStream("/Users/rohitranchal/Dropbox/Developer/workspace/absoa/keys/service1/abstore.ks");
-		kStore.load(fStream, password);
-		fStream.close();
+		InputStream fStream;
+		try {
+			fStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("service1/abstore.ks");
+			kStore.load(fStream, password);
+			fStream.close();
 
-		Key myKey =  kStore.getKey("service1", password);
-		PrivateKey myPrivateKey = (PrivateKey)myKey;
+			Key myKey =  kStore.getKey("service1", password);
+			PrivateKey myPrivateKey = (PrivateKey)myKey;
 
-		Signature mySign = Signature.getInstance("SHA256withRSA");
-		mySign.initSign(myPrivateKey);
-		mySign.update(strMsg.getBytes());
-		byte[] byteSignedData = mySign.sign();	  
-		return new String(byteSignedData);	
+			Signature mySign = Signature.getInstance("SHA256withRSA");
+			mySign.initSign(myPrivateKey);
+			mySign.update(strMsg.getBytes());
+			byte[] byteSignedData = mySign.sign();	  
+			return new String(byteSignedData);
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		return null;
+	
 	}	
 
 	private String dataEncode(String strData) throws Exception

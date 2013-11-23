@@ -58,12 +58,13 @@ public class ABServiceHandler implements ABService.Iface
 			//	System.out.println("Decode Cert: " + decodeCert);			
 			String decodeToken = dataDecode(token);
 
-			String storePath = "/Users/rohitranchal/Dropbox/Developer/workspace/absoa/keys/CA/ABCACert.cert";			
+			//String storePath = "/Users/rohitranchal/Dropbox/Developer/workspace/absoa/keys/CA/ABCACert.cert";
+			String storePath = "CA/ABCACert.cert";
 			String CACert = loadCertificateFile(storePath);
 
 			if (validateSignature(decodeToken, decodeChall, decodeCert, CACert)) {
 				String sessionID = generateSessionKey(decodeCert);
-			//	System.out.println("Session ID Created: " + sessionID);
+				//	System.out.println("Session ID Created: " + sessionID);
 				//sessionIDList.put(certificate, sessionID);
 				sessionIDList.put(sessionID, decodeCert); // we need to look up this cert based on session ID
 				return dataEncode(sessionID);
@@ -77,7 +78,9 @@ public class ABServiceHandler implements ABService.Iface
 	private String loadCertificateFile(String path) throws Exception
 	{
 		CertificateFactory certificatefactory = CertificateFactory.getInstance("X.509");
-		final FileInputStream certFile = new FileInputStream(path);
+		//final FileInputStream certFile = new FileInputStream(path);
+		final InputStream certFile;			
+		certFile = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
 		X509Certificate caCert = (X509Certificate)certificatefactory.generateCertificate(certFile);
 		/*
 		System.out.println("---Certificate---");
@@ -151,7 +154,7 @@ public class ABServiceHandler implements ABService.Iface
 			out.writeObject(aesKey);
 			byte[] data = bos.toByteArray(); 
 			bos.close();	
-			
+
 			System.out.println("Session Key created on server: " + new String(data));
 
 			ByteArrayInputStream bis = new ByteArrayInputStream(serviceCert.getBytes());
@@ -167,9 +170,9 @@ public class ABServiceHandler implements ABService.Iface
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
-			
-			
+
+
+
 			String strKey = new String(cipherText);
 			return strKey;
 		} catch(Exception e) {
@@ -183,6 +186,7 @@ public class ABServiceHandler implements ABService.Iface
 		try {
 			String decodedID = dataDecode(sessionID);
 			String decodedABKey = dataDecode(abDataKey);
+
 			/*
 		if(sessionIDList.containsKey(decodedID)) {
 			String serviceCert = sessionIDList.get(sessionID);
