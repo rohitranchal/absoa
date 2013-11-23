@@ -51,3 +51,21 @@ AB should also receive the token back in the authchallenge()
 Use set for tokens to lookup token
 
 Use sessionID as value and certificate as key
+
+- We don't need mutual authentication because AB can travel to secondary parties and so on
+so we only do one way authentication where AB authenticates the service. 
+
+- authenticateResponse() 
+{
+    1. verify service cert
+    2. verify cert chain leading to CA
+    3. verify sign
+    4. generate an AES key for session with service
+    5. encrypt session key with service cert
+    6. return encrypted session key
+}
+
+? When service invokes authenticatechallenge and authenticateResponse and sends data
+can that data be tampered with as it is not encrypted ?
+
+

@@ -6,6 +6,7 @@ import java.net.SocketException;
 
 import java.security.*;
 import java.security.cert.*;
+import javax.crypto.*;
 
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -47,10 +48,28 @@ public class ABClient
 			//	System.out.println("Encoded Certificate: " + encodeCert);
 
 			String encodedSessionID = client.authenticateResponse(encodedMsg, encodeChall, encodeCert);
+
+			KeyStore kStore = KeyStore.getInstance(KeyStore.getDefaultType());
+			char[] password = "absoa1".toCharArray();
+			FileInputStream fStream;
+			fStream = new FileInputStream(storePath);
+			kStore.load(fStream, password);
+			fStream.close();
+			Key myKey =  kStore.getKey("service1", password);
+			PrivateKey myPrivateKey = (PrivateKey)myKey;
+
 			if(encodedSessionID != null) {
 				String sessionID = dataDecode(encodedSessionID);
-				if (sessionID != null) {
-					System.out.println("Session ID received on Service: " + sessionID);
+				if (sessionID != null) {					
+					byte[] decryptedText = null;
+				    try {
+				      final Cipher cipher = Cipher.getInstance("RSA");
+				      cipher.init(Cipher.DECRYPT_MODE, myPrivateKey);
+				      decryptedText = cipher.doFinal(sessionID.getBytes());
+				    } catch (Exception ex) {
+				      ex.printStackTrace();
+				    }					
+					System.out.println("Session key received on Service: " + new String(decryptedText));
 					String abName = client.getValue(encodedSessionID, dataEncode("ab.user.name"));
 					String abZip = client.getValue(encodedSessionID, dataEncode("ab.user.zip"));
 					String abData = client.getValue(encodedSessionID, dataEncode("ab.user.data"));
@@ -66,6 +85,8 @@ public class ABClient
 		}
 	}
 
+	
+	
 	private String loadCertificateStore(String path) throws Exception
 	{
 		final FileInputStream storeFile = new FileInputStream(path);

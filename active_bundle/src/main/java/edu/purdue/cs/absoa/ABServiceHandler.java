@@ -62,8 +62,8 @@ public class ABServiceHandler implements ABService.Iface
 			String CACert = loadCertificateFile(storePath);
 
 			if (validateSignature(decodeToken, decodeChall, decodeCert, CACert)) {
-				String sessionID = generateToken();
-				System.out.println("Session ID Created: " + sessionID);
+				String sessionID = generateSessionKey(decodeCert);
+			//	System.out.println("Session ID Created: " + sessionID);
 				//sessionIDList.put(certificate, sessionID);
 				sessionIDList.put(sessionID, decodeCert); // we need to look up this cert based on session ID
 				return dataEncode(sessionID);
@@ -140,11 +140,49 @@ public class ABServiceHandler implements ABService.Iface
 		return false;		
 	}
 
-	public String getValue(String sessionID, String abkey) throws TException 
+	private static String generateSessionKey(String serviceCert)
+	{
+		try {			
+			KeyGenerator keygenerator = KeyGenerator.getInstance("AES");
+			SecretKey aesKey = keygenerator.generateKey();
+
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			ObjectOutputStream out = new ObjectOutputStream(bos);   
+			out.writeObject(aesKey);
+			byte[] data = bos.toByteArray(); 
+			bos.close();	
+			
+			System.out.println("Session Key created on server: " + new String(data));
+
+			ByteArrayInputStream bis = new ByteArrayInputStream(serviceCert.getBytes());
+			ObjectInput in = new ObjectInputStream(bis);
+			X509Certificate cert = (X509Certificate) in.readObject(); 
+			bis.close();			
+			PublicKey serviceKey = cert.getPublicKey();
+			byte[] cipherText = null;
+			try {
+				final Cipher cipher = Cipher.getInstance("RSA");
+				cipher.init(Cipher.ENCRYPT_MODE, serviceKey);
+				cipherText = cipher.doFinal(data);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			
+			
+			String strKey = new String(cipherText);
+			return strKey;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public String getValue(String sessionID, String abDataKey) throws TException 
 	{	
 		try {
 			String decodedID = dataDecode(sessionID);
-			String decodedABKey = dataDecode(abkey);
+			String decodedABKey = dataDecode(abDataKey);
 			/*
 		if(sessionIDList.containsKey(decodedID)) {
 			String serviceCert = sessionIDList.get(sessionID);
@@ -167,19 +205,19 @@ public class ABServiceHandler implements ABService.Iface
 		}
 	}	
 
-	public String generateToken()
+	public static String generateToken()
 	{	
 		String id = UUID.randomUUID().toString();
 		return id;    	
 	}
 
-	private String dataEncode(String strData) throws Exception
+	private static String dataEncode(String strData) throws Exception
 	{
 		byte[] byteTok = strData.getBytes("UTF8");		        
 		return new BASE64Encoder().encode(byteTok);	
 	}
 
-	private String dataDecode(String strData) throws Exception
+	private static String dataDecode(String strData) throws Exception
 	{
 		byte[] byteMsg = new BASE64Decoder().decodeBuffer(strData);
 		return new String(byteMsg, "UTF8");		
