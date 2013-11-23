@@ -77,12 +77,13 @@ public class ABServiceHandler implements ABService.Iface
 
 	private String loadCertificateFile(String path) throws Exception
 	{
+		System.out.println("load certificate called");
 		CertificateFactory certificatefactory = CertificateFactory.getInstance("X.509");
 		//final FileInputStream certFile = new FileInputStream(path);
 		final InputStream certFile;			
 		certFile = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
 		X509Certificate caCert = (X509Certificate)certificatefactory.generateCertificate(certFile);
-		/*
+		
 		System.out.println("---Certificate---");
         System.out.println("type = " + caCert.getType());
         System.out.println("version = " + caCert.getVersion());
@@ -94,7 +95,7 @@ public class ABServiceHandler implements ABService.Iface
         System.out.println("signing algorithm = " + caCert.getSigAlgName());
         System.out.println("public key algorithm = " + caCert.getPublicKey().getAlgorithm());
 		certFile.close();
-		 */
+		
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		ObjectOutputStream out = new ObjectOutputStream(bos);   
 		out.writeObject(caCert);
