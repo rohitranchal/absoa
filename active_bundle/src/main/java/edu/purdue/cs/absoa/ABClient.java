@@ -40,10 +40,7 @@ public class ABClient
 			String signedChall = signData(strTok);
 			//	System.out.println("Signed token: " + signedChall);			
 			String encodeChall = dataEncode(signedChall);
-			System.out.println("Encoded Signed token: " + encodeChall);
-
-			
-			
+			System.out.println("Encoded Signed token: " + encodeChall);			
 			
 			String storePath = "service1/abstore.ks";			
 			String serviceCert = loadCertificateStore(storePath);

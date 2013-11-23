@@ -6,6 +6,6 @@ typedef i32 int
 service ABService
 {
 	string authenticateChallenge(),
-	string authenticateResponse(1:string token, 2:string signedChallenge, 3:string certificate),
+	struct authenticateResponse(1:string token, 2:string signedChallenge, 3:string certificate),
 	string getValue(1:string sessionID, 2:string key),
 }
