@@ -1,6 +1,5 @@
 package edu.purdue.cs.absoa;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.security.Key;
@@ -34,25 +33,24 @@ public class ABClient
 
 			String encodedMsg = client.authenticateChallenge();
 			//	System.out.println("Received token: " + encodedMsg);
-			String strTok = dataDecode(encodedMsg);
-			System.out.println("Decoded token: " + strTok);
+			byte[] tok = dataDecode(encodedMsg);
+			System.out.println("Decoded token: " + tok);
 
-			String signedChall = signData(strTok);
+			byte[] signedChall = signData(tok);
 			//	System.out.println("Signed token: " + signedChall);			
-			String encodeChall = dataEncode(signedChall);
-			System.out.println("Encoded Signed token: " + encodeChall);			
-			
+			String encodedSignedChall = dataEncode(signedChall);
+			System.out.println("Encoded Signed token: " + encodedSignedChall);			
+
 			String storePath = "service1/abstore.ks";			
-			String serviceCert = loadCertificateStore(storePath);
+			byte[] serviceCert = loadCertificateStore(storePath);
 			//	System.out.println("Certificate: " + serviceCert);			
 			String encodeCert = dataEncode(serviceCert);
 			//	System.out.println("Encoded Certificate: " + encodeCert);
 
-			String encodedSessionID = client.authenticateResponse(encodedMsg, encodeChall, encodeCert);
+			String encodedSessionID = client.authenticateResponse(encodedMsg, encodedSignedChall, encodeCert);
 
 			KeyStore kStore = KeyStore.getInstance(KeyStore.getDefaultType());
-			char[] password = "absoa1".toCharArray();
-			
+			char[] password = "absoa1".toCharArray();			
 			InputStream fStream;			
 			try {
 				fStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("service1/abstore.ks");
@@ -61,27 +59,24 @@ public class ABClient
 			} catch(Exception e) {
 				e.printStackTrace();
 			}			
-			
 			Key myKey =  kStore.getKey("service1", password);
 			PrivateKey myPrivateKey = (PrivateKey)myKey;
 
 			if(encodedSessionID != null) {
-				String sessionID = dataDecode(encodedSessionID);
-				if (sessionID != null) {					
-					byte[] decryptedText = null;
-				    try {
-				      final Cipher cipher = Cipher.getInstance("RSA");
-				      cipher.init(Cipher.DECRYPT_MODE, myPrivateKey);
-				      decryptedText = cipher.doFinal(sessionID.getBytes());
-				    } catch (Exception ex) {
-				      ex.printStackTrace();
-				    }					
-					System.out.println("Session key received on Service: " + new String(decryptedText));
-					String abName = client.getValue(encodedSessionID, dataEncode("ab.user.name"));
-					String abZip = client.getValue(encodedSessionID, dataEncode("ab.user.zip"));
-					String abData = client.getValue(encodedSessionID, dataEncode("ab.user.data"));
-					System.out.println("AB Data Name: " + abName + " Zip: " + abZip + " Data: " + abData);
-				}
+				byte[] sessionID = dataDecode(encodedSessionID);
+				byte[] decryptedText = null;
+				try {
+					final Cipher cipher = Cipher.getInstance("RSA");
+					cipher.init(Cipher.DECRYPT_MODE, myPrivateKey);
+					decryptedText = cipher.doFinal(sessionID);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}					
+				System.out.println("Session key received on Service: " + new String(decryptedText));
+				String abName = client.getValue(encodedSessionID, dataEncode("ab.user.name".getBytes()));
+				String abZip = client.getValue(encodedSessionID, dataEncode("ab.user.zip".getBytes()));
+				String abData = client.getValue(encodedSessionID, dataEncode("ab.user.data".getBytes()));
+				System.out.println("AB Data Name: " + abName + " Zip: " + abZip + " Data: " + abData);
 			} else 	System.out.println("Null Session ID received on Service ");
 
 			transport.close();
@@ -91,13 +86,13 @@ public class ABClient
 			e.printStackTrace();
 		}
 	}	
-	
-	private String loadCertificateStore(String path) throws Exception
+
+	private byte[] loadCertificateStore(String path) throws Exception
 	{
 		//final FileInputStream storeFile = new FileInputStream(path);		
 		final InputStream storeFile;			
 		storeFile = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
-		
+
 		final KeyStore kStore = KeyStore.getInstance("JKS");
 		String storePass = "absoa1";
 		kStore.load(storeFile, storePass.toCharArray());
@@ -107,15 +102,12 @@ public class ABClient
 		ObjectOutputStream out = new ObjectOutputStream(bos);   
 		out.writeObject(serviceCert);
 		byte[] data = bos.toByteArray(); 
-		bos.close();		
-		String strCert = new String(data);		
-
-		return strCert;		
+		bos.close();
+		return data;		
 	}
 
-	private String signData(String strMsg) throws Exception
+	private byte[] signData(byte[] msg) throws Exception
 	{
-		// Specify the Keystore of the Service 
 		KeyStore kStore = KeyStore.getInstance(KeyStore.getDefaultType());
 		char[] password = "absoa1".toCharArray();
 		InputStream fStream;
@@ -129,27 +121,35 @@ public class ABClient
 
 			Signature mySign = Signature.getInstance("SHA256withRSA");
 			mySign.initSign(myPrivateKey);
-			mySign.update(strMsg.getBytes());
+			mySign.update(msg);
 			byte[] byteSignedData = mySign.sign();	  
-			return new String(byteSignedData);
-		} catch (Exception e) {
-			
+			return byteSignedData;
+		} catch (Exception e) {			
 			e.printStackTrace();
 		}
-		return null;
-	
+		return null;	
 	}	
 
-	private String dataEncode(String strData) throws Exception
+	//	private String dataEncode(String strData) throws Exception
+	//	{
+	//		byte[] byteTok = strData.getBytes("UTF8");		        
+	//		return new BASE64Encoder().encode(byteTok);	
+	//	}
+	//
+	//	private String dataDecode(String strData) throws Exception
+	//	{
+	//		byte[] byteMsg = new BASE64Decoder().decodeBuffer(strData);
+	//		return new String(byteMsg, "UTF8");		
+	//	}
+
+	private String dataEncode(byte[] byteTok) throws Exception
 	{
-		byte[] byteTok = strData.getBytes("UTF8");		        
 		return new BASE64Encoder().encode(byteTok);	
 	}
 
-	private String dataDecode(String strData) throws Exception
+	private byte[] dataDecode(String strData) throws Exception
 	{
-		byte[] byteMsg = new BASE64Decoder().decodeBuffer(strData);
-		return new String(byteMsg, "UTF8");		
+		return new BASE64Decoder().decodeBuffer(strData);
 	}
 
 	public static void main(String[] args) throws Exception 

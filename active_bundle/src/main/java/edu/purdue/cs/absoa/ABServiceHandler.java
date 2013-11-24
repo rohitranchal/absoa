@@ -39,7 +39,7 @@ public class ABServiceHandler implements ABService.Iface
 		issuedTokenSet.add(strTok);
 		String encodedTok;
 		try {
-			encodedTok = dataEncode(strTok);
+			encodedTok = dataEncode(strTok.getBytes());
 			//	System.out.println("Encoded token: " + encodedTok);
 			return encodedTok;
 		} catch (Exception e) {
@@ -52,21 +52,21 @@ public class ABServiceHandler implements ABService.Iface
 	{		
 		try {
 			System.out.println("Encoded Signed Chall: " + signedChallenge);
-			String decodeChall = dataDecode(signedChallenge);
+			byte[] decodeChall = dataDecode(signedChallenge);
 			//	System.out.println("Decode Chall: " + decodeChall);			
-			String decodeCert = dataDecode(certificate);
+			byte[] decodeCert = dataDecode(certificate);
 			//	System.out.println("Decode Cert: " + decodeCert);			
-			String decodeToken = dataDecode(token);
+			byte[] decodeToken = dataDecode(token);
 
 			//String storePath = "/Users/rohitranchal/Dropbox/Developer/workspace/absoa/keys/CA/ABCACert.cert";
 			String storePath = "CA/ABCACert.cert";
-			String CACert = loadCertificateFile(storePath);
+			byte[] CACert = loadCertificateFile(storePath);
 
 			if (validateSignature(decodeToken, decodeChall, decodeCert, CACert)) {
-				String sessionID = generateSessionKey(decodeCert);
+				byte[] sessionID = generateSessionKey(decodeCert);
 				//	System.out.println("Session ID Created: " + sessionID);
 				//sessionIDList.put(certificate, sessionID);
-				sessionIDList.put(sessionID, decodeCert); // we need to look up this cert based on session ID
+				sessionIDList.put(new String(sessionID), new String(decodeCert)); // we need to look up this cert based on session ID
 				return dataEncode(sessionID);
 			} else return null;
 		} catch (Exception e) {
@@ -75,9 +75,8 @@ public class ABServiceHandler implements ABService.Iface
 		}		
 	}
 
-	private String loadCertificateFile(String path) throws Exception
+	private byte[] loadCertificateFile(String path) throws Exception
 	{
-		System.out.println("load certificate called");
 		CertificateFactory certificatefactory = CertificateFactory.getInstance("X.509");
 		//final FileInputStream certFile = new FileInputStream(path);
 		final InputStream certFile;			
@@ -101,13 +100,12 @@ public class ABServiceHandler implements ABService.Iface
 		out.writeObject(caCert);
 		byte[] data = bos.toByteArray(); 
 		bos.close();		
-		String strCert = new String(data);				
-		return strCert;			
+		return data;			
 	}
 
-	private static boolean validateSignature(String token, String signedMessage, String certificate, String CAcertificate) throws Exception
+	private static boolean validateSignature(byte[] token, byte[] signedMessage, byte[] certificate, byte[] CAcertificate) throws Exception
 	{
-		ByteArrayInputStream bis = new ByteArrayInputStream(certificate.getBytes());
+		ByteArrayInputStream bis = new ByteArrayInputStream(certificate);
 		ObjectInput in = new ObjectInputStream(bis);
 		X509Certificate cert = (X509Certificate) in.readObject(); 
 		//System.out.println("service issued dn: " + cert.getIssuerDN());
@@ -118,7 +116,7 @@ public class ABServiceHandler implements ABService.Iface
 			throw new CertificateException("Service Certificate has expired",e);
 		}
 
-		ByteArrayInputStream cabis = new ByteArrayInputStream(CAcertificate.getBytes());
+		ByteArrayInputStream cabis = new ByteArrayInputStream(CAcertificate);
 		ObjectInput cain = new ObjectInputStream(cabis);
 		X509Certificate cacert = (X509Certificate) cain.readObject(); 
 		//System.out.println("CA subject dn: " + cacert.getSubjectDN());
@@ -135,16 +133,16 @@ public class ABServiceHandler implements ABService.Iface
 			Signature verifySign = Signature.getInstance("SHA256withRSA");
 			verifySign.initVerify(pubKey);
 			//verifySign.update(tokenList.get("service1").getBytes());
-			if (issuedTokenSet.contains(token)) {
-				verifySign.update(token.getBytes());
-				return verifySign.verify(signedMessage.getBytes());					
+			if (issuedTokenSet.contains(new String(token))) {
+				verifySign.update(token);
+				return verifySign.verify(signedMessage);					
 			} else System.out.println("Wrong token");			
 		} else System.out.println("Service Issuer doesn't match CA Subject");
 
 		return false;		
 	}
 
-	private static String generateSessionKey(String serviceCert)
+	private static byte[] generateSessionKey(byte[] serviceCert)
 	{
 		try {			
 			KeyGenerator keygenerator = KeyGenerator.getInstance("AES");
@@ -158,7 +156,7 @@ public class ABServiceHandler implements ABService.Iface
 
 			System.out.println("Session Key created on server: " + new String(data));
 
-			ByteArrayInputStream bis = new ByteArrayInputStream(serviceCert.getBytes());
+			ByteArrayInputStream bis = new ByteArrayInputStream(serviceCert);
 			ObjectInput in = new ObjectInputStream(bis);
 			X509Certificate cert = (X509Certificate) in.readObject(); 
 			bis.close();			
@@ -171,11 +169,7 @@ public class ABServiceHandler implements ABService.Iface
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
-
-
-			String strKey = new String(cipherText);
-			return strKey;
+			return cipherText;
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -185,23 +179,11 @@ public class ABServiceHandler implements ABService.Iface
 	public String getValue(String sessionID, String abDataKey) throws TException 
 	{	
 		try {
-			String decodedID = dataDecode(sessionID);
-			String decodedABKey = dataDecode(abDataKey);
-
-			/*
-		if(sessionIDList.containsKey(decodedID)) {
-			String serviceCert = sessionIDList.get(sessionID);
-
-			ByteArrayInputStream bis = new ByteArrayInputStream(serviceCert.getBytes());
-			ObjectInput in = new ObjectInputStream(bis);
-			X509Certificate cert = (X509Certificate) in.readObject(); 
-			bis.close();
-
-			decodedABKey.verify(cert.getPublicKey());			
-		}
-			 */
-			if(sessionIDList.containsKey(decodedID)) {
-				if(!abData.isEmpty()) return ABServiceHandler.getABData(decodedABKey);
+			byte[] decodedID = dataDecode(sessionID);
+			byte[] decodedABKey = dataDecode(abDataKey);
+	
+			if(sessionIDList.containsKey(new String(decodedID))) {
+				if(!abData.isEmpty()) return ABServiceHandler.getABData(new String(decodedABKey));
 				else return null;
 			} else return null;	
 		} catch(Exception e) {
@@ -216,15 +198,13 @@ public class ABServiceHandler implements ABService.Iface
 		return id;    	
 	}
 
-	private static String dataEncode(String strData) throws Exception
+	private static String dataEncode(byte[] byteTok) throws Exception
 	{
-		byte[] byteTok = strData.getBytes("UTF8");		        
 		return new BASE64Encoder().encode(byteTok);	
 	}
 
-	private static String dataDecode(String strData) throws Exception
+	private static byte[] dataDecode(String strData) throws Exception
 	{
-		byte[] byteMsg = new BASE64Decoder().decodeBuffer(strData);
-		return new String(byteMsg, "UTF8");		
+		return new BASE64Decoder().decodeBuffer(strData);
 	}
 }

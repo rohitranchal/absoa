@@ -68,4 +68,7 @@ so we only do one way authentication where AB authenticates the service.
 ? When service invokes authenticatechallenge and authenticateResponse and sends data
 can that data be tampered with as it is not encrypted ?
 
-
+- AB process has to stop after completing the request from service
+It has to figure out where to be routed next
+Does service specify where it should be routed?
+Need another API function 
