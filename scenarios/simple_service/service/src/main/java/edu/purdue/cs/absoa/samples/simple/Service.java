@@ -20,6 +20,7 @@ import org.apache.thrift.transport.TTransport;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
+import edu.purdue.cs.absoa.ABObject;
 import edu.purdue.cs.absoa.ABService;
 
 public class Service {
@@ -58,7 +59,10 @@ public class Service {
 			String encodeCert = dataEncode(serviceCert);
 			//	System.out.println("Encoded Certificate: " + encodeCert);
 
-			String encodedSessionID = client.authenticateResponse(encodedMsg, encodedSignedChall, encodeCert);
+			//String encodedSessionID = client.authenticateResponse(encodedMsg, encodedSignedChall, encodeCert);
+			ABObject abSessionObject = client.authenticateResponse(encodedMsg, encodedSignedChall, encodeCert);
+			
+			System.out.println("AB Object received on service: " + abSessionObject.sessionID + abSessionObject.sessionKey);
 
 			KeyStore kStore = KeyStore.getInstance(KeyStore.getDefaultType());
 			char[] password = "absoa1".toCharArray();			
@@ -73,22 +77,24 @@ public class Service {
 			Key myKey =  kStore.getKey("service1", password);
 			PrivateKey myPrivateKey = (PrivateKey)myKey;
 
-			if(encodedSessionID != null) {
-				byte[] sessionID = dataDecode(encodedSessionID);
+			if(abSessionObject != null) {
+				byte[] sessionKey = dataDecode(abSessionObject.sessionKey);
 				byte[] decryptedText = null;
 				try {
 					final Cipher cipher = Cipher.getInstance("RSA");
 					cipher.init(Cipher.DECRYPT_MODE, myPrivateKey);
-					decryptedText = cipher.doFinal(sessionID);
+					decryptedText = cipher.doFinal(sessionKey);
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}					
 				System.out.println("Session key received on Service: " + new String(decryptedText));
-				String abName = client.getValue(encodedSessionID, dataEncode("ab.user.name".getBytes()));
-				String abZip = client.getValue(encodedSessionID, dataEncode("ab.user.zip".getBytes()));
-				String abData = client.getValue(encodedSessionID, dataEncode("ab.user.data".getBytes()));
+				String abName = client.getValue(abSessionObject.sessionID, "ab.user.name");
+				String abZip = client.getValue(abSessionObject.sessionID, "ab.user.zip");
+				String abData = client.getValue(abSessionObject.sessionID, "ab.user.data");
 				System.out.println("AB Data Name: " + abName + " Zip: " + abZip + " Data: " + abData);
-			} else 	System.out.println("Null Session ID received on Service ");
+			} else {
+				System.out.println("Null Session ID received on Service ");
+			}
 
 			transport.close();
 		} catch (Exception e) {
