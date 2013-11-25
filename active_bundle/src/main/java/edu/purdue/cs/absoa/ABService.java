@@ -38,9 +38,9 @@ public class ABService {
 
     public String authenticateChallenge() throws org.apache.thrift.TException;
 
-    public String authenticateResponse(String token, String signedChallenge, String certificate) throws org.apache.thrift.TException;
+    public ABObject authenticateResponse(String challenge, String signedChallenge, String certificate) throws org.apache.thrift.TException;
 
-    public String getValue(String sessionID, String key) throws org.apache.thrift.TException;
+    public String getValue(String sessionKey, String dataKey) throws org.apache.thrift.TException;
 
   }
 
@@ -48,9 +48,9 @@ public class ABService {
 
     public void authenticateChallenge(org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
-    public void authenticateResponse(String token, String signedChallenge, String certificate, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
+    public void authenticateResponse(String challenge, String signedChallenge, String certificate, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
-    public void getValue(String sessionID, String key, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
+    public void getValue(String sessionKey, String dataKey, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -96,22 +96,22 @@ public class ABService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "authenticateChallenge failed: unknown result");
     }
 
-    public String authenticateResponse(String token, String signedChallenge, String certificate) throws org.apache.thrift.TException
+    public ABObject authenticateResponse(String challenge, String signedChallenge, String certificate) throws org.apache.thrift.TException
     {
-      send_authenticateResponse(token, signedChallenge, certificate);
+      send_authenticateResponse(challenge, signedChallenge, certificate);
       return recv_authenticateResponse();
     }
 
-    public void send_authenticateResponse(String token, String signedChallenge, String certificate) throws org.apache.thrift.TException
+    public void send_authenticateResponse(String challenge, String signedChallenge, String certificate) throws org.apache.thrift.TException
     {
       authenticateResponse_args args = new authenticateResponse_args();
-      args.setToken(token);
+      args.setChallenge(challenge);
       args.setSignedChallenge(signedChallenge);
       args.setCertificate(certificate);
       sendBase("authenticateResponse", args);
     }
 
-    public String recv_authenticateResponse() throws org.apache.thrift.TException
+    public ABObject recv_authenticateResponse() throws org.apache.thrift.TException
     {
       authenticateResponse_result result = new authenticateResponse_result();
       receiveBase(result, "authenticateResponse");
@@ -121,17 +121,17 @@ public class ABService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "authenticateResponse failed: unknown result");
     }
 
-    public String getValue(String sessionID, String key) throws org.apache.thrift.TException
+    public String getValue(String sessionKey, String dataKey) throws org.apache.thrift.TException
     {
-      send_getValue(sessionID, key);
+      send_getValue(sessionKey, dataKey);
       return recv_getValue();
     }
 
-    public void send_getValue(String sessionID, String key) throws org.apache.thrift.TException
+    public void send_getValue(String sessionKey, String dataKey) throws org.apache.thrift.TException
     {
       getValue_args args = new getValue_args();
-      args.setSessionID(sessionID);
-      args.setKey(key);
+      args.setSessionKey(sessionKey);
+      args.setDataKey(dataKey);
       sendBase("getValue", args);
     }
 
@@ -192,20 +192,20 @@ public class ABService {
       }
     }
 
-    public void authenticateResponse(String token, String signedChallenge, String certificate, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
+    public void authenticateResponse(String challenge, String signedChallenge, String certificate, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      authenticateResponse_call method_call = new authenticateResponse_call(token, signedChallenge, certificate, resultHandler, this, ___protocolFactory, ___transport);
+      authenticateResponse_call method_call = new authenticateResponse_call(challenge, signedChallenge, certificate, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class authenticateResponse_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private String token;
+      private String challenge;
       private String signedChallenge;
       private String certificate;
-      public authenticateResponse_call(String token, String signedChallenge, String certificate, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      public authenticateResponse_call(String challenge, String signedChallenge, String certificate, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.token = token;
+        this.challenge = challenge;
         this.signedChallenge = signedChallenge;
         this.certificate = certificate;
       }
@@ -213,14 +213,14 @@ public class ABService {
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("authenticateResponse", org.apache.thrift.protocol.TMessageType.CALL, 0));
         authenticateResponse_args args = new authenticateResponse_args();
-        args.setToken(token);
+        args.setChallenge(challenge);
         args.setSignedChallenge(signedChallenge);
         args.setCertificate(certificate);
         args.write(prot);
         prot.writeMessageEnd();
       }
 
-      public String getResult() throws org.apache.thrift.TException {
+      public ABObject getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -230,27 +230,27 @@ public class ABService {
       }
     }
 
-    public void getValue(String sessionID, String key, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
+    public void getValue(String sessionKey, String dataKey, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      getValue_call method_call = new getValue_call(sessionID, key, resultHandler, this, ___protocolFactory, ___transport);
+      getValue_call method_call = new getValue_call(sessionKey, dataKey, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class getValue_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private String sessionID;
-      private String key;
-      public getValue_call(String sessionID, String key, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private String sessionKey;
+      private String dataKey;
+      public getValue_call(String sessionKey, String dataKey, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.sessionID = sessionID;
-        this.key = key;
+        this.sessionKey = sessionKey;
+        this.dataKey = dataKey;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getValue", org.apache.thrift.protocol.TMessageType.CALL, 0));
         getValue_args args = new getValue_args();
-        args.setSessionID(sessionID);
-        args.setKey(key);
+        args.setSessionKey(sessionKey);
+        args.setDataKey(dataKey);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -319,7 +319,7 @@ public class ABService {
 
       public authenticateResponse_result getResult(I iface, authenticateResponse_args args) throws org.apache.thrift.TException {
         authenticateResponse_result result = new authenticateResponse_result();
-        result.success = iface.authenticateResponse(args.token, args.signedChallenge, args.certificate);
+        result.success = iface.authenticateResponse(args.challenge, args.signedChallenge, args.certificate);
         return result;
       }
     }
@@ -339,7 +339,7 @@ public class ABService {
 
       public getValue_result getResult(I iface, getValue_args args) throws org.apache.thrift.TException {
         getValue_result result = new getValue_result();
-        result.success = iface.getValue(args.sessionID, args.key);
+        result.success = iface.getValue(args.sessionKey, args.dataKey);
         return result;
       }
     }
@@ -414,7 +414,7 @@ public class ABService {
       }
     }
 
-    public static class authenticateResponse<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, authenticateResponse_args, String> {
+    public static class authenticateResponse<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, authenticateResponse_args, ABObject> {
       public authenticateResponse() {
         super("authenticateResponse");
       }
@@ -423,10 +423,10 @@ public class ABService {
         return new authenticateResponse_args();
       }
 
-      public AsyncMethodCallback<String> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
+      public AsyncMethodCallback<ABObject> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
         final org.apache.thrift.AsyncProcessFunction fcall = this;
-        return new AsyncMethodCallback<String>() { 
-          public void onComplete(String o) {
+        return new AsyncMethodCallback<ABObject>() { 
+          public void onComplete(ABObject o) {
             authenticateResponse_result result = new authenticateResponse_result();
             result.success = o;
             try {
@@ -460,8 +460,8 @@ public class ABService {
         return false;
       }
 
-      public void start(I iface, authenticateResponse_args args, org.apache.thrift.async.AsyncMethodCallback<String> resultHandler) throws TException {
-        iface.authenticateResponse(args.token, args.signedChallenge, args.certificate,resultHandler);
+      public void start(I iface, authenticateResponse_args args, org.apache.thrift.async.AsyncMethodCallback<ABObject> resultHandler) throws TException {
+        iface.authenticateResponse(args.challenge, args.signedChallenge, args.certificate,resultHandler);
       }
     }
 
@@ -512,7 +512,7 @@ public class ABService {
       }
 
       public void start(I iface, getValue_args args, org.apache.thrift.async.AsyncMethodCallback<String> resultHandler) throws TException {
-        iface.getValue(args.sessionID, args.key,resultHandler);
+        iface.getValue(args.sessionKey, args.dataKey,resultHandler);
       }
     }
 
@@ -1121,7 +1121,7 @@ public class ABService {
   public static class authenticateResponse_args implements org.apache.thrift.TBase<authenticateResponse_args, authenticateResponse_args._Fields>, java.io.Serializable, Cloneable, Comparable<authenticateResponse_args>   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("authenticateResponse_args");
 
-    private static final org.apache.thrift.protocol.TField TOKEN_FIELD_DESC = new org.apache.thrift.protocol.TField("token", org.apache.thrift.protocol.TType.STRING, (short)1);
+    private static final org.apache.thrift.protocol.TField CHALLENGE_FIELD_DESC = new org.apache.thrift.protocol.TField("challenge", org.apache.thrift.protocol.TType.STRING, (short)1);
     private static final org.apache.thrift.protocol.TField SIGNED_CHALLENGE_FIELD_DESC = new org.apache.thrift.protocol.TField("signedChallenge", org.apache.thrift.protocol.TType.STRING, (short)2);
     private static final org.apache.thrift.protocol.TField CERTIFICATE_FIELD_DESC = new org.apache.thrift.protocol.TField("certificate", org.apache.thrift.protocol.TType.STRING, (short)3);
 
@@ -1131,13 +1131,13 @@ public class ABService {
       schemes.put(TupleScheme.class, new authenticateResponse_argsTupleSchemeFactory());
     }
 
-    public String token; // required
+    public String challenge; // required
     public String signedChallenge; // required
     public String certificate; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      TOKEN((short)1, "token"),
+      CHALLENGE((short)1, "challenge"),
       SIGNED_CHALLENGE((short)2, "signedChallenge"),
       CERTIFICATE((short)3, "certificate");
 
@@ -1154,8 +1154,8 @@ public class ABService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // TOKEN
-            return TOKEN;
+          case 1: // CHALLENGE
+            return CHALLENGE;
           case 2: // SIGNED_CHALLENGE
             return SIGNED_CHALLENGE;
           case 3: // CERTIFICATE
@@ -1203,7 +1203,7 @@ public class ABService {
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.TOKEN, new org.apache.thrift.meta_data.FieldMetaData("token", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+      tmpMap.put(_Fields.CHALLENGE, new org.apache.thrift.meta_data.FieldMetaData("challenge", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       tmpMap.put(_Fields.SIGNED_CHALLENGE, new org.apache.thrift.meta_data.FieldMetaData("signedChallenge", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
@@ -1217,12 +1217,12 @@ public class ABService {
     }
 
     public authenticateResponse_args(
-      String token,
+      String challenge,
       String signedChallenge,
       String certificate)
     {
       this();
-      this.token = token;
+      this.challenge = challenge;
       this.signedChallenge = signedChallenge;
       this.certificate = certificate;
     }
@@ -1231,8 +1231,8 @@ public class ABService {
      * Performs a deep copy on <i>other</i>.
      */
     public authenticateResponse_args(authenticateResponse_args other) {
-      if (other.isSetToken()) {
-        this.token = other.token;
+      if (other.isSetChallenge()) {
+        this.challenge = other.challenge;
       }
       if (other.isSetSignedChallenge()) {
         this.signedChallenge = other.signedChallenge;
@@ -1248,32 +1248,32 @@ public class ABService {
 
     @Override
     public void clear() {
-      this.token = null;
+      this.challenge = null;
       this.signedChallenge = null;
       this.certificate = null;
     }
 
-    public String getToken() {
-      return this.token;
+    public String getChallenge() {
+      return this.challenge;
     }
 
-    public authenticateResponse_args setToken(String token) {
-      this.token = token;
+    public authenticateResponse_args setChallenge(String challenge) {
+      this.challenge = challenge;
       return this;
     }
 
-    public void unsetToken() {
-      this.token = null;
+    public void unsetChallenge() {
+      this.challenge = null;
     }
 
-    /** Returns true if field token is set (has been assigned a value) and false otherwise */
-    public boolean isSetToken() {
-      return this.token != null;
+    /** Returns true if field challenge is set (has been assigned a value) and false otherwise */
+    public boolean isSetChallenge() {
+      return this.challenge != null;
     }
 
-    public void setTokenIsSet(boolean value) {
+    public void setChallengeIsSet(boolean value) {
       if (!value) {
-        this.token = null;
+        this.challenge = null;
       }
     }
 
@@ -1327,11 +1327,11 @@ public class ABService {
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case TOKEN:
+      case CHALLENGE:
         if (value == null) {
-          unsetToken();
+          unsetChallenge();
         } else {
-          setToken((String)value);
+          setChallenge((String)value);
         }
         break;
 
@@ -1356,8 +1356,8 @@ public class ABService {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case TOKEN:
-        return getToken();
+      case CHALLENGE:
+        return getChallenge();
 
       case SIGNED_CHALLENGE:
         return getSignedChallenge();
@@ -1376,8 +1376,8 @@ public class ABService {
       }
 
       switch (field) {
-      case TOKEN:
-        return isSetToken();
+      case CHALLENGE:
+        return isSetChallenge();
       case SIGNED_CHALLENGE:
         return isSetSignedChallenge();
       case CERTIFICATE:
@@ -1399,12 +1399,12 @@ public class ABService {
       if (that == null)
         return false;
 
-      boolean this_present_token = true && this.isSetToken();
-      boolean that_present_token = true && that.isSetToken();
-      if (this_present_token || that_present_token) {
-        if (!(this_present_token && that_present_token))
+      boolean this_present_challenge = true && this.isSetChallenge();
+      boolean that_present_challenge = true && that.isSetChallenge();
+      if (this_present_challenge || that_present_challenge) {
+        if (!(this_present_challenge && that_present_challenge))
           return false;
-        if (!this.token.equals(that.token))
+        if (!this.challenge.equals(that.challenge))
           return false;
       }
 
@@ -1442,12 +1442,12 @@ public class ABService {
 
       int lastComparison = 0;
 
-      lastComparison = Boolean.valueOf(isSetToken()).compareTo(other.isSetToken());
+      lastComparison = Boolean.valueOf(isSetChallenge()).compareTo(other.isSetChallenge());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetToken()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.token, other.token);
+      if (isSetChallenge()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.challenge, other.challenge);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -1492,11 +1492,11 @@ public class ABService {
       StringBuilder sb = new StringBuilder("authenticateResponse_args(");
       boolean first = true;
 
-      sb.append("token:");
-      if (this.token == null) {
+      sb.append("challenge:");
+      if (this.challenge == null) {
         sb.append("null");
       } else {
-        sb.append(this.token);
+        sb.append(this.challenge);
       }
       first = false;
       if (!first) sb.append(", ");
@@ -1558,10 +1558,10 @@ public class ABService {
             break;
           }
           switch (schemeField.id) {
-            case 1: // TOKEN
+            case 1: // CHALLENGE
               if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-                struct.token = iprot.readString();
-                struct.setTokenIsSet(true);
+                struct.challenge = iprot.readString();
+                struct.setChallengeIsSet(true);
               } else { 
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
@@ -1597,9 +1597,9 @@ public class ABService {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
-        if (struct.token != null) {
-          oprot.writeFieldBegin(TOKEN_FIELD_DESC);
-          oprot.writeString(struct.token);
+        if (struct.challenge != null) {
+          oprot.writeFieldBegin(CHALLENGE_FIELD_DESC);
+          oprot.writeString(struct.challenge);
           oprot.writeFieldEnd();
         }
         if (struct.signedChallenge != null) {
@@ -1630,7 +1630,7 @@ public class ABService {
       public void write(org.apache.thrift.protocol.TProtocol prot, authenticateResponse_args struct) throws org.apache.thrift.TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
         BitSet optionals = new BitSet();
-        if (struct.isSetToken()) {
+        if (struct.isSetChallenge()) {
           optionals.set(0);
         }
         if (struct.isSetSignedChallenge()) {
@@ -1640,8 +1640,8 @@ public class ABService {
           optionals.set(2);
         }
         oprot.writeBitSet(optionals, 3);
-        if (struct.isSetToken()) {
-          oprot.writeString(struct.token);
+        if (struct.isSetChallenge()) {
+          oprot.writeString(struct.challenge);
         }
         if (struct.isSetSignedChallenge()) {
           oprot.writeString(struct.signedChallenge);
@@ -1656,8 +1656,8 @@ public class ABService {
         TTupleProtocol iprot = (TTupleProtocol) prot;
         BitSet incoming = iprot.readBitSet(3);
         if (incoming.get(0)) {
-          struct.token = iprot.readString();
-          struct.setTokenIsSet(true);
+          struct.challenge = iprot.readString();
+          struct.setChallengeIsSet(true);
         }
         if (incoming.get(1)) {
           struct.signedChallenge = iprot.readString();
@@ -1675,7 +1675,7 @@ public class ABService {
   public static class authenticateResponse_result implements org.apache.thrift.TBase<authenticateResponse_result, authenticateResponse_result._Fields>, java.io.Serializable, Cloneable, Comparable<authenticateResponse_result>   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("authenticateResponse_result");
 
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRING, (short)0);
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
@@ -1683,7 +1683,7 @@ public class ABService {
       schemes.put(TupleScheme.class, new authenticateResponse_resultTupleSchemeFactory());
     }
 
-    public String success; // required
+    public ABObject success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -1748,7 +1748,7 @@ public class ABService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, ABObject.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(authenticateResponse_result.class, metaDataMap);
     }
@@ -1757,7 +1757,7 @@ public class ABService {
     }
 
     public authenticateResponse_result(
-      String success)
+      ABObject success)
     {
       this();
       this.success = success;
@@ -1768,7 +1768,7 @@ public class ABService {
      */
     public authenticateResponse_result(authenticateResponse_result other) {
       if (other.isSetSuccess()) {
-        this.success = other.success;
+        this.success = new ABObject(other.success);
       }
     }
 
@@ -1781,11 +1781,11 @@ public class ABService {
       this.success = null;
     }
 
-    public String getSuccess() {
+    public ABObject getSuccess() {
       return this.success;
     }
 
-    public authenticateResponse_result setSuccess(String success) {
+    public authenticateResponse_result setSuccess(ABObject success) {
       this.success = success;
       return this;
     }
@@ -1811,7 +1811,7 @@ public class ABService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((String)value);
+          setSuccess((ABObject)value);
         }
         break;
 
@@ -1922,6 +1922,9 @@ public class ABService {
     public void validate() throws org.apache.thrift.TException {
       // check for required fields
       // check for sub-struct validity
+      if (success != null) {
+        success.validate();
+      }
     }
 
     private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -1959,8 +1962,9 @@ public class ABService {
           }
           switch (schemeField.id) {
             case 0: // SUCCESS
-              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-                struct.success = iprot.readString();
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.success = new ABObject();
+                struct.success.read(iprot);
                 struct.setSuccessIsSet(true);
               } else { 
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
@@ -1983,7 +1987,7 @@ public class ABService {
         oprot.writeStructBegin(STRUCT_DESC);
         if (struct.success != null) {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-          oprot.writeString(struct.success);
+          struct.success.write(oprot);
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -2009,7 +2013,7 @@ public class ABService {
         }
         oprot.writeBitSet(optionals, 1);
         if (struct.isSetSuccess()) {
-          oprot.writeString(struct.success);
+          struct.success.write(oprot);
         }
       }
 
@@ -2018,7 +2022,8 @@ public class ABService {
         TTupleProtocol iprot = (TTupleProtocol) prot;
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
-          struct.success = iprot.readString();
+          struct.success = new ABObject();
+          struct.success.read(iprot);
           struct.setSuccessIsSet(true);
         }
       }
@@ -2029,8 +2034,8 @@ public class ABService {
   public static class getValue_args implements org.apache.thrift.TBase<getValue_args, getValue_args._Fields>, java.io.Serializable, Cloneable, Comparable<getValue_args>   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getValue_args");
 
-    private static final org.apache.thrift.protocol.TField SESSION_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("sessionID", org.apache.thrift.protocol.TType.STRING, (short)1);
-    private static final org.apache.thrift.protocol.TField KEY_FIELD_DESC = new org.apache.thrift.protocol.TField("key", org.apache.thrift.protocol.TType.STRING, (short)2);
+    private static final org.apache.thrift.protocol.TField SESSION_KEY_FIELD_DESC = new org.apache.thrift.protocol.TField("sessionKey", org.apache.thrift.protocol.TType.STRING, (short)1);
+    private static final org.apache.thrift.protocol.TField DATA_KEY_FIELD_DESC = new org.apache.thrift.protocol.TField("dataKey", org.apache.thrift.protocol.TType.STRING, (short)2);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
@@ -2038,13 +2043,13 @@ public class ABService {
       schemes.put(TupleScheme.class, new getValue_argsTupleSchemeFactory());
     }
 
-    public String sessionID; // required
-    public String key; // required
+    public String sessionKey; // required
+    public String dataKey; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SESSION_ID((short)1, "sessionID"),
-      KEY((short)2, "key");
+      SESSION_KEY((short)1, "sessionKey"),
+      DATA_KEY((short)2, "dataKey");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -2059,10 +2064,10 @@ public class ABService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // SESSION_ID
-            return SESSION_ID;
-          case 2: // KEY
-            return KEY;
+          case 1: // SESSION_KEY
+            return SESSION_KEY;
+          case 2: // DATA_KEY
+            return DATA_KEY;
           default:
             return null;
         }
@@ -2106,9 +2111,9 @@ public class ABService {
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.SESSION_ID, new org.apache.thrift.meta_data.FieldMetaData("sessionID", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+      tmpMap.put(_Fields.SESSION_KEY, new org.apache.thrift.meta_data.FieldMetaData("sessionKey", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-      tmpMap.put(_Fields.KEY, new org.apache.thrift.meta_data.FieldMetaData("key", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+      tmpMap.put(_Fields.DATA_KEY, new org.apache.thrift.meta_data.FieldMetaData("dataKey", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getValue_args.class, metaDataMap);
@@ -2118,23 +2123,23 @@ public class ABService {
     }
 
     public getValue_args(
-      String sessionID,
-      String key)
+      String sessionKey,
+      String dataKey)
     {
       this();
-      this.sessionID = sessionID;
-      this.key = key;
+      this.sessionKey = sessionKey;
+      this.dataKey = dataKey;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
     public getValue_args(getValue_args other) {
-      if (other.isSetSessionID()) {
-        this.sessionID = other.sessionID;
+      if (other.isSetSessionKey()) {
+        this.sessionKey = other.sessionKey;
       }
-      if (other.isSetKey()) {
-        this.key = other.key;
+      if (other.isSetDataKey()) {
+        this.dataKey = other.dataKey;
       }
     }
 
@@ -2144,73 +2149,73 @@ public class ABService {
 
     @Override
     public void clear() {
-      this.sessionID = null;
-      this.key = null;
+      this.sessionKey = null;
+      this.dataKey = null;
     }
 
-    public String getSessionID() {
-      return this.sessionID;
+    public String getSessionKey() {
+      return this.sessionKey;
     }
 
-    public getValue_args setSessionID(String sessionID) {
-      this.sessionID = sessionID;
+    public getValue_args setSessionKey(String sessionKey) {
+      this.sessionKey = sessionKey;
       return this;
     }
 
-    public void unsetSessionID() {
-      this.sessionID = null;
+    public void unsetSessionKey() {
+      this.sessionKey = null;
     }
 
-    /** Returns true if field sessionID is set (has been assigned a value) and false otherwise */
-    public boolean isSetSessionID() {
-      return this.sessionID != null;
+    /** Returns true if field sessionKey is set (has been assigned a value) and false otherwise */
+    public boolean isSetSessionKey() {
+      return this.sessionKey != null;
     }
 
-    public void setSessionIDIsSet(boolean value) {
+    public void setSessionKeyIsSet(boolean value) {
       if (!value) {
-        this.sessionID = null;
+        this.sessionKey = null;
       }
     }
 
-    public String getKey() {
-      return this.key;
+    public String getDataKey() {
+      return this.dataKey;
     }
 
-    public getValue_args setKey(String key) {
-      this.key = key;
+    public getValue_args setDataKey(String dataKey) {
+      this.dataKey = dataKey;
       return this;
     }
 
-    public void unsetKey() {
-      this.key = null;
+    public void unsetDataKey() {
+      this.dataKey = null;
     }
 
-    /** Returns true if field key is set (has been assigned a value) and false otherwise */
-    public boolean isSetKey() {
-      return this.key != null;
+    /** Returns true if field dataKey is set (has been assigned a value) and false otherwise */
+    public boolean isSetDataKey() {
+      return this.dataKey != null;
     }
 
-    public void setKeyIsSet(boolean value) {
+    public void setDataKeyIsSet(boolean value) {
       if (!value) {
-        this.key = null;
+        this.dataKey = null;
       }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case SESSION_ID:
+      case SESSION_KEY:
         if (value == null) {
-          unsetSessionID();
+          unsetSessionKey();
         } else {
-          setSessionID((String)value);
+          setSessionKey((String)value);
         }
         break;
 
-      case KEY:
+      case DATA_KEY:
         if (value == null) {
-          unsetKey();
+          unsetDataKey();
         } else {
-          setKey((String)value);
+          setDataKey((String)value);
         }
         break;
 
@@ -2219,11 +2224,11 @@ public class ABService {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case SESSION_ID:
-        return getSessionID();
+      case SESSION_KEY:
+        return getSessionKey();
 
-      case KEY:
-        return getKey();
+      case DATA_KEY:
+        return getDataKey();
 
       }
       throw new IllegalStateException();
@@ -2236,10 +2241,10 @@ public class ABService {
       }
 
       switch (field) {
-      case SESSION_ID:
-        return isSetSessionID();
-      case KEY:
-        return isSetKey();
+      case SESSION_KEY:
+        return isSetSessionKey();
+      case DATA_KEY:
+        return isSetDataKey();
       }
       throw new IllegalStateException();
     }
@@ -2257,21 +2262,21 @@ public class ABService {
       if (that == null)
         return false;
 
-      boolean this_present_sessionID = true && this.isSetSessionID();
-      boolean that_present_sessionID = true && that.isSetSessionID();
-      if (this_present_sessionID || that_present_sessionID) {
-        if (!(this_present_sessionID && that_present_sessionID))
+      boolean this_present_sessionKey = true && this.isSetSessionKey();
+      boolean that_present_sessionKey = true && that.isSetSessionKey();
+      if (this_present_sessionKey || that_present_sessionKey) {
+        if (!(this_present_sessionKey && that_present_sessionKey))
           return false;
-        if (!this.sessionID.equals(that.sessionID))
+        if (!this.sessionKey.equals(that.sessionKey))
           return false;
       }
 
-      boolean this_present_key = true && this.isSetKey();
-      boolean that_present_key = true && that.isSetKey();
-      if (this_present_key || that_present_key) {
-        if (!(this_present_key && that_present_key))
+      boolean this_present_dataKey = true && this.isSetDataKey();
+      boolean that_present_dataKey = true && that.isSetDataKey();
+      if (this_present_dataKey || that_present_dataKey) {
+        if (!(this_present_dataKey && that_present_dataKey))
           return false;
-        if (!this.key.equals(that.key))
+        if (!this.dataKey.equals(that.dataKey))
           return false;
       }
 
@@ -2291,22 +2296,22 @@ public class ABService {
 
       int lastComparison = 0;
 
-      lastComparison = Boolean.valueOf(isSetSessionID()).compareTo(other.isSetSessionID());
+      lastComparison = Boolean.valueOf(isSetSessionKey()).compareTo(other.isSetSessionKey());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetSessionID()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.sessionID, other.sessionID);
+      if (isSetSessionKey()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.sessionKey, other.sessionKey);
         if (lastComparison != 0) {
           return lastComparison;
         }
       }
-      lastComparison = Boolean.valueOf(isSetKey()).compareTo(other.isSetKey());
+      lastComparison = Boolean.valueOf(isSetDataKey()).compareTo(other.isSetDataKey());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetKey()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.key, other.key);
+      if (isSetDataKey()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.dataKey, other.dataKey);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -2331,19 +2336,19 @@ public class ABService {
       StringBuilder sb = new StringBuilder("getValue_args(");
       boolean first = true;
 
-      sb.append("sessionID:");
-      if (this.sessionID == null) {
+      sb.append("sessionKey:");
+      if (this.sessionKey == null) {
         sb.append("null");
       } else {
-        sb.append(this.sessionID);
+        sb.append(this.sessionKey);
       }
       first = false;
       if (!first) sb.append(", ");
-      sb.append("key:");
-      if (this.key == null) {
+      sb.append("dataKey:");
+      if (this.dataKey == null) {
         sb.append("null");
       } else {
-        sb.append(this.key);
+        sb.append(this.dataKey);
       }
       first = false;
       sb.append(")");
@@ -2389,18 +2394,18 @@ public class ABService {
             break;
           }
           switch (schemeField.id) {
-            case 1: // SESSION_ID
+            case 1: // SESSION_KEY
               if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-                struct.sessionID = iprot.readString();
-                struct.setSessionIDIsSet(true);
+                struct.sessionKey = iprot.readString();
+                struct.setSessionKeyIsSet(true);
               } else { 
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
               break;
-            case 2: // KEY
+            case 2: // DATA_KEY
               if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-                struct.key = iprot.readString();
-                struct.setKeyIsSet(true);
+                struct.dataKey = iprot.readString();
+                struct.setDataKeyIsSet(true);
               } else { 
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
@@ -2420,14 +2425,14 @@ public class ABService {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
-        if (struct.sessionID != null) {
-          oprot.writeFieldBegin(SESSION_ID_FIELD_DESC);
-          oprot.writeString(struct.sessionID);
+        if (struct.sessionKey != null) {
+          oprot.writeFieldBegin(SESSION_KEY_FIELD_DESC);
+          oprot.writeString(struct.sessionKey);
           oprot.writeFieldEnd();
         }
-        if (struct.key != null) {
-          oprot.writeFieldBegin(KEY_FIELD_DESC);
-          oprot.writeString(struct.key);
+        if (struct.dataKey != null) {
+          oprot.writeFieldBegin(DATA_KEY_FIELD_DESC);
+          oprot.writeString(struct.dataKey);
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -2448,18 +2453,18 @@ public class ABService {
       public void write(org.apache.thrift.protocol.TProtocol prot, getValue_args struct) throws org.apache.thrift.TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
         BitSet optionals = new BitSet();
-        if (struct.isSetSessionID()) {
+        if (struct.isSetSessionKey()) {
           optionals.set(0);
         }
-        if (struct.isSetKey()) {
+        if (struct.isSetDataKey()) {
           optionals.set(1);
         }
         oprot.writeBitSet(optionals, 2);
-        if (struct.isSetSessionID()) {
-          oprot.writeString(struct.sessionID);
+        if (struct.isSetSessionKey()) {
+          oprot.writeString(struct.sessionKey);
         }
-        if (struct.isSetKey()) {
-          oprot.writeString(struct.key);
+        if (struct.isSetDataKey()) {
+          oprot.writeString(struct.dataKey);
         }
       }
 
@@ -2468,12 +2473,12 @@ public class ABService {
         TTupleProtocol iprot = (TTupleProtocol) prot;
         BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
-          struct.sessionID = iprot.readString();
-          struct.setSessionIDIsSet(true);
+          struct.sessionKey = iprot.readString();
+          struct.setSessionKeyIsSet(true);
         }
         if (incoming.get(1)) {
-          struct.key = iprot.readString();
-          struct.setKeyIsSet(true);
+          struct.dataKey = iprot.readString();
+          struct.setDataKeyIsSet(true);
         }
       }
     }

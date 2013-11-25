@@ -18,9 +18,13 @@ import edu.purdue.cs.absoa.ABService;
 
 public class ABServiceHandler implements ABService.Iface 
 {
-	private static HashMap<String, String> sessionIDList = new HashMap<String, String>();
 	private static Set<String> issuedTokenSet = new HashSet<String>();	
 	private static HashMap<String, String> abData = new HashMap<String, String>();
+	
+	/**
+	 * This is the list of sessions maintained by the Active Bundle with services it interacts with.
+	 */
+	private static HashMap<String, ABSession> sessionList = new HashMap<String, ABSession>();
 
 	public static void setABData(String abkey, String abvalue)
 	{
@@ -48,7 +52,7 @@ public class ABServiceHandler implements ABService.Iface
 		}				
 	}
 
-	public String authenticateResponse(String token, String signedChallenge, String certificate) throws TException 
+	public ABObject authenticateResponse(String challenge, String signedChallenge, String certificate) throws TException 
 	{		
 		try {
 			System.out.println("Encoded Signed Chall: " + signedChallenge);
@@ -56,19 +60,29 @@ public class ABServiceHandler implements ABService.Iface
 			//	System.out.println("Decode Chall: " + decodeChall);			
 			byte[] decodeCert = dataDecode(certificate);
 			//	System.out.println("Decode Cert: " + decodeCert);			
-			byte[] decodeToken = dataDecode(token);
+			byte[] decodeToken = dataDecode(challenge);
 
 			//String storePath = "/Users/rohitranchal/Dropbox/Developer/workspace/absoa/keys/CA/ABCACert.cert";
 			String storePath = "CA/ABCACert.cert";
 			byte[] CACert = loadCertificateFile(storePath);
 
 			if (validateSignature(decodeToken, decodeChall, decodeCert, CACert)) {
-				byte[] sessionID = generateSessionKey(decodeCert);
+				byte[] sessionKey = generateSessionKey(decodeCert);
+				String sessionID = generateToken();				
 				//	System.out.println("Session ID Created: " + sessionID);
-				//sessionIDList.put(certificate, sessionID);
-				sessionIDList.put(new String(sessionID), new String(decodeCert)); // we need to look up this cert based on session ID
-				return dataEncode(sessionID);
-			} else return null;
+				//sessionIDList.put(certificate, sessionID);				
+				ABSession abs = new ABSession();
+				abs.setSessionKey(sessionKey);
+				abs.setServiceCert(decodeCert);
+				// we need to look up this cert based on session ID
+				sessionList.put(sessionID, abs); 				
+				ABObject abo = new ABObject(sessionID, dataEncode(sessionKey));
+				
+				return abo;
+				//return dataEncode(sessionID);
+			} else {			
+				return null; 
+			}
 		} catch (Exception e) {
 			e.printStackTrace();			
 			return null;
@@ -82,17 +96,18 @@ public class ABServiceHandler implements ABService.Iface
 		final InputStream certFile;			
 		certFile = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
 		X509Certificate caCert = (X509Certificate)certificatefactory.generateCertificate(certFile);
+//		
+//		System.out.println("---Certificate---");
+//        System.out.println("type = " + caCert.getType());
+//        System.out.println("version = " + caCert.getVersion());
+//        System.out.println("subject = " + caCert.getSubjectDN().getName());
+//        System.out.println("valid from = " + caCert.getNotBefore());
+//        System.out.println("valid to = " + caCert.getNotAfter());
+//        System.out.println("serial number = " + caCert.getSerialNumber().toString(16));
+//        System.out.println("issuer = " + caCert.getIssuerDN().getName());
+//        System.out.println("signing algorithm = " + caCert.getSigAlgName());
+//        System.out.println("public key algorithm = " + caCert.getPublicKey().getAlgorithm());
 		
-		System.out.println("---Certificate---");
-        System.out.println("type = " + caCert.getType());
-        System.out.println("version = " + caCert.getVersion());
-        System.out.println("subject = " + caCert.getSubjectDN().getName());
-        System.out.println("valid from = " + caCert.getNotBefore());
-        System.out.println("valid to = " + caCert.getNotAfter());
-        System.out.println("serial number = " + caCert.getSerialNumber().toString(16));
-        System.out.println("issuer = " + caCert.getIssuerDN().getName());
-        System.out.println("signing algorithm = " + caCert.getSigAlgName());
-        System.out.println("public key algorithm = " + caCert.getPublicKey().getAlgorithm());
 		certFile.close();
 		
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -175,21 +190,15 @@ public class ABServiceHandler implements ABService.Iface
 		}
 		return null;
 	}
-
-	public String getValue(String sessionID, String abDataKey) throws TException 
-	{	
-		try {
-			byte[] decodedID = dataDecode(sessionID);
-			byte[] decodedABKey = dataDecode(abDataKey);
 	
-			if(sessionIDList.containsKey(new String(decodedID))) {
-				if(!abData.isEmpty()) return ABServiceHandler.getABData(new String(decodedABKey));
+
+	public String getValue(String sessionID, String dataKey) throws TException 
+	{		
+			if(sessionList.containsKey(sessionID)) {
+				if(!abData.isEmpty()) return ABServiceHandler.getABData(new String(dataKey));
 				else return null;
-			} else return null;	
-		} catch(Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+			} else 
+				return null;			
 	}	
 
 	public static String generateToken()

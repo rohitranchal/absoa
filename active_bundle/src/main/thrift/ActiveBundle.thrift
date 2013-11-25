@@ -2,10 +2,16 @@ namespace java edu.purdue.cs.absoa
   
 typedef i64 long
 typedef i32 int
+
+struct ABObject 
+{
+	1: string sessionID;
+    2: string sessionKey; 
+}
   
 service ABService
 {
 	string authenticateChallenge(),
-	struct authenticateResponse(1:string token, 2:string signedChallenge, 3:string certificate),
-	string getValue(1:string sessionID, 2:string key),
+	ABObject authenticateResponse(1:string challenge, 2:string signedChallenge, 3:string certificate),
+	string getValue(1:string sessionKey, 2:string dataKey),
 }
