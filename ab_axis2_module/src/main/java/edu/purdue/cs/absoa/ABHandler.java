@@ -1,9 +1,9 @@
 package edu.purdue.cs.absoa;
 
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Iterator;
 
 import javax.xml.namespace.QName;
@@ -30,7 +30,6 @@ public class ABHandler extends AbstractHandler implements Handler {
 	}
 
 	public InvocationResponse invoke(MessageContext mc) throws AxisFault {
-		System.out.println("Testing");
 		
 		Iterator abHeaderIt = mc.getEnvelope().getHeader().getChildrenWithName(new QName(
 				"http://absoa.cs.purdue.edu/ns/", "ActiveBundle", "ab"));
@@ -40,17 +39,36 @@ public class ABHandler extends AbstractHandler implements Handler {
 				String abB64Str = abHeader.getText();
 				byte[] abBytes = Base64.decode(abB64Str);
 				
-				File abFile = new File("AB.jar");
+				//TODO: Need to check whether this is available
+				int port = 5000 + (int) (Math.random() * 2500);
+				
+				//Create temp ab directory if it is not there
+				File tmpABDir = new File("/tmp/AB/");
+				if(!tmpABDir.exists()) {
+					tmpABDir.mkdir();
+				}
+				
+				String abName = tmpABDir.getAbsolutePath() + "/AB" + port + ".jar";
+				File abFile = new File(abName);
 				abFile.createNewFile();
+				abFile.deleteOnExit();
 				FileOutputStream fos = new FileOutputStream(abFile);
 				fos.write(abBytes);
 				fos.flush();
 				fos.close();
 				
-				Process process = Runtime.getRuntime().exec("java -jar AB.jar");
+				
+				Process process = Runtime.getRuntime().exec("java -jar " + abFile.getAbsolutePath() + " " + port);
+				BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+				String line = reader.readLine(); //Blocks for AB to start
+				if(line.startsWith("Starting server on port:")) {
+					System.out.println("Active Bundle Started!");
+				}
 				
 				mc.getOptions().setProperty("abProcess", process);
-				mc.getOptions().setProperty("abPort", new Integer(5555));
+				mc.getOptions().setProperty("abPort", new Integer(port));
+				mc.getOptions().setProperty("abTempDir", tmpABDir.getAbsolutePath());
+				mc.getOptions().setProperty("abFilePath", abFile.getAbsolutePath());
 				
 			} catch (Exception e) {
 				e.printStackTrace();
