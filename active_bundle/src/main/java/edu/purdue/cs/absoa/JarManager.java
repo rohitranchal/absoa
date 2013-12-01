@@ -53,6 +53,7 @@ public class JarManager {
 				br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
 				while ((line = br.readLine()) != null) {
 				    append.write(line.getBytes());
+				    append.write("\n".getBytes());
 				}
 
 				// Done with the file
