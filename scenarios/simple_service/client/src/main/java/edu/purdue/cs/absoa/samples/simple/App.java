@@ -1,6 +1,11 @@
 package edu.purdue.cs.absoa.samples.simple;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Properties;
 
 import javax.xml.namespace.QName;
 
@@ -9,6 +14,8 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.util.Base64;
 import org.apache.commons.io.FileUtils;
+
+import edu.purdue.cs.absoa.JarManager;
 
 public class App {
 
@@ -31,8 +38,28 @@ public class App {
 
 	private static OMElement getAbHeader() throws Exception {
 
+
+		
+		//Write data into a file
+		Properties prop =  new Properties();
+		prop.put("name", "Alice");
+		prop.put("zip", "90210");
+		prop.put("state", "CA");
+		FileOutputStream out = new FileOutputStream("data.txt");
+//		prop.store(out, null);
+		Enumeration<Object> keys = prop.keys();
+		while (keys.hasMoreElements()) {
+			String key = (String) keys.nextElement();
+			String output = key + " = " + prop.get(key) + "\n";
+			out.write(output.getBytes());
+		}
+
+		//Add it to jar
+		JarManager.main(new String[]{"data.txt"});
+		
 		// Read the AB and add it to the header
-		File abFile = new File("AB.jar");
+		File abFile = new File("ABNew.jar");
+		
 		byte[] abBytes = FileUtils.readFileToByteArray(abFile);
 		String abB64Str = Base64.encode(abBytes);
 

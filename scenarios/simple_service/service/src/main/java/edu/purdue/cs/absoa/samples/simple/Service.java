@@ -87,10 +87,9 @@ public class Service {
 					ex.printStackTrace();
 				}					
 				System.out.println("Session key received on Service: " + new String(decryptedText));
-				String abName = client.getValue(abSessionObject.sessionID, "ab.user.name");
-				String abZip = client.getValue(abSessionObject.sessionID, "ab.user.zip");
-				String abData = client.getValue(abSessionObject.sessionID, "ab.user.data");
-				System.out.println("AB Data Name: " + abName + " Zip: " + abZip + " Data: " + abData);
+				String state = client.getValue(abSessionObject.sessionID, "state");
+				String zip = client.getValue(abSessionObject.sessionID, "zip");
+				System.out.println("AB Data State: " + state + " Zip: " + zip);
 			} else {
 				System.out.println("Null Session ID received on Service ");
 			}
