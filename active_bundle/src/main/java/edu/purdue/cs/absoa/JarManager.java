@@ -1,21 +1,17 @@
 package edu.purdue.cs.absoa;
 
-import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.Reader;
 
 public class JarManager {
 
@@ -48,9 +44,22 @@ public class JarManager {
 				ZipEntry f = new ZipEntry("data.txt");
 				System.out.println("append: " + f.getName());
 				append.putNextEntry(f);
-				append.write("ab.user.name = AB Owner\n".getBytes());
-				append.write("ab.user.zip = 47906\n".getBytes());
-				append.write("ab.user.data = AB sensitive data\n".getBytes());
+				
+				InputStream    fis;
+				BufferedReader br;
+				String         line;
+
+				fis = new FileInputStream(args[0]);
+				br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
+				while ((line = br.readLine()) != null) {
+				    append.write(line.getBytes());
+				}
+
+				// Done with the file
+				br.close();				
+//				append.write("ab.user.name = AB Owner\n".getBytes());
+//				append.write("ab.user.zip = 47906\n".getBytes());
+//				append.write("ab.user.data = AB sensitive data\n".getBytes());
 			} else {            
 				append.putNextEntry(e);
 			}

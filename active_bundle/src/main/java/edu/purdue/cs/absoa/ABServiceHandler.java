@@ -26,6 +26,25 @@ public class ABServiceHandler implements ABService.Iface
 	 */
 	private static HashMap<String, ABSession> sessionList = new HashMap<String, ABSession>();
 
+	public ABServiceHandler()
+	{
+		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("data.txt");
+		//System.out.println(is == null);	
+		ABDataParser parser = new ABDataParser(is);	
+		
+//		ABServiceHandler.setABData("ab.user.name", "AB Owner");
+//		ABServiceHandler.setABData("ab.user.zip", "47906");
+//		ABServiceHandler.setABData("ab.user.data", "AB sensitive data");
+		
+	    try {
+			parser.processLineByLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public static void setABData(String abkey, String abvalue)
 	{
 		abData.put(abkey, abvalue);
@@ -37,7 +56,7 @@ public class ABServiceHandler implements ABService.Iface
 	}
 
 	public String authenticateChallenge() throws TException
-	{		
+	{	
 		String strTok = generateToken();
 		System.out.println("Generated token: " + strTok);
 		issuedTokenSet.add(strTok);
@@ -45,11 +64,13 @@ public class ABServiceHandler implements ABService.Iface
 		try {
 			encodedTok = dataEncode(strTok.getBytes());
 			//	System.out.println("Encoded token: " + encodedTok);
+			ABSession abs = new ABSession();
+			String dt = abs.serialize(strTok);
 			return encodedTok;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
-		}				
+		}		
 	}
 
 	public ABObject authenticateResponse(String challenge, String signedChallenge, String certificate) throws TException 
