@@ -31,14 +31,13 @@ public class Service {
 		AxisService myService = msgCtx.getAxisService();
 		ClassLoader clsLoader = myService.getClassLoader();
 		
+		Integer abPort = (Integer) msgCtx.getOptions().getProperty("abPort");
 		
 		System.out.println("Mark");
 
 		TTransport transport;
 		try {
-			Thread.sleep(1000L);
-			
-			transport = new TSocket("localhost", 5555);
+			transport = new TSocket("localhost", abPort.intValue());
 			TProtocol protocol = new TBinaryProtocol(transport);
 			ABService.Client client = new ABService.Client(protocol);
 			transport.open();
