@@ -31,6 +31,9 @@ public class ABClient
 			ABService.Client client = new ABService.Client(protocol);
 			transport.open();
 
+			ABSLA abSLA = client.getSLA();			
+			System.out.println("AB SLA num requests: " + abSLA.numRequests);			
+			
 			String encodedMsg = client.authenticateChallenge();
 			//	System.out.println("Received token: " + encodedMsg);
 			byte[] tok = dataDecode(encodedMsg);

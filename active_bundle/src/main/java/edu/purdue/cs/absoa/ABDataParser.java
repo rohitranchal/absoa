@@ -8,35 +8,15 @@ import java.util.Scanner;
 
 public class ABDataParser 
 {
+	private final InputStream fFilePath;
+	private final static Charset ENCODING = StandardCharsets.UTF_8;  
+	private static String dataType; // = "data" or = "sla"
 
-	/** Assumes UTF-8 encoding. JDK 7+. */
-
-	//	  public static void main(String... aArgs) throws IOException {
-	//	    ABDataParser parser = new ABDataParser("C:\\Temp\\test.txt");
-	//	    parser.processLineByLine();
-	//	    log("Done.");
-	//	  }
-
-	/**
-	   Constructor.
-	   @param aFileName full name of an existing, readable file.
-	 */
-	//	  public ABDataParser(String aFileName) {
-	//		  
-	//		URL url = getClass().getResource(aFileName);
-	//	    fFilePath = Paths.get(url.getFile());
-	//	    
-	//	    System.out.println("URL identified in Parser: " + url);
-	//	    System.out.println("Path identified in Parser: " + fFilePath);
-	//
-	//	    
-	//	  }
-
-	public ABDataParser(InputStream aFileName) {
-
+	public ABDataParser(InputStream aFileName, String dType) 
+	{
 		fFilePath = aFileName;	   
+		dataType = dType;
 	}
-
 
 	/** Template method that calls {@link #processLine(String)}.  */
 	public final void processLineByLine() throws IOException {
@@ -47,7 +27,6 @@ public class ABDataParser
 		}
 	}
 
-
 	protected void processLine(String aLine) {
 		//use a second Scanner to parse the content of each line 
 		Scanner scanner = new Scanner(aLine);
@@ -57,8 +36,11 @@ public class ABDataParser
 			String name = scanner.next();
 			String value = scanner.next();
 			log("Name is : " + quote(name.trim()) + ", and Value is : " + quote(value.trim()));
-			ABServiceHandler.setABData(name.trim(), value.trim());
-
+			if(dataType.equals("data")) {
+				ABServiceHandler.setABData(name.trim(), value.trim());
+			} else if(dataType.equals("sla")) {
+				ABServiceHandler.setABSLA(name.trim(), value.trim());
+			}
 		}
 		else {
 			log("Empty or invalid line. Unable to process.");
@@ -67,9 +49,7 @@ public class ABDataParser
 
 	// PRIVATE 
 //	private final Path fFilePath;
-	private final InputStream fFilePath;
 
-	private final static Charset ENCODING = StandardCharsets.UTF_8;  
 
 	private static void log(Object aObject){
 		System.out.println(String.valueOf(aObject));

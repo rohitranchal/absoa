@@ -44,7 +44,16 @@ Active Bundle API
     
 Data in Active Bundles is specified in data.txt
 ===============================================================================
-Main data structure is a key-value pair:
+Data format in data.txt
+
+ab.user.name = Alice
+ab.user.zip = 47906
+com.foo.bar = mar
+
+TODO
+    // Data needs to be encrypted. Each item with a separate key for selective disclosure.
+
+Data format when AB executes is a key-value pair:
 
 +---------------+-------+
 | Key           | Value |
@@ -54,31 +63,31 @@ Main data structure is a key-value pair:
 | com.foo.bar   | mar   |
 +---------------+-------+
 
-TODO, Open Questions, need more thoughts
+SLA in Active Bundles is specified in sla.txt
 ===============================================================================
-- Does AB need to authenticate with domain/server/host because multiple services may reside on the server and 
-  multiple servers may reside on the host. We can assume that the user/owner's application authenticates with 
-  the domain before sending the AB. The initial idea was that AB interceptor in the server will authenticate with the AB and 
-  then add the session ID to the message/message context of the request which can be collected at the service.
-- We don't need mutual authentication because AB can travel to secondary parties and so on
-  so we only do one way authentication where AB authenticates the service. 
-- AB has to do self-integrity checks. Need to think about this. 
-- When service invokes authenticatechallenge and authenticateResponse and sends data. can that data be tampered with as it is not encrypted ?
-- AB process has to stop after completing the request from service. It has to figure out where to be routed next.
-  Does service specify where it should be routed? Need another API function.  
-- Need to encrypt parts of AB, its data, policies...
+sla.txt format
 
-Service Requesting Values from AB
-===============================================================================
-- Service extends the ABCommunicator
-- ABCommunicator : getValue()
-- Service implementation will call getValue() as required
-- getValue() implementation in ABCommunicator will invoke the AB, to obtain values.
+ab.activetime = 10
+ab.expiretime = 2013.12.24.23:10:20
+ab.numrequests = 10               
+
++---------------+---------------------+
+| Key           | Value		      |
++---------------+---------------------+
+| ab.activetime | 10		      |
+| ab.expiretime | 2013.12.24.23:10:20 |
+| ab.numrequests| 10                  |
++---------------+---------------------+
 
 AB internals
 ===============================================================================
 - AB has a CA's cert which is the trust root of all certificates 
 - AB uses sessionID as value and certificate as key
+- AB has two types of policies - public and private. Public policies are defined in SLA. Private policies are internal policies defined using
+  XACML and enforced using Balana. 
+- When AB starts executing, it checks its expiration. If it has expired, it exits. 
+  TODO
+    // AB should also self-destruct or encrypt itself so that it can't be run again. 
 
 AB Policies
 ===============================================================================
@@ -109,6 +118,20 @@ AttributeID: http://abosa.cs.purdue.edu/policy/id/clearancevalue
 Value: clearance value
 Policy should be greater than or equal to a clearance value
 Action: read or write
+
+TODO, Open Questions, need more thoughts
+===============================================================================
+- Does AB need to authenticate with domain/server/host because multiple services may reside on the server and 
+  multiple servers may reside on the host. We can assume that the user/owner's application authenticates with 
+  the domain before sending the AB. The initial idea was that AB interceptor in the server will authenticate with the AB and 
+  then add the session ID to the message/message context of the request which can be collected at the service.
+- We don't need mutual authentication because AB can travel to secondary parties and so on
+  so we only do one way authentication where AB authenticates the service. 
+- AB has to do self-integrity checks. Need to think about this. 
+- When service invokes authenticatechallenge and authenticateResponse and sends data. can that data be tampered with as it is not encrypted ?
+- AB process has to stop after completing the request from service. It has to figure out where to be routed next.
+  Does service specify where it should be routed? Need another API function.  
+- Need to encrypt parts of AB, its data, policies...
 
 AB Interceptor
 ===============================================================================
