@@ -1,31 +1,50 @@
-Domain Authentication with AB
+Active Bundle API
 ===============================================================================
-The AB needs to know its execution environment.
-Steps:
+- ABSLA getSLA()
+    - Active Bundle promises to provide data/service with certain guarantees which is represented as AB SLA.
+    - This information is defined by the user when creating the AB. 
+    - It is public and anybody can get it by calling this function. 
+    - The function returns an ABSLA object. 
+    - ABSLA object contains:
+	1. activeTime - This is the max active time of AB if all goes well. The active time counts only when AB executes.  
+	2. expirationTime - This is the date-time after which AB will expire and not execute.   
+	3. numRequests - This is the max data requests which AB will allow per host.
+	TODO
+	   // We can add more parameters such as numReqs over AB Lifecycle, num of host visits. 
 
-- Environment (E) asks to be challenged
-- AB returns a random string
-- E signs the random string with its private key and return the signature and the certificate
-- AB verifies the signature using the certificate
-- AB checks its black lists and white lists for any rules about the domain using the certificate DN
-- Returns a session ID
+- string authenticateChallenge()
+    - This is used for service (not server/host/domain) authentication with AB.
+    - Service (S) asks to be challenged by calling this function. 
+    - This function returns a random token.
+    - AB internally generates a random UUID which is the token to be returned.
+    - AB sets up internal state by saving the issued token and creating a session. 
+    TODO 
+	// AB should log each call to API. It should be written to an internal AB file eventually or on each call. 
+    
+- ABObject authenticateResponse(challenge, signedChallenge, certificate)
+    - challenge is the original token which the service got by calling authenticateChallenge()
+    - signedChallenge is the signed token with service's private key
+    - certificate is the service cert. This certificate should be singed by a trusted CA so that AB can trust this service.
+    - AB verifies that service cert is valid, has not expired and is signed by the CA cert or the signing chain leads to the CA. 
+    - AB verifies if the token is signed by the service's cert. 
+    - AB saves state regarding this new session. 
+    - The function returns an ABObject if all goes well.
+    - ABObject contains:
+	1. sessionID: To identify unique sessions between AB and service
+	2. sessionKey: secret key for secure communication between AB and service. This is encrypted with service cert. 
+	creates a sessionID and sessionkey if all goes well 
+    TODO
+	// AB can check its black lists and white lists for any rules about the service using the certificate
 
-AB interceptor will add the session ID to the message/message context of the request so that it can be collected at the service.
-
-
-
-Service Requesting Values from AB
+- string getValue(1:string sessionKey, 2:string dataKey)
+    - service calls this function to get data from AB.
+    - sessionKey is the unqiue sessionID
+    - dataKey is the key for AB data's key-value pair. For e.g. ab.user.name
+    - AB verifies sessionKey and return value associated with dataKey if all goes well. 
+    
+Data in Active Bundles is specified in data.txt
 ===============================================================================
-- Service extends the ABCommunicator
-- ABCommunicator : getValue()
-- Service implementation will call getValue() as required
-- getValue() implementation in ABCommunicator will invoke the AB, to obtain values.
-
-
-
-Data in Active Bundles
-===============================================================================
-Main data structure is a table:
+Main data structure is a key-value pair:
 
 +---------------+-------+
 | Key           | Value |
@@ -35,40 +54,70 @@ Main data structure is a table:
 | com.foo.bar   | mar   |
 +---------------+-------+
 
-
-Active Bundle Service API
+TODO, Open Questions, need more thoughts
 ===============================================================================
-The Active Bundle will offer these functions
-
-- String authenticateChallenge() // returns a random string
-- String authenticateResponse(String signedChallenge, String certificate) // return a session id
-- String getValue(String sessionID, String key) // returns the value for the key if the session id is correct
-- VerifyIntegrity() // check AB integrity 
- 
-AB should have a CA's cert which is the trust root of all certificates 
-AB will verify the received cert such that it leads to CA chain
-AB should also receive the token back in the authchallenge()
-Use set for tokens to lookup token
-
-Use sessionID as value and certificate as key
-
+- Does AB need to authenticate with domain/server/host because multiple services may reside on the server and 
+  multiple servers may reside on the host. We can assume that the user/owner's application authenticates with 
+  the domain before sending the AB. The initial idea was that AB interceptor in the server will authenticate with the AB and 
+  then add the session ID to the message/message context of the request which can be collected at the service.
 - We don't need mutual authentication because AB can travel to secondary parties and so on
-so we only do one way authentication where AB authenticates the service. 
+  so we only do one way authentication where AB authenticates the service. 
+- AB has to do self-integrity checks. Need to think about this. 
+- When service invokes authenticatechallenge and authenticateResponse and sends data. can that data be tampered with as it is not encrypted ?
+- AB process has to stop after completing the request from service. It has to figure out where to be routed next.
+  Does service specify where it should be routed? Need another API function.  
+- Need to encrypt parts of AB, its data, policies...
 
-- authenticateResponse() 
-{
-    1. verify service cert
-    2. verify cert chain leading to CA
-    3. verify sign
-    4. generate an AES key for session with service
-    5. encrypt session key with service cert
-    6. return encrypted session key
-}
+Service Requesting Values from AB
+===============================================================================
+- Service extends the ABCommunicator
+- ABCommunicator : getValue()
+- Service implementation will call getValue() as required
+- getValue() implementation in ABCommunicator will invoke the AB, to obtain values.
 
-? When service invokes authenticatechallenge and authenticateResponse and sends data
-can that data be tampered with as it is not encrypted ?
+AB internals
+===============================================================================
+- AB has a CA's cert which is the trust root of all certificates 
+- AB uses sessionID as value and certificate as key
 
-- AB process has to stop after completing the request from service
-It has to figure out where to be routed next
-Does service specify where it should be routed?
-Need another API function 
+AB Policies
+===============================================================================
+- Number of requests per client should not be more than X (e.g. 10)
+- AB only trusts certain clients for data access. For e.g. the client certificates
+should be signed or their sign chain should lead to a particular CA
+- Different CA certificates and services can have different clearance levels and the policy 
+can permit read/write operations based on model, e.g. BLP or Biba. 
+
+Clearance level policies
+
+- simple clearance level based policies. e.g. Allow reads on particular content only if meets a certain clearance level
+
+- BLP clearance based polcies: e.g. Allow read down, write up based on service clearance level
+
+Policy 1:
+AttributeID: http://absoa.cs.purdue.edu/policy/id/numrequests
+Value: Int 
+Policy can be less than or equal to threshold value
+
+Policy 2:
+AttibuteID: http://abosa.cs.purdue.edu/policy/id/certsig
+Value: Cert fingerprints
+Policy contains the set of cert fpr
+
+Policy 3: 
+AttributeID: http://abosa.cs.purdue.edu/policy/id/clearancevalue
+Value: clearance value
+Policy should be greater than or equal to a clearance value
+Action: read or write
+
+AB Interceptor
+===============================================================================
+
+Service side interaction details with AB
+===============================================================================
+- Service extends the ABCommunicator
+- ABCommunicator : getValue()
+- Service implementation will call getValue() as required
+- getValue() implementation in ABCommunicator will invoke the AB, to obtain values.
+
+
