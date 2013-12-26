@@ -1,0 +1,17 @@
+# Install maven on your machine
+# Maven Tutorial
+    http://www.mkyong.com/maven/how-to-create-a-java-project-with-maven/
+
+# This fill build the project and fetch all the necessary dependencies
+    mvn clean install 
+
+# This will create the necessary settings so that the project can be imported in eclipse
+    mvn eclipse:eclipse
+
+# Import active_bundle project in eclipse
+
+# Running Server.java starts AB
+
+# Run ABClient.java to test AB 
+
+
