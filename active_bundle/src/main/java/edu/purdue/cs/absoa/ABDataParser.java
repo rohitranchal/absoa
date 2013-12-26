@@ -35,7 +35,7 @@ public class ABDataParser
 			//assumes the line has a certain structure
 			String name = scanner.next();
 			String value = scanner.next();
-			log("Name is : " + quote(name.trim()) + ", and Value is : " + quote(value.trim()));
+			//log("Name is : " + quote(name.trim()) + ", and Value is : " + quote(value.trim()));
 			if(dataType.equals("data")) {
 				ABServiceHandler.setABData(name.trim(), value.trim());
 			} else if(dataType.equals("sla")) {

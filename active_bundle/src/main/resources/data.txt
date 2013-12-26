@@ -1,0 +1,3 @@
+ab.user.name = Alice
+ab.user.zip = 12345
+ab.user.data = sensitive data
