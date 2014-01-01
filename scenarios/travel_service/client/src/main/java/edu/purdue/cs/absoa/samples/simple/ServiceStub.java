@@ -57,10 +57,10 @@ public class ServiceStub extends org.apache.axis2.client.Stub {
 		_service.addOperation(__operation);
 		_operations[0] = __operation;
 
-		// Add bookService operation
+		// Add flightService operation
 		__operation = new org.apache.axis2.description.OutInAxisOperation();
 		__operation.setName(new javax.xml.namespace.QName(
-				"http://simple.samples.absoa.cs.purdue.edu", "bookService"));
+				"http://simple.samples.absoa.cs.purdue.edu", "flightService"));
 		_service.addOperation(__operation);
 		_operations[1] = __operation;
 
@@ -266,13 +266,13 @@ public class ServiceStub extends org.apache.axis2.client.Stub {
 		}
 	}
 
-	public java.lang.String bookService(java.lang.String input)
+	public java.lang.String flightService(java.lang.String input)
 			throws java.rmi.RemoteException {
 		org.apache.axis2.context.MessageContext _messageContext = null;
 		try {
 			org.apache.axis2.client.OperationClient _operationClient = _serviceClient
 					.createClient(_operations[1].getName());
-			_operationClient.getOptions().setAction("urn:bookService");
+			_operationClient.getOptions().setAction("urn:flightService");
 			_operationClient.getOptions().setExceptionToBeThrownOnSOAPFault(
 					true);
 
@@ -291,7 +291,7 @@ public class ServiceStub extends org.apache.axis2.client.Stub {
 					.getSoapVersionURI()), input, dummyWrappedType,
 					optimizeContent(new javax.xml.namespace.QName(
 							"http://simple.samples.absoa.cs.purdue.edu",
-							"bookService")));
+							"flightService")));
 
 			// adding SOAP soap_headers
 			_serviceClient.addHeadersToEnvelope(env);
@@ -322,12 +322,12 @@ public class ServiceStub extends org.apache.axis2.client.Stub {
 			if (faultElt != null) {
 				if (faultExceptionNameMap
 						.containsKey(new org.apache.axis2.client.FaultMapKey(
-								faultElt.getQName(), "bookService"))) {
+								faultElt.getQName(), "flightService"))) {
 					// make the fault by reflection
 					try {
 						java.lang.String exceptionClassName = (java.lang.String) faultExceptionClassNameMap
 								.get(new org.apache.axis2.client.FaultMapKey(
-										faultElt.getQName(), "bookService"));
+										faultElt.getQName(), "flightService"));
 						java.lang.Class exceptionClass = java.lang.Class
 								.forName(exceptionClassName);
 						java.lang.reflect.Constructor constructor = exceptionClass

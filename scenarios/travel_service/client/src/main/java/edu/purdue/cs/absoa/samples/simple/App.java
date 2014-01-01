@@ -28,11 +28,11 @@ public class App {
 	public static void main(String[] args) throws Exception {
 		// Invoke service
 		edu.purdue.cs.absoa.samples.simple.ServiceStub service = new edu.purdue.cs.absoa.samples.simple.ServiceStub(
-				"http://localhost:8080/axis2/services/main_service");
+				"http://localhost:8080/axis2/services/flight_service");
 
 		service._getServiceClient().addHeader(getAbHeader());
 
-		String ret = service.bookService("flight");
+		String ret = service.flightService("Alice");
 		getReturnedAB(ret);
 
 		// System.out.println(ret);
