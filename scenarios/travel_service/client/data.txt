@@ -1,8 +1,11 @@
-destination = ORD
-leaving_from = LAX
-name = Alice
-zip = 90210
 state = CA
-to = 01/03/2014
-from = 01/01/2014
+name = Alice
 id = G12345678
+zip = 90210
+carrental_service = false
+destination = ORD
+hotel_service = false
+from = 01/01/2014
+to = 01/03/2014
+flight_service = true
+leaving_from = LAX

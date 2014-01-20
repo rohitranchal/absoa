@@ -50,6 +50,9 @@ public class App {
 		prop.put("to", "01/03/2014");
 		prop.put("zip", "90210");
 		prop.put("state", "CA");
+		prop.put("flight_service", "true");
+		prop.put("hotel_service", "false");
+		prop.put("carrental_service", "false");
 		FileOutputStream out = new FileOutputStream("data.txt");
 		// prop.store(out, null);
 		Enumeration<Object> keys = prop.keys();

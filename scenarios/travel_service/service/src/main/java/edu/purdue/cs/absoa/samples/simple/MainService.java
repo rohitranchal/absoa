@@ -121,35 +121,30 @@ public class MainService {
 		System.out.println("BookService");
 
 		String ABReturn = "";
+		OMElement abHeader = null;
 
 		TTransport transport;
 		try {
+			System.out.println("localhost: "+abPort.intValue());
 			transport = new TSocket("localhost", abPort.intValue());
 			TProtocol protocol = new TBinaryProtocol(transport);
 			ABService.Client client = new ABService.Client(protocol);
 			transport.open();
 
 			String encodedMsg = client.authenticateChallenge();
-			// System.out.println("Received token: " + encodedMsg);
 			byte[] tok = dataDecode(encodedMsg);
 			System.out.println("Decoded token: " + tok);
 
 			byte[] signedChall = signData(clsLoader, tok);
-			// System.out.println("Signed token: " + signedChall);
 			String encodedSignedChall = dataEncode(signedChall);
 			System.out.println("Encoded Signed token: " + encodedSignedChall);
 
 			String storePath = "service1/abstore.ks";
 			byte[] serviceCert = loadCertificateStore(clsLoader, storePath);
-			// System.out.println("Certificate: " + serviceCert);
 			String encodeCert = dataEncode(serviceCert);
-			// System.out.println("Encoded Certificate: " + encodeCert);
-
-			// String encodedSessionID = client.authenticateResponse(encodedMsg,
-			// encodedSignedChall, encodeCert);
+			
 			ABObject abSessionObject = client.authenticateResponse(encodedMsg,
 					encodedSignedChall, encodeCert);
-
 			System.out.println("AB Object received on service: "
 					+ abSessionObject.sessionID + abSessionObject.sessionKey);
 
@@ -179,11 +174,20 @@ public class MainService {
 				System.out.println("Session key received on Service: "
 						+ new String(decryptedText));
 
+				
+				// Pretend to extract information from AB as a normal service
 				String name = client
 						.getValue(abSessionObject.sessionID, "name");
 				String id = client.getValue(abSessionObject.sessionID, "id");
 
-				if (input.equals("flight")) {
+				
+				// Check if each service is requested by the client
+				String check_service = "";
+				if ((check_service=client
+						.getValue(abSessionObject.sessionID, "flight_service")).equals("true")) {
+					
+					System.out.println("MainService Name: flight_service");
+					
 					edu.purdue.cs.absoa.samples.simple.ServiceStub service = new edu.purdue.cs.absoa.samples.simple.ServiceStub(
 							"http://localhost:8081/axis2/services/flight_service");
 					// Retrieve the active bundle
@@ -193,7 +197,14 @@ public class MainService {
 							.getChildrenWithName(
 									new QName("http://absoa.cs.purdue.edu/ns/",
 											"ActiveBundle", "ab"));
-					OMElement abHeader = (OMElement) abHeaderIt.next();
+					if(abHeaderIt.hasNext()){
+						 abHeader = (OMElement) abHeaderIt.next();
+					}
+					else{
+						System.err.println("MainService: ActiveBundle header not present!");
+					}
+					
+					// Add AB as header
 					service._getServiceClient().addHeader(abHeader);
 					ABReturn = service.flightService("flight");
 				}

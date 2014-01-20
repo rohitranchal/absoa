@@ -133,9 +133,10 @@ public class FlightService {
 
 		System.out.println("FlightService");
 
-		String abB64Str = "";
+		String returnAB = "";
 		TTransport transport;
 		try {
+			System.out.println("localhost: "+abPort.intValue());
 			transport = new TSocket("localhost", abPort.intValue());
 			TProtocol protocol = new TBinaryProtocol(transport);
 			ABService.Client client = new ABService.Client(protocol);
@@ -188,8 +189,7 @@ public class FlightService {
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
-				System.out.println("Session key received on Service: "
-						+ new String(decryptedText));
+				System.out.println("Session key received on Service: " + new String(decryptedText));
 
 				// Get passenger name, passport, leaving_from, destination, from
 				String name = client
@@ -202,6 +202,12 @@ public class FlightService {
 				String from = client
 						.getValue(abSessionObject.sessionID, "from");
 
+				System.out.println("FlightService Name: "+name);
+				System.out.println("ID: "+id);
+				System.out.println("Leaving From: " + leaving_from);
+				System.out.println("Destination: "+ destination);
+				System.out.println("From: "+ from);
+				
 				// Flight ticket reserved
 				String flight = "UA987";
 				String flight_ticket = "ABF32983N432258DF";
@@ -213,16 +219,15 @@ public class FlightService {
 						.getChildrenWithName(
 								new QName("http://absoa.cs.purdue.edu/ns/",
 										"ActiveBundle", "ab"));
-				OMElement abHeader = (OMElement) abHeaderIt.next();
-				abB64Str = abHeader.getText();
-				byte[] abBytes = Base64.decode(abB64Str);
+				OMElement abHeader = null;
+				if(abHeaderIt.hasNext()){
+					abHeader = (OMElement) abHeaderIt.next();
+				}
+				returnAB = abHeader.getText();
+				byte[] abBytes = Base64.decode(returnAB);
 
-				/*
-				 * //Create temp ab directory if it is not there File tmpABDir =
-				 * new File("/tmp/AB/"); if(!tmpABDir.exists()) {
-				 * tmpABDir.mkdir(); }
-				 */
-				String abName = /* tmpABDir.getAbsolutePath() + */"./AB.jar";
+				// Write Active Bundle to AB.jar
+				String abName = "AB.jar";
 				File abFile = new File(abName);
 				abFile.createNewFile();
 				abFile.deleteOnExit();
@@ -251,24 +256,8 @@ public class FlightService {
 
 				abBytes = org.apache.commons.io.FileUtils
 						.readFileToByteArray(abFile);
-				abB64Str = Base64.encode(abBytes);
+				returnAB = Base64.encode(abBytes);
 
-				/*
-				 * // Add header to SOAPEnvelope
-				 * org.apache.axiom.soap.SOAPEnvelope env =
-				 * msgCtx.getEnvelope(); org.apache.axiom.soap.SOAPFactory
-				 * factory = (org.apache.axiom.soap.SOAPFactory) env
-				 * .getOMFactory(); org.apache.axiom.om.OMNamespace ns =
-				 * factory.createOMNamespace( "http://absoa.cs.purdue.edu/ns/",
-				 * "ab"); org.apache.axiom.soap.SOAPHeader myHeader = factory
-				 * .createSOAPHeader(env); org.apache.axiom.soap.SOAPHeaderBlock
-				 * newHead = myHeader .addHeaderBlock("ActiveBundle", ns);
-				 * newHead.setText(abB64Str);
-				 * 
-				 * // Update the message context with the new SOAPEnvelope
-				 * msgCtx.setEnvelope(env);
-				 * MessageContext.setCurrentMessageContext(msgCtx);
-				 */
 
 			} else {
 				System.out.println("Null Session ID received on Service ");
@@ -279,7 +268,7 @@ public class FlightService {
 			e.printStackTrace();
 		}
 
-		return abB64Str;
+		return returnAB;
 	}
 
 	private byte[] loadCertificateStore(ClassLoader clsLoader, String path)
