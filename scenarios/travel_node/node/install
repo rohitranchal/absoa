@@ -1,0 +1,2 @@
+npm install
+cp ../client/target/lib/* ./lib/

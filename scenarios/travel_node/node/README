@@ -1,0 +1,4 @@
+To install, run: ./install
+Before running server, go to ../client directory, and run: mvn clean install
+To run the server on actual machine, run: ./start
+To run the server in development mode(do not need to restart server every time a change is made), run: ./start_dev
