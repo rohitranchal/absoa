@@ -1,0 +1,5 @@
+rm data.txt
+rm AB.jar
+rm ABNew.jar
+rm -r ./lib/*
+rm -r ./node_modules/*

@@ -60,6 +60,7 @@ exports.book = function(req, res){
   java.classpath.push (jars_dir+"geronimo-ws-metadata_2.0_spec-1.1.2.jar");
   java.classpath.push (jars_dir+"XmlSchema-1.4.7.jar");
   java.classpath.push (jars_dir+"httpclient-4.2.5.jar");
+  java.classpath.push (jars_dir+"client-1.0-SNAPSHOT.jar");
 
 
   var service = java.newInstanceSync("edu.purdue.cs.absoa.samples.simple.ServiceStub","http://localhost:8080/axis2/services/main_service");  
@@ -75,8 +76,16 @@ exports.book = function(req, res){
         console.log("The file was saved!");
     }
   }); 
-
   
+  // Append data.txt to AB and generate ABNew.jar
+  var dataFileArray = java.newArray("java.lang.String", ["data.txt"]);
+  var JarManager = java.import("edu.purdue.cs.absoa.JarManager");  
+  JarManager.main(dataFileArray);
+/*
+  var abFile = java.newInstanceSync("java.io.File","ABNew.jar");  
+  var FileUtils = java.import("org.apache.commons.io.FileUtils");  
+  FileUtils.readFileToByteArray(abFile);
+  */
   res.render('test', { title: 'Expedia', retStr: "Yay, working" });    
  
 };

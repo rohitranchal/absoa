@@ -1,2 +1,4 @@
 npm install
 cp ../client/target/lib/* ./lib/
+cp ../client/target/client-1.0-SNAPSHOT.jar ./lib/
+cp ../client/AB.jar .
