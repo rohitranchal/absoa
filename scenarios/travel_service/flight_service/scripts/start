@@ -1,0 +1,2 @@
+cp ../target/flight_service-1.0-SNAPSHOT.aar ./axis2_server/axis2-1.6.2/repository/services/
+sh axis2_server/axis2-1.6.2/bin/axis2server.sh

@@ -135,6 +135,47 @@ TODO, Open Questions, need more thoughts
 
 AB Interceptor
 ===============================================================================
+An active bundle is included in a SOAP header as shown below:
+
+<soap:Envelope>
+  <soap:Header>
+    <ab:ActiveBundle xmlns:ab="http://absoa.cs.purdue.edu/ns/">[BASE 64 Encoded ActiveBundle.jar]</<ab:ActiveBundle>
+  </soap:Header>
+  <soap:Body>
+    ...
+  </soap:Body>
+</soap:Envelope>
+
+The ActiveBundle is created along with its data and packaged as an executable jar file. This is read by a service 
+client program and Base64 encoded. The result is added as a header element called 'ActiveBundle' under the 
+namespace 'http://absoa.cs.purdue.edu/ns/'.
+
+
+                         +==============================================+
++--------+               |    +--------------+           +---------+    |
+|        |               |    |      AB      |           |         |    |
+| Client | -> [SOAP] ->  | -->|  Interceptor |  ------>  | Service |    |
+|        |               |    |              |           |         |    |
++--------+               |    +--------------+           +---------+    |
+    ^                    +==============================================+
+    |                    |                 Service Container            |
+_________                +==============================================+
+| AB.jar|
+---------
+
+The AB Interceptor is placed before the SOAP message reaches the intended service. 
+This is implemented as an Apache Axos2 module with a single handler on the inflow of the service. 
+Upon invocation, this handler performs the following steps:
+ - Extract the Base64 encoded active bundle jar file from the 'ab:ActiveBundle' header
+ - Decode the active bundle (and optionally verify the signature of the active bundle jar)
+ - Store active bundle jar in a temporary directoryin the file system
+ - Generate a random port number
+ - Start the active bundle as an independent process and provide the above randomly generated port number
+ - Set a pointer to the process instance and the port number in the Axis2 MessageContext
+   (This is required to access the running active bundle at the service implementation code, and to manage
+   the active bundle process)
+
+
 
 Service side interaction details with AB
 ===============================================================================

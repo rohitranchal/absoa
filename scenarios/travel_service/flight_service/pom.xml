@@ -1,0 +1,85 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>edu.purdue.cs.absoa.samples.simple</groupId>
+	<artifactId>flight_service</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	
+	<repositories>
+		<repository>
+			<id>mvn-repo</id>
+			<url>http://anon-idm.googlecode.com/svn/trunk/maven_repo/</url>
+		</repository>
+		<repository>
+			<id>repo2</id>
+			<url>http://repo1.maven.org/maven2/</url>
+		</repository>
+	</repositories>
+	
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2</artifactId>
+			<version>1.6.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2-aar-maven-plugin</artifactId>
+			<version>1.6.2</version>
+			<type>maven-plugin</type>
+		</dependency>
+		<dependency>
+			<groupId>edu.purdue.cs.absoa</groupId>
+			<artifactId>active_bundle</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+            <groupId>org.apache.ws.commons.axiom</groupId>
+            <artifactId>axiom-api</artifactId>
+            <version>1.2.13</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.ws.commons.axiom</groupId>
+            <artifactId>axiom-impl</artifactId>
+            <version>1.2.13</version>
+        </dependency>
+		<dependency>
+        	<groupId>org.apache.commons</groupId>
+        	<artifactId>commons-io</artifactId>
+        	<version>1.3.2</version>
+    	</dependency>
+
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.axis2</groupId>
+				<artifactId>axis2-aar-maven-plugin</artifactId>
+				<version>1.6.2</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>aar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                    <compilerArgument></compilerArgument>
+                </configuration>
+            </plugin>
+
+		</plugins>
+	</build>
+</project>
