@@ -1,4 +1,11 @@
+echo "npm install"
 npm install
+
+echo "cp ../client/target/lib/* ./lib/"
 cp ../client/target/lib/* ./lib/
+
+echo "cp ../client/target/client-1.0-SNAPSHOT.jar ./lib/"
 cp ../client/target/client-1.0-SNAPSHOT.jar ./lib/
+
+echo "cp ../client/AB.jar ."
 cp ../client/AB.jar .
