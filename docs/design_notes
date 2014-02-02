@@ -185,3 +185,16 @@ Service side interaction details with AB
 - getValue() implementation in ABCommunicator will invoke the AB, to obtain values.
 
 
+
+// AB 2.0 Mode
+AB has different modes of operation
+In this mode, the AB has all the information about shipping details, payment etc. It arrives at online shopping service and runs only there, it communicates
+with payment and shipping service from there. Now since we trust online shopping service, it a trusted environment for AB to run. This saves many trips from 
+online service to user and back since AB is running right at the online service. 
+
+This can use OAuth concepts to allow third hand services to interact with AB. 
+
+For this AB has to packed with all this information. There should be an application that has a generic AB with placeholders and can generate new ABs with 
+the selected options. 
+
+

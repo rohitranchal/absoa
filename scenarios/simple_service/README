@@ -9,4 +9,6 @@ mvn clean install
 
 3.) Build ab_axis2_module project and copy "ab_axis2_module-1.0-SNAPSHOT.mar" from "target" directory into "service/scripts/axis2_server/axis2-1.6.2/repository/modules/"
 
-4.) Run edu.purdue.cs.absoa.samples.simple.App in "client" project.
+4.) Start axis2 server by running script scripts/start
+
+5.) From eclipse Run edu.purdue.cs.absoa.samples.simple.App in "client" project.

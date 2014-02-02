@@ -1,0 +1,20 @@
+/target
+
+/node_modules
+
+# Can ignore specific files
+.DS_Store
+
+# Use wildcards as well
+*~
+*.swp
+*.class
+
+#ignore object or archive files 
+*.[oa]
+
+# ignore my README
+*.readme
+
+# to force an ignored file to be tracked
+!foo.readme
