@@ -8,7 +8,7 @@
 	<repositories>
 		<repository>
 			<id>mvn-repo</id>
-			<url>http://anon-idm.googlecode.com/svn/trunk/maven_repo/</url>
+			<url>http://mvn-rpo.googlecode.com/svn/trunk/</url>
 		</repository>
 		<repository>
 			<id>repo2</id>
