@@ -1,0 +1,5 @@
+Before installation, go to ../client directory, and run: mvn clean install
+And go to travel_service, start service and flight_service
+To install, run: ./install
+To run the server on actual machine, run: ./start
+To run the server in development mode(do not need to restart server every time a change is made), run: ./start_dev

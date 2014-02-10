@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  form(action="/flight_info", method="post")
+    div
+      p First Name:  
+        input(type="text", name="fn",placeholder="First Name")
+      p Last Name: 
+        input(type="text", name="ln",placeholder="Last Name")
+      p ID: 
+        input(type="text", name="id",placeholder="ID (Driver Licence, etc.)")
+      input(type='submit',value="Next")
+

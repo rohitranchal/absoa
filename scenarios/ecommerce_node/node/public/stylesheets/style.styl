@@ -1,0 +1,57 @@
+/*
+ * Import nib
+ */
+@import 'nib'
+
+/*
+ * Grab a custom font from Google
+ */
+@import url('http://fonts.googleapis.com/css?family=Quicksand')
+
+/*
+ * Nib provides a CSS reset
+ */
+global-reset()
+
+/*
+ * Store the main color and
+ * background color as variables
+ */
+main-color = #2e2e2e
+background-color = #faf9f0
+
+body
+  font-family 'Georgia'
+  background-color background-color
+  color #444
+
+.container
+	width 500px
+	margin 50px auto
+	overflow hidden
+
+.main-content
+	horizontal-align middle
+	float left
+	width 300px
+	p
+		margin-bottom 20px
+
+p
+  line-height 1.8
+	
+.grey
+	color grey
+
+.green
+	color green
+
+.red
+	color red
+
+footer
+  width 500px
+  margin 50px auto
+  border-top 2px dotted #ccc
+  padding-top 5px
+  font-size 13px

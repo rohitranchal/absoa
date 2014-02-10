@@ -1,0 +1,14 @@
+echo "rm data.txt"
+rm data.txt
+
+echo "rm ABNew.jar"
+rm ABNew.jar
+
+echo "rm ABReturn.jar"
+rm ABReturn.jar
+
+echo "rm -r ./lib/*"
+rm -r ./lib/*
+
+echo "rm -r ./node_modules/*"
+rm -r ./node_modules/*
