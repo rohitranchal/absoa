@@ -3,11 +3,11 @@ block content
 	div(class="panel panel-default")
 		div(class="panel-heading") 
 			h3(class="panel-title") Available Items
-		table(class="table")
+		table(class="table table-striped table-hover")
 			tr
-				td Name
-				td Price
-				td
+				th Name
+				th Price
+				th
 					a
 						i(class="glyphicon glyphicon-shopping-cart")
 			each item,i in items
@@ -15,7 +15,7 @@ block content
 					td=item[0]
 					td=item[1]
 					td
-						input(id="spinner" + i class="spinner" + i name="value" value=1)
+						input(id="spinner" + i  value=1)
 						a(id="buy" + i href="#")
 							i(class="glyphicon glyphicon-ok grey")
 						

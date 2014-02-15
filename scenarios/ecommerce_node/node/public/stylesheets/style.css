@@ -109,20 +109,21 @@ body {
   color: #444;
 }
 .container {
-  width: 500px;
-  margin: 50px auto;
+  margin: auto;
+  width: 70%;
   overflow: hidden;
 }
 .main-content {
-  horizontal-align: middle;
-  float: left;
-  width: 300px;
+  margin: auto;
+  width: 480px;
 }
 .main-content p {
   margin-bottom: 20px;
 }
-.main-content input.spinner {
-  width: 20px;
+th,
+td {
+  width: 160px;
+  table-layout: fixed;
 }
 p {
   line-height: 1.8;
@@ -141,5 +142,6 @@ footer {
   margin: 50px auto;
   border-top: 2px dotted #ccc;
   padding-top: 5px;
+  text-align: center;
   font-size: 13px;
 }
