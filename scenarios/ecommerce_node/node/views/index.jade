@@ -10,25 +10,13 @@ block content
 				td
 					a
 						i(class="glyphicon glyphicon-shopping-cart")
-			each item in items
+			each item,i in items
 				tr
 					td=item[0]
 					td=item[1]
-					if item[2]
-						td
-							a
-								i(class="glyphicon glyphicon-ok green")
-						td
-							a(href="")
-								i(class="glyphicon glyphicon-plus-sign green")
-							span(class="badge")=item[3]
-							a(href="")
-								i(class="glyphicon glyphicon-minus-sign red")
-							a(href="")
-								i(class="glyphicon glyphicon-remove-sign red")
-					else
-						td
-							a(href="#")
-								i(class="glyphicon glyphicon-ok grey")
-							
+					td
+						input(id="spinner" + i class="spinner" + i name="value" value=1)
+						a(id="buy" + i href="#")
+							i(class="glyphicon glyphicon-ok grey")
+						
 

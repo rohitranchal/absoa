@@ -121,6 +121,9 @@ body {
 .main-content p {
   margin-bottom: 20px;
 }
+.main-content input.spinner {
+  width: 20px;
+}
 p {
   line-height: 1.8;
 }
@@ -129,6 +132,9 @@ p {
 }
 .green {
   color: #008000;
+}
+.red {
+  color: #f00;
 }
 footer {
   width: 500px;
