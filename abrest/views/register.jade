@@ -1,0 +1,33 @@
+doctype html
+html
+	include header
+	script(src="/javascripts/fileupload.js")
+	body
+		include nav
+
+		div(class = 'container')
+				form(class = 'form-horizontal', role = 'form')
+					div(id = 'legend')
+						legend
+							h4 Register
+					div(class = 'form-group')
+						label(for = 'uname', class = 'col-sm-2 control-label') Username
+						div(class = 'col-sm-3')
+							input(type = 'text', class = 'form-control', id = 'uname', placeholder = 'Username')
+					div(class = 'form-group')
+						label(for = 'pass', class = 'col-sm-2 control-label') Password
+						div(class = 'col-sm-3')
+							input(type = 'password', class = 'form-control', id = 'pass', placeholder = 'Password')
+					div(class = 'form-group')
+						label(for = 'abfile', class = 'col-sm-2 control-label') Active Bundle
+						div(class = 'col-sm-3')
+							div(class = 'controls')
+								input(type = 'file', id = 'file')
+								div(class = 'dummyfile')
+									input(id = 'filename', type = 'text', class = 'input disabled', name = 'filename' readonly)
+									a(id = 'fileselectbutton', class = 'btn btn-info') Choose
+					div(class = 'form-group')
+						div(class = 'col-sm-offset-2 col-sm-10')
+							button(type = 'submit', class = 'btn btn-primary') Sign up
+
+
