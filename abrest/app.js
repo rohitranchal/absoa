@@ -4,7 +4,8 @@ var path = require('path');
 
 var routes = require('./routes');
 var register = require('./routes/register');
-var tmp = require('./routes/tmp');
+var catalog = require('./routes/catalog');
+//var tmp = require('./routes/tmp');
 
 var service_port = 5555;
 
@@ -43,6 +44,8 @@ app.get('/register', register.create_account);
 //app.get('/tmp', tmp.account_list);
 
 app.post('/register', register.add_account);
+
+app.get('/catalog', catalog.browse);
 
 //for unknown reqs to prevent against attacks
 // app.get('/*', function(req, res){
