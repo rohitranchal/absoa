@@ -1,0 +1,12 @@
+$(document).ready(function(){
+	/*$(".hoverDiv").hover(function(){
+		$(this).animate({height:"+=30px"});
+	});
+	*/
+	$(".hoverDiv").mouseenter(function(){
+		$(this).animate({height:"+=50px"});
+	});
+	$(".hoverDiv").mouseleave(function(){
+		$(this).animate({height:"-=50px"});
+	});
+});
