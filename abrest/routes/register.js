@@ -10,6 +10,10 @@ exports.add_account = function(req, res) {
 	var pass = req.body.pass;
 	var fn = req.body.filename;
 
+	// Uploaded files
+	console.log('req files: ' + JSON.stringify(req.files));
+	console.log('req abfile: ' + JSON.stringify(req.files.abfile));
+
 	// Check user input
 	var error = new Array();
 	if(uname.length == 0){

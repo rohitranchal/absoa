@@ -7,7 +7,7 @@ CREATE TABLE Account (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	username VARCHAR(512) UNIQUE,
 	password VARCHAR(512),
-	active_bundle BLOB
+	active_bundle VARCHAR(512)
 ) ENGINE=InnoDB;
 
 INSERT INTO Account(id, username, password) VALUES
