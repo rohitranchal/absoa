@@ -4,6 +4,7 @@ var path = require('path');
 
 var routes = require('./routes');
 var register = require('./routes/register');
+var login = require('./routes/login');
 var catalog = require('./routes/catalog');
 //var tmp = require('./routes/tmp');
 
@@ -40,6 +41,8 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
+app.post('/', login.verify);
+
 app.get('/register', register.create_account);
 //app.get('/tmp', tmp.account_list);
 

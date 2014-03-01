@@ -18,6 +18,10 @@ body {
    display: none;
 }
 
+li.error{
+	color: red;
+}
+
 .dummyfile input[type="text"] {
    width: 120px;
    display: inline;

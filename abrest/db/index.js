@@ -22,6 +22,25 @@ exports.get_accounts = function(cb) {
 	});
 }
 
+exports.verify_user = function(uname,pass,cb) {
+	var sql = 'SELECT password FROM Account WHERE username=\''+uname+"\'";
+	connection.query(sql, function(err, rows, fields) {
+		if (err) throw err;
+		var realpass = rows[0].password;
+		var result;
+		if(realpass==pass){
+			console.log("correct");
+
+			result=1;
+		}
+		else{
+			console.log("wrong");
+			result=0;
+		}
+		cb(result);
+	});
+}
+
 exports.insert_account = function(new_user, new_pass, done) {
 	var sql = "INSERT INTO Account(username, password) VALUES('" + new_user + "','" + new_pass + "')";
 	console.log(sql);
