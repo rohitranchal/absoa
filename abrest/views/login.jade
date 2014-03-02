@@ -3,6 +3,10 @@ div(class = 'container')
 			div(id = 'legend')
 				legend
 					h3 Login
+			if(error)
+				ul
+					for msg in error
+						li(class="error")=msg
 			div(class = 'form-group')
 				label(for = 'uname', class = 'col-sm-2 control-label') Username
 				div(class = 'col-sm-3')

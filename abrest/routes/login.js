@@ -17,12 +17,22 @@ exports.verify = function(req, res) {
 */
 	console.log('verify user: ' + uname);
 	db.verify_user(uname, pass,function(cb) {
-		// WARNING: This is unfinished, return value is not correct
-		if(cb.result==1){
-			res.send('Password is correct');
+		// Indicates that the user's password is correct
+		if(cb==1){
+			//res.send('Password is correct');
+			res.render('browse', {title: 'E-Commerce',user:uname});
 		}
-		else{
-			res.send('Password is wrong');
+		else if(cb==-1){
+			//res.send('Password is wrong');
+			var errMsg = new Array();
+			errMsg.push( "Wrong password");
+			res.render('index', {title: 'E-Commerce',error:errMsg});
+		}
+		else if(cb==0){
+			//res.send('User is not found');
+			var errMsg = new Array();
+			errMsg.push("User not found");
+			res.render('index', {title: 'E-Commerce',error:errMsg});
 		}
 	});
 }

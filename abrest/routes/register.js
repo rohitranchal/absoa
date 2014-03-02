@@ -8,7 +8,6 @@ exports.create_account = function(req, res) {
 exports.add_account = function(req, res) {
 	var uname = req.body.uname;
 	var pass = req.body.pass;
-	var fn = req.body.filename;
 
 	// Uploaded files
 	console.log('req files: ' + JSON.stringify(req.files));
@@ -22,14 +21,6 @@ exports.add_account = function(req, res) {
 	}
 	if(pass.length == 0){
 		var errMsg = "ERROR: Username can not be NULL";
-		error.push(errMsg);
-	}
-	if(fn.length == 0){
-		var errMsg = "ERROR: Active Bundle can not be NULL";
-		error.push(errMsg);
-	}
-	if(fn.substr(fn.length - 4)!=".jar"){
-		var errMsg = "ERROR: The selected file is not an Active Bundle file (.jar)";
 		error.push(errMsg);
 	}
 

@@ -23,19 +23,25 @@ exports.get_accounts = function(cb) {
 }
 
 exports.verify_user = function(uname,pass,cb) {
+
 	var sql = 'SELECT password FROM Account WHERE username=\''+uname+"\'";
 	connection.query(sql, function(err, rows, fields) {
 		if (err) throw err;
-		var realpass = rows[0].password;
-		var result;
-		if(realpass==pass){
-			console.log("correct");
-
-			result=1;
+		// No such user
+		if(rows.length<=0){
+			result=0;
 		}
 		else{
-			console.log("wrong");
-			result=0;
+			var realpass = rows[0].password;
+			var result;
+			// Password is correct
+			if(realpass==pass){
+				result=1;
+			}
+			// Password is wrong
+			else{
+				result=-1;
+			}
 		}
 		cb(result);
 	});

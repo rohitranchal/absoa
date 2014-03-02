@@ -8,9 +8,15 @@ div(class = 'navbar navbar-inverse navbar-static-top')
 			a(href = '/', class = 'navbar-brand active') E-Commerce
 		div(class = 'collapse navbar-collapse navHeaderCollapse')
 			ul(class = 'nav navbar-nav navbar-right')
-				li
-					a(href = '/') Login
-				li
-					a(href = '/register') Register
+				if(user)
+					li
+						a(href = '#')=user
+					li
+						a(href = '#') Log out
+				else
+					li
+						a(href = '/') Login
+					li
+						a(href = '/register') Register
 				li
 					a(href = '/catalog') Catalog
