@@ -1,4 +1,5 @@
 CREATE DATABASE IF NOT EXISTS soa_ab;
+
 USE soa_ab;
 
 DROP TABLE IF EXISTS Account;

@@ -1,6 +1,7 @@
 var express = require('express');
 var http = require('http');
 var path = require('path');
+var fs = require('fs');
 
 var routes = require('./routes');
 var register = require('./routes/register');
@@ -9,6 +10,14 @@ var catalog = require('./routes/catalog');
 //var tmp = require('./routes/tmp');
 
 var service_port = 5555;
+var AB_dir = "/abfiles";
+
+console.log("LOG: Check "+__dirname+AB_dir);
+if(!fs.existsSync(__dirname+AB_dir)){
+	fs.mkdirSync(__dirname+AB_dir);
+	console.log("LOG: Create "+__dirname+AB_dir);
+}
+
 
 var app = express();
 
@@ -33,7 +42,7 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
 // To store uploaded files
-app.use(express.bodyParser({ keepExtensions: true, uploadDir: __dirname + "/" }));
+app.use(express.bodyParser({ keepExtensions: true, uploadDir: __dirname + AB_dir }));
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 

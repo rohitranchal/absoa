@@ -1,4 +1,5 @@
 var db = require('../db');
+var fs = require('fs');
 
 exports.create_account = function(req, res) {
 	//res.send("Create Account: respond with a resource");
@@ -8,10 +9,7 @@ exports.create_account = function(req, res) {
 exports.add_account = function(req, res) {
 	var uname = req.body.uname;
 	var pass = req.body.pass;
-
-	// Uploaded files
-	console.log('req files: ' + JSON.stringify(req.files));
-	console.log('req abfile: ' + JSON.stringify(req.files.abfile));
+	var abpath= req.files.abfile.path;
 
 	// Check user input
 	var error = new Array();
@@ -26,12 +24,37 @@ exports.add_account = function(req, res) {
 
 	if(error.length==0){
 		console.log('req body uname: ' + req.body.uname);
-		db.insert_account(uname, pass, fn,function() {
-			res.send('User successfully added to db');
+		// Uploaded files
+		//console.log('req files: ' + JSON.stringify(req.files));
+		//console.log('req abfile: ' + JSON.stringify(req.files.abfile));
+
+		db.insert_account(uname, pass, abpath, function(cb) {
+			if(cb == 1){
+				res.send('User successfully added to db');
+			}
+			else{
+				// Delete uploaded AB jar file
+				
+				if (fs.existsSync(abpath)) {
+					response.errors.push("File name already exists,updating");
+					fs.unlink(abpath, function (err) {
+						if (err) response.errors.push("Erorr : " + err);
+						console.log('successfully deleted : '+ newPath );
+					});
+				}
+				res.send('ERROR: Cannot create user. User already exists.');
+			}
 		});
 	}
 	else{
 		console.log('ERROR: register failed');
+		if (fs.existsSync(abpath)) {
+			response.errors.push("File name already exists,updating");
+			fs.unlink(abpath, function (err) {
+				if (err) response.errors.push("Erorr : " + err);
+				console.log('successfully deleted : '+ newPath );
+			});
+		}
 		res.render('register', {title: 'E-Commerce',error:error});
 	}
 }

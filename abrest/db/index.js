@@ -24,7 +24,7 @@ exports.get_accounts = function(cb) {
 
 exports.verify_user = function(uname,pass,cb) {
 
-	var sql = 'SELECT password FROM Account WHERE username=\''+uname+"\'";
+	var sql = "SELECT password FROM Account WHERE username='"+uname+"'";
 	connection.query(sql, function(err, rows, fields) {
 		if (err) throw err;
 		// No such user
@@ -47,11 +47,22 @@ exports.verify_user = function(uname,pass,cb) {
 	});
 }
 
-exports.insert_account = function(new_user, new_pass, done) {
-	var sql = "INSERT INTO Account(username, password) VALUES('" + new_user + "','" + new_pass + "')";
+exports.insert_account = function(new_user, new_pass,path, done) {
+	/*
+	var sql = "SELECT password FROM Account WHERE username='"+new_user+"'";
+	connection.query(sql, function(err, rows, fields) {
+		if (err) throw err;
+		// No such user
+		if(rows.length>0){
+			done(0);
+		}
+	}
+*/
+
+	var sql = "INSERT INTO Account(username, password,active_bundle) VALUES ('" + new_user + "','" + new_pass + "','"+path+"')";
 	console.log(sql);
 	connection.query(sql, function(err, rows, fields) {
-		if(err) throw err;
-		done();
+		if(err) done(0);
+		else done(1);
 	});
 }
