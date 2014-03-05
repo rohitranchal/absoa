@@ -10,15 +10,16 @@ html
 				legen
 					h3 Catalog
 			table(class="table" id="shop")
-				for row,i in [['macbook air','macbook pro','iphone'],['sumsung galaxy','sumsung note I','sumsung note II'],['Google Nexus 5','Amazon Kindle','Amazon Kindle Fire']]
+				- var columns = 3
+				- for(var i=0;i<item_sell.length;i=i+columns)
 					tr
-						for item in row 
-							th 
-								//a(href="/catalog/"+item)
+						- for(var j=0;j<columns && (i+j)<item_sell.length;j++)
+							td
 								div( class = 'hoverDiv item')
-									img(src="http://g-ecx.images-amazon.com/images/G/01/electronics/apple/apple-12q2-macbook-pro-13-front-lg.jpg" class="item")
+									img(src=item_sell[i+j].picture class="item")
 									center
-										p=item
+										p(class="itemname")=item_sell[i+j].itemname
+										p(class="price") $#{item_sell[i+j].price}
 
 
 

@@ -33,10 +33,20 @@ div.item
 img.item
 {
 	width:100%;
+	margin:0px 0px 20px;
 }
 
 a{
   text-decoration:none;
+}
+
+p.itemname{
+	color: blue;
+	font-size: 20px;
+}
+p.price{
+	color: red;
+	font-size: 16px;
 }
 
 .dummyfile input[type="text"] {

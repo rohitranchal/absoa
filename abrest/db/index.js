@@ -66,3 +66,11 @@ exports.insert_account = function(new_user, new_pass,path, done) {
 		else done(1);
 	});
 }
+
+exports.get_item_info = function(cb) {
+	var sql = 'SELECT * FROM Item';
+	connection.query(sql, function(err, rows, fields) {
+		if (err) throw err;
+		cb(rows);
+	});
+}
