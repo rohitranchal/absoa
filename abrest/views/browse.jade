@@ -15,11 +15,13 @@ html
 					tr
 						- for(var j=0;j<columns && (i+j)<item_sell.length;j++)
 							td
-								div( class = 'hoverDiv item')
+								div( class = 'hoverDiv item' id="div_"+item_sell[i+j].id)
 									img(src=item_sell[i+j].picture class="item")
 									center
 										p(class="itemname")=item_sell[i+j].itemname
 										p(class="price") $#{item_sell[i+j].price}
+										button( type="button" onclick="window.location.href='/catalog?item="+item_sell[i+j].id+"'" class="shopbtn" id="shopbtn_"+item_sell[i+j].id)
+											span(class="glyphicon glyphicon-shopping-cart")
 
 
 

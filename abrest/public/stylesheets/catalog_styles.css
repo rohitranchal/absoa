@@ -19,8 +19,8 @@ body {
 }
 
 .hoverDiv:hover {
-	box-shadow: 2px 2px 2px #888888;
-	border: 1px solid grey;
+	box-shadow: 1px 1px 1px #E8E8E8;
+	border: 1px solid #E8E8E8;
 }
 
 div.item
@@ -47,6 +47,15 @@ p.itemname{
 p.price{
 	color: red;
 	font-size: 16px;
+}
+
+button.shopbtn{
+
+	height: 50px;
+	width: 50px;
+	border-radius: 50px;
+	border: 0px solid #000;
+	color: #888888
 }
 
 .dummyfile input[type="text"] {
