@@ -20,6 +20,9 @@ if(!fs.existsSync(__dirname+AB_dir)){
 
 
 var app = express();
+// Express session, must be inserted here, otherwise it won't work
+app.use(express.cookieParser());
+app.use(express.session({secret: "This is a secret",user:"",login:"no"}));
 
 // all environments
 app.set('port', process.env.PORT || service_port);
@@ -53,6 +56,8 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes.index);
 app.post('/', login.verify);
+
+app.get('/logout', login.logout);
 
 app.get('/register', register.create_account);
 //app.get('/tmp', tmp.account_list);

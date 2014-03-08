@@ -8,11 +8,11 @@ div(class = 'navbar navbar-inverse navbar-static-top')
 			a(href = '/', class = 'navbar-brand active') E-Commerce
 		div(class = 'collapse navbar-collapse navHeaderCollapse')
 			ul(class = 'nav navbar-nav navbar-right')
-				if(user)
+				if(login=="yes")
 					li
-						a(href = '#')=user
+						a(href = '') Hello, #{user}!
 					li
-						a(href = '#') Log out
+						a(href = '/logout') Sign Out
 				else
 					li
 						a(href = '/') Login
