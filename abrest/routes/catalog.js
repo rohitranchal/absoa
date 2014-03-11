@@ -5,7 +5,12 @@ exports.browse = function(req, res){
 	var login = req.session.login;
 	var user = req.session.user;
 
-	db.get_item_info(function(cb) {
-		res.render('browse', {item_sell:cb,login:login,user:user});
-	});
+	if(req.query.item){
+		res.render('browse_item', {login:login,user:user});
+	}
+	else{
+		db.get_item_info(function(cb) {
+			res.render('browse', {item_sell:cb,login:login,user:user});
+		});
+	}
 };

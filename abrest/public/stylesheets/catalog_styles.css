@@ -48,6 +48,24 @@ p.price{
 	color: red;
 	font-size: 16px;
 }
+/*
+div#browse_item_container{
+  width: 500px;
+	margin: 50px auto;
+	overflow: hidden;
+}
+*/
+.main-content{
+	float: left;
+	width: 300px;
+}
+
+
+.sidebar{
+  float: left;
+	width: 200px;
+}
+
 
 button.shopbtn{
 
