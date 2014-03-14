@@ -9,7 +9,13 @@ exports.create_account = function(req, res) {
 exports.add_account = function(req, res) {
 	var uname = req.body.uname;
 	var pass = req.body.pass;
-	var abpath= req.files.abfile.path;
+	var tmppath = req.files.abfile.path;
+
+	var abpath = tmppath.split("/").slice(0,-1).join("/") + "/" + uname + ".jar";
+	fs.rename(tmppath, abpath, function(err) {
+		if (err) throw err;
+  		console.log('renamed complete');
+	});
 
 	// Check user input
 	var error = new Array();
@@ -24,17 +30,13 @@ exports.add_account = function(req, res) {
 
 	if(error.length==0){
 		console.log('req body uname: ' + req.body.uname);
-		// Uploaded files
-		//console.log('req files: ' + JSON.stringify(req.files));
-		//console.log('req abfile: ' + JSON.stringify(req.files.abfile));
-
 		db.insert_account(uname, pass, abpath, function(cb) {
 			if(cb == 1){
 				res.send('User successfully added to db');
 			}
 			else{
 				// Delete uploaded AB jar file
-				
+
 				if (fs.existsSync(abpath)) {
 					response.errors.push("File name already exists,updating");
 					fs.unlink(abpath, function (err) {

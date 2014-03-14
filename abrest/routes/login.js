@@ -12,11 +12,10 @@ exports.verify = function(req, res) {
 			//res.send('Password is correct');
 			//res.render('browse', {title: 'E-Commerce',user:uname});
 			db.get_item_info(function(cb) {
-			
 					//res.render('browse', {item_sell:cb,user:uname});
-					// At this point, the login is successful. We should make a new http get request 
-					req.session.user = uname;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-					req.session.login = 'yes';                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+					// At this point, the login is successful. We should make a new http get request
+					req.session.user = uname;
+					req.session.login = 'yes';
 					res.redirect('/catalog');
 			});
 		}
@@ -36,7 +35,7 @@ exports.verify = function(req, res) {
 }
 
 exports.logout = function(req, res) {
-	req.session.user = '';                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-	req.session.login = 'no';                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+	req.session.user = '';
+	req.session.login = 'no';
 	res.redirect('/');
 }
