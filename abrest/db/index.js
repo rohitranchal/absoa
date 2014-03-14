@@ -22,6 +22,15 @@ exports.get_accounts = function(cb) {
 	});
 }
 
+exports.get_abpath = function(uname, cb) {
+	var sql = "SELECT active_bundle FROM Account WHERE username ='" + uname + "'";
+	connection.query(sql, function(err, rows, fields) {
+		if (err) throw err;
+		abpath = rows[0].active_bundle;
+		cb(abpath);;
+	});
+}
+
 exports.verify_user = function(uname,pass,cb) {
 
 	var sql = "SELECT password FROM Account WHERE username='"+uname+"'";
