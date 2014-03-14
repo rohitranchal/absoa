@@ -16,6 +16,11 @@ exports.add_account = function(req, res) {
 
 	if(req.files.abfile.size == 0) {
 		err_msg.push("ERROR: AB is unspecified");
+		// delete the tmp file created by form submission
+		fs.unlink(tmppath, function (err) {
+		  if (err) throw err;
+		  console.log('successfully deleted /tmp/hello');
+		});
 	} else {
 		var abpath = tmppath.split("/").slice(0,-1).join("/") + "/" + uname + ".jar";
 		fs.rename(tmppath, abpath, function(err) {
