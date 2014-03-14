@@ -9,7 +9,7 @@ var login = require('./routes/login');
 var catalog = require('./routes/catalog');
 //var tmp = require('./routes/tmp');
 
-var service_port = 5555;
+var service_port = 5000;
 var AB_dir = "/abfiles";
 
 console.log("LOG: Check "+__dirname+AB_dir);
