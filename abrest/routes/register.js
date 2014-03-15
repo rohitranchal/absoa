@@ -36,7 +36,7 @@ exports.add_account = function(req, res) {
 				// Delete uploaded AB jar file
 				
 				if (fs.existsSync(abpath)) {
-					response.errors.push("File name already exists,updating");
+					res.errors.push("File name already exists,updating");
 					fs.unlink(abpath, function (err) {
 						if (err) response.errors.push("Erorr : " + err);
 						console.log('successfully deleted : '+ newPath );

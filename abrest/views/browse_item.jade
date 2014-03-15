@@ -7,8 +7,26 @@ html
 		div(class="container", id="browse_item_container")
 			.sidebar
 				.widget
-					h1 Image
+					img(src=item_sell[0].picture class="item")
 			.main-content
-				h1 Purchase
+				h1=item_sell[0].itemname
+				table(class="table")
+					tr 
+						td Price
+						td
+						td=item_sell[0].price
+					tr
+						td
+						td x
+						td 3
+					tr
+						td
+						td =
+						td 100
+					tr
+						td
+						td
+						td 
+							button(type="button" class="btn btn-primary") Check Out
 
 

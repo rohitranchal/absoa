@@ -48,22 +48,22 @@ p.price{
 	color: red;
 	font-size: 16px;
 }
-/*
+
 div#browse_item_container{
-  width: 500px;
+  width: 800px;
 	margin: 50px auto;
-	overflow: hidden;
+/*	background-color: red;
+	overflow: hidden;*/
 }
-*/
 .main-content{
 	float: left;
-	width: 300px;
+	width: 350px;
 }
 
 
 .sidebar{
   float: left;
-	width: 200px;
+	width: 250px;
 }
 
 
