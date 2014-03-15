@@ -6,7 +6,7 @@ exports.browse = function(req, res){
 	var user = req.session.user;
 
 	if(req.query.item){
-		console.log("id: "+req.query.item);
+		//console.log("id: "+req.query.item);
 		db.get_one_item(req.query.item,function(cb) {
 			res.render('browse_item', {item_sell:cb, login:login,user:user});
 		});

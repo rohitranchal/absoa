@@ -87,7 +87,7 @@ exports.get_one_item = function(id,cb) {
 	var sql = 'SELECT * FROM Item WHERE id='+id;
 	connection.query(sql, function(err, rows, fields) {
 		if (err) throw err;
-		console.log("rows: "+rows.length);
+		//console.log("rows: "+rows.length);
 		cb(rows);
 	});
 }

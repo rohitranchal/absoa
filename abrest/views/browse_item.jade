@@ -1,7 +1,7 @@
 doctype html
 html
 	include catalog_header
-	script(src="/javascripts/browse.js")
+	script(src="/javascripts/browse_item.js")
 	body
 		include nav
 		div(class="container", id="browse_item_container")
@@ -14,15 +14,24 @@ html
 					tr 
 						td Price
 						td
-						td=item_sell[0].price
+						td(id="price")=item_sell[0].price
 					tr
 						td
 						td x
-						td 3
+						td
+							input(id="spinner" value=1)
 					tr
 						td
 						td =
-						td 100
+						td(id="item_sum")=item_sell[0].price
+					tr
+						td Shipping
+						td +
+						td(id="shipping") 10
+					tr
+						td Total
+						td =
+						td(id="sum")=item_sell[0].price+10
 					tr
 						td
 						td
