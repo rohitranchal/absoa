@@ -9,7 +9,7 @@ var login = require('./routes/login');
 var catalog = require('./routes/catalog');
 //var tmp = require('./routes/tmp');
 
-var service_port = 5555;
+var service_port = 5000;
 var AB_dir = "/abfiles";
 
 console.log("LOG: Check "+__dirname+AB_dir);
@@ -29,16 +29,6 @@ app.set('port', process.env.PORT || service_port);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-// middleware pipeline
-// when req comes, it goes through pipeline
-// each middleware returns a function which has a signature like function(req, res, next)
-
-// my middleware
-// app.use(function(req, res, next) {
-//  // req.url // something like this
-//  next(); // can pass err in next in case an err opens
-// });
-// Browser sends another request to get the icon
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.json());

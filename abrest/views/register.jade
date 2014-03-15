@@ -12,27 +12,33 @@ html
 							h4 Register
 					if(error)
 						ul
-							for msg in error
-								li(class="error")=msg
-					div(class = "form-group")
-						label(for = "uname", class = "col-sm-2 control-label") Username
-						div(class = "col-sm-3")
-							input(type = "text", class = "form-control", name = "uname", placeholder = "Username")
-					div(class = "form-group")
-						label(for = "pass", class = "col-sm-2 control-label") Password
-						div(class = "col-sm-3")
-							input(type = "password", class = "form-control", name = "pass", placeholder = "Password")
-					div(class = "form-group")
-						label(for = "abfile", class = "col-sm-2 control-label") Active Bundle
-						div(class = "col-sm-3")
-							input(type = "file", id="abfile", name = "abfile")
-							//- div(class = "controls")
-							//- 	input(type = "file", id = "file")
-							//- 	div(class = "dummyfile")
-							//- 		input(id = "filename", type = "text", class = "input disabled", name = "filename" readonly)
-							//- 		a(id = "fileselectbutton", class = "btn btn-info") Choose
-					div(class = "form-group")
-						div(class = "col-sm-offset-2 col-sm-10")
-							button(type = "submit", class = "btn btn-primary") Sign up
+							for err in error
+								li(class="error")=err
+					if(message)
+						for msg in message
+							p=msg
+					else
+						div(class = "form-group")
+							label(for = "uname", class = "col-sm-2 control-label") Username
+							div(class = "col-sm-3")
+								input(type = "text", class = "form-control", name = "uname", placeholder = "Username")
+						div(class = "form-group")
+							label(for = "pass", class = "col-sm-2 control-label") Password
+							div(class = "col-sm-3")
+								input(type = "password", class = "form-control", name = "pass", placeholder = "Password")
+						div(class = "form-group")
+							label(for = "abfile", class = "col-sm-2 control-label") Active Bundle
+							div(class = "col-sm-3")
+								input(type = "file", id="abfile", name = "abfile")
+								//- div(class = "controls")
+								//- 	input(type = "file", id = "file")
+								//- 	div(class = "dummyfile")
+								//- 		input(id = "filename", type = "text", class = "input disabled", name = "filename" readonly)
+								//- 		a(id = "fileselectbutton", class = "btn btn-info") Choose
+						div(class = "form-group")
+							div(class = "col-sm-offset-2 col-sm-10")
+								button(type = "submit", class = "btn btn-primary") Sign up
+
+
 
 
