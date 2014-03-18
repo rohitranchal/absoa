@@ -1,14 +1,41 @@
 doctype html
 html
 	include catalog_header
-	script(src="/javascripts/browse.js")
+	script(src="/javascripts/browse_item.js")
 	body
 		include nav
 		div(class="container", id="browse_item_container")
 			.sidebar
 				.widget
-					h1 Image
+					img(src=item_sell[0].picture class="item")
 			.main-content
-				h1 Purchase
+				h1=item_sell[0].itemname
+				table(class="table")
+					tr 
+						td Price
+						td
+						td(id="price")=item_sell[0].price
+					tr
+						td
+						td x
+						td
+							input(id="spinner" value=1)
+					tr
+						td
+						td =
+						td(id="item_sum")=item_sell[0].price
+					tr
+						td Shipping
+						td +
+						td(id="shipping") 10
+					tr
+						td Total
+						td =
+						td(id="sum")=item_sell[0].price+10
+					tr
+						td
+						td
+						td 
+							button(type="button" class="btn btn-primary") Check Out
 
 
