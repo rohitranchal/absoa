@@ -48,9 +48,9 @@ exports.add_account = function(req, res) {
 			} else {
 				// Delete uploaded AB jar file
 				if (fs.existsSync(abpath)) {
-					response.errors.push("File name already exists,updating");
+					res.errors.push("File name already exists,updating");
 					fs.unlink(abpath, function (err) {
-						if (err) response.errors.push("Erorr : " + err);
+						if (err) res.errors.push("Erorr : " + err);
 						console.log('successfully deleted : '+ newPath );
 					});
 				}
@@ -60,9 +60,9 @@ exports.add_account = function(req, res) {
 	} else {
 		console.log('ERROR: register failed');
 		if (fs.existsSync(abpath)) {
-			response.errors.push("File name already exists,updating");
+			res.errors.push("File name already exists,updating");
 			fs.unlink(abpath, function (err) {
-				if (err) response.errors.push("Error : " + err);
+				if (err) res.errors.push("Error : " + err);
 				console.log('successfully deleted : '+ newPath );
 			});
 		}

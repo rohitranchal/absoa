@@ -27,7 +27,7 @@ exports.get_abpath = function(uname, cb) {
 	connection.query(sql, function(err, rows, fields) {
 		if (err) throw err;
 		abpath = rows[0].active_bundle;
-		cb(abpath);;
+		cb(abpath);
 	});
 }
 

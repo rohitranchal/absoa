@@ -26,7 +26,7 @@ exports.verify = function(req, res) {
 				// start ab
 				var exec = require('child_process').exec;
 				ab_exec = "java -jar " + abpath;
-				ab_proc = exec(ab_exec, function callback(error, stdout, stderr){
+				ab_proc = exec(ab_exec, function callback(error, stdout, stderr) {
 				    console.log(stderr);
 				});
 			});
@@ -47,6 +47,7 @@ exports.verify = function(req, res) {
 }
 
 exports.logout = function(req, res) {
+	// Stop AB process
 	req.session.user = '';
 	req.session.login = 'no';
 	res.redirect('/');
