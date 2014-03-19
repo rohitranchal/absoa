@@ -10,24 +10,18 @@ exports.verify = function(req, res) {
 	db.verify_user(uname, pass,function(cb) {
 		// Indicates that the user's password is correct
 		if (cb==1) {
-			// Why are items fetched here?
-			// db.get_item_info(function(cb) {
-			// 		// Login is successful. Redirect to catalog
-			// 		db.get_abpath
-
-			// 		req.session.user = uname;
-			// 		req.session.login = 'yes';
-			// 		res.redirect('/catalog');
-			// });
-
 			// Successful login, start corresponding AB, create session, redirect to catalog
 			db.get_abpath(uname, function(abpath) {
 				console.log('abpath: ' + abpath);
 				// start ab
 				var exec = require('child_process').exec;
 				ab_exec = "java -jar " + abpath;
-				ab_proc = exec(ab_exec, function callback(error, stdout, stderr) {
-				    console.log(stderr);
+				ab_proc = exec(ab_exec);
+				ab_proc.stdout.on('data', function (data) {
+				  console.log(data);
+				});
+				ab_proc.stderr.on('data', function (data) {
+				  console.log(data);
 				});
 			});
 			req.session.user = uname;
