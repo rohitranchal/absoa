@@ -19,7 +19,7 @@ exports.add_account = function(req, res) {
 		// delete the tmp file created by form submission
 		fs.unlink(tmppath, function (err) {
 		  if (err) throw err;
-		  console.log('successfully deleted /tmp/hello');
+		  console.log('Deleted tmp uploaded file');
 		});
 	} else {
 		var abpath = tmppath.split("/").slice(0,-1).join("/") + "/" + uname + ".jar";

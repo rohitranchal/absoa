@@ -8,7 +8,8 @@ CREATE TABLE Account (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	username VARCHAR(512) UNIQUE,
 	password VARCHAR(512),
-	active_bundle VARCHAR(512)
+	active_bundle VARCHAR(512),
+  status INT
 ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS Item;
@@ -21,10 +22,9 @@ CREATE TABLE Item(
 	picture VARCHAR(512)
 ) ENGINE=InnoDB;
 
-INSERT INTO Account(id, username, password) VALUES
-(1, 'user1', 'pass1'),
-(2, 'user2', 'pass2'),
-(3, 'user3', 'pass3');
+INSERT INTO Account(id, username, password, status) VALUES
+(1, 'user1', 'pass1', -1),
+(2, 'user2', 'pass2', -1);
 
 INSERT INTO Item(id, itemname, price,amount,picture) VALUES
 (1, '13-inch MacBook Pro', 1299,10,'http://g-ecx.images-amazon.com/images/G/01/electronics/apple/apple-12q2-macbook-pro-ret-zebra-lg.jpg'),

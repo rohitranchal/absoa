@@ -31,6 +31,18 @@ exports.get_abpath = function(uname, cb) {
 	});
 }
 
+exports.get_account = function(uname, cb) {
+	var sql = "SELECT * FROM Account WHERE username ='" + uname + "'";
+	connection.query(sql, function(err, rows, fields) {
+		if (err) throw err;
+		if(rows.length > 0) {
+			cb(rows[0]);
+		} else {
+			cb(null);
+		}
+	});
+}
+
 exports.verify_user = function(uname,pass,cb) {
 
 	var sql = "SELECT password FROM Account WHERE username='"+uname+"'";
@@ -57,18 +69,8 @@ exports.verify_user = function(uname,pass,cb) {
 }
 
 exports.insert_account = function(new_user, new_pass,path, done) {
-	/*
-	var sql = "SELECT password FROM Account WHERE username='"+new_user+"'";
-	connection.query(sql, function(err, rows, fields) {
-		if (err) throw err;
-		// No such user
-		if(rows.length>0){
-			done(0);
-		}
-	}
-*/
 
-	var sql = "INSERT INTO Account(username, password,active_bundle) VALUES ('" + new_user + "','" + new_pass + "','"+path+"')";
+	var sql = "INSERT INTO Account(username, password,active_bundle, status) VALUES ('" + new_user + "','" + new_pass + "','"+path+"', '-1')";
 	console.log(sql);
 	connection.query(sql, function(err, rows, fields) {
 		if(err) done(0);
@@ -83,11 +85,19 @@ exports.get_item_info = function(cb) {
 		cb(rows);
 	});
 }
+
 exports.get_one_item = function(id,cb) {
 	var sql = 'SELECT * FROM Item WHERE id='+id;
 	connection.query(sql, function(err, rows, fields) {
 		if (err) throw err;
 		//console.log("rows: "+rows.length);
 		cb(rows);
+	});
+}
+
+exports.set_account_status = function(uname, pid) {
+	var sql = "UPDATE Account SET status=" + pid + " WHERE username='" + uname +"'";
+	connection.query(sql, function(err, rows, fields) {
+		if (err) throw err;
 	});
 }
