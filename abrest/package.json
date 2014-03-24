@@ -12,6 +12,8 @@
 		"mysql" : "*",
     "stylus": "*",
     "nib": "*",
+    "restify": "*",
+    "thrift": "*",
     "java": "*"
   }
 }

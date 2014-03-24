@@ -89,6 +89,142 @@ ABService_authenticateChallenge_result.prototype.write = function(output) {
   return;
 };
 
+ABService_authenticateResponse_args = function(args) {
+  this.challenge = null;
+  this.signedChallenge = null;
+  this.certificate = null;
+  if (args) {
+    if (args.challenge !== undefined) {
+      this.challenge = args.challenge;
+    }
+    if (args.signedChallenge !== undefined) {
+      this.signedChallenge = args.signedChallenge;
+    }
+    if (args.certificate !== undefined) {
+      this.certificate = args.certificate;
+    }
+  }
+};
+ABService_authenticateResponse_args.prototype = {};
+ABService_authenticateResponse_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.challenge = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.signedChallenge = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 3:
+      if (ftype == Thrift.Type.STRING) {
+        this.certificate = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+ABService_authenticateResponse_args.prototype.write = function(output) {
+  output.writeStructBegin('ABService_authenticateResponse_args');
+  if (this.challenge !== null && this.challenge !== undefined) {
+    output.writeFieldBegin('challenge', Thrift.Type.STRING, 1);
+    output.writeString(this.challenge);
+    output.writeFieldEnd();
+  }
+  if (this.signedChallenge !== null && this.signedChallenge !== undefined) {
+    output.writeFieldBegin('signedChallenge', Thrift.Type.STRING, 2);
+    output.writeString(this.signedChallenge);
+    output.writeFieldEnd();
+  }
+  if (this.certificate !== null && this.certificate !== undefined) {
+    output.writeFieldBegin('certificate', Thrift.Type.STRING, 3);
+    output.writeString(this.certificate);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+ABService_authenticateResponse_result = function(args) {
+  this.success = null;
+  if (args) {
+    if (args.success !== undefined) {
+      this.success = args.success;
+    }
+  }
+};
+ABService_authenticateResponse_result.prototype = {};
+ABService_authenticateResponse_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 0:
+      if (ftype == Thrift.Type.STRUCT) {
+        this.success = new ttypes.ABObject();
+        this.success.read(input);
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 0:
+        input.skip(ftype);
+        break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+ABService_authenticateResponse_result.prototype.write = function(output) {
+  output.writeStructBegin('ABService_authenticateResponse_result');
+  if (this.success !== null && this.success !== undefined) {
+    output.writeFieldBegin('success', Thrift.Type.STRUCT, 0);
+    this.success.write(output);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 ABService_getValue_args = function(args) {
   this.sessionKey = null;
   this.dataKey = null;
@@ -330,6 +466,42 @@ ABServiceClient.prototype.recv_authenticateChallenge = function(input,mtype,rseq
   }
   return callback('authenticateChallenge failed: unknown result');
 };
+ABServiceClient.prototype.authenticateResponse = function(challenge, signedChallenge, certificate, callback) {
+  this.seqid += 1;
+  this._reqs[this.seqid] = callback;
+  this.send_authenticateResponse(challenge, signedChallenge, certificate);
+};
+
+ABServiceClient.prototype.send_authenticateResponse = function(challenge, signedChallenge, certificate) {
+  var output = new this.pClass(this.output);
+  output.writeMessageBegin('authenticateResponse', Thrift.MessageType.CALL, this.seqid);
+  var args = new ABService_authenticateResponse_args();
+  args.challenge = challenge;
+  args.signedChallenge = signedChallenge;
+  args.certificate = certificate;
+  args.write(output);
+  output.writeMessageEnd();
+  return this.output.flush();
+};
+
+ABServiceClient.prototype.recv_authenticateResponse = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new ABService_authenticateResponse_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  if (null !== result.success) {
+    return callback(null, result.success);
+  }
+  return callback('authenticateResponse failed: unknown result');
+};
 ABServiceClient.prototype.getValue = function(sessionKey, dataKey, callback) {
   this.seqid += 1;
   this._reqs[this.seqid] = callback;
@@ -423,6 +595,19 @@ ABServiceProcessor.prototype.process_authenticateChallenge = function(seqid, inp
   this._handler.authenticateChallenge(function (err, result) {
     var result = new ABService_authenticateChallenge_result((err != null ? err : {success: result}));
     output.writeMessageBegin("authenticateChallenge", Thrift.MessageType.REPLY, seqid);
+    result.write(output);
+    output.writeMessageEnd();
+    output.flush();
+  })
+}
+
+ABServiceProcessor.prototype.process_authenticateResponse = function(seqid, input, output) {
+  var args = new ABService_authenticateResponse_args();
+  args.read(input);
+  input.readMessageEnd();
+  this._handler.authenticateResponse(args.challenge, args.signedChallenge, args.certificate, function (err, result) {
+    var result = new ABService_authenticateResponse_result((err != null ? err : {success: result}));
+    output.writeMessageBegin("authenticateResponse", Thrift.MessageType.REPLY, seqid);
     result.write(output);
     output.writeMessageEnd();
     output.flush();

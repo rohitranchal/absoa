@@ -6,6 +6,72 @@
 var Thrift = require('thrift').Thrift;
 
 var ttypes = module.exports = {};
+ABObject = module.exports.ABObject = function(args) {
+  this.sessionID = null;
+  this.sessionKey = null;
+  if (args) {
+    if (args.sessionID !== undefined) {
+      this.sessionID = args.sessionID;
+    }
+    if (args.sessionKey !== undefined) {
+      this.sessionKey = args.sessionKey;
+    }
+  }
+};
+ABObject.prototype = {};
+ABObject.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true)
+  {
+    var ret = input.readFieldBegin();
+    var fname = ret.fname;
+    var ftype = ret.ftype;
+    var fid = ret.fid;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+      if (ftype == Thrift.Type.STRING) {
+        this.sessionID = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 2:
+      if (ftype == Thrift.Type.STRING) {
+        this.sessionKey = input.readString();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      default:
+        input.skip(ftype);
+    }
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+ABObject.prototype.write = function(output) {
+  output.writeStructBegin('ABObject');
+  if (this.sessionID !== null && this.sessionID !== undefined) {
+    output.writeFieldBegin('sessionID', Thrift.Type.STRING, 1);
+    output.writeString(this.sessionID);
+    output.writeFieldEnd();
+  }
+  if (this.sessionKey !== null && this.sessionKey !== undefined) {
+    output.writeFieldBegin('sessionKey', Thrift.Type.STRING, 2);
+    output.writeString(this.sessionKey);
+    output.writeFieldEnd();
+  }
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 ABSLA = module.exports.ABSLA = function(args) {
   this.activeTime = null;
   this.expirationTime = null;
