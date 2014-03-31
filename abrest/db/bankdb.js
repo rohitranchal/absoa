@@ -13,12 +13,12 @@ connection.connect();
 var records = new Object();
 
 
-exports.deduct = function(creditcard, csv,total, done) {
+exports.deduct = function(name,creditcard, csv,total, done) {
 
-	var sql = "UPDATE Bank SET amount=amount-"+total+" WHERE creditcardnumber='"+creditcard+"' AND csv='"+csv+"';";
-	console.log(sql);
+	var sql = "UPDATE BankAccount SET amount=amount-"+total+" WHERE creditcard='"+creditcard+"' AND csv='"+csv+"' AND name='"+name+"';";
 	connection.query(sql, function(err, rows, fields) {
 		if(err) done(0);
+		else if(rows.length==0) done(-1);
 		else done(1);
 	});
 }

@@ -10,32 +10,34 @@ html
 					img(src=item_sell[0].picture class="item")
 			.main-content
 				h1=item_sell[0].itemname
-				table(class="table")
-					tr 
-						td Price
-						td
-						td(id="price")=item_sell[0].price
-					tr
-						td
-						td x
-						td
-							input(id="spinner" value=1)
-					tr
-						td
-						td =
-						td(id="item_sum")=item_sell[0].price
-					tr
-						td Shipping
-						td +
-						td(id="shipping") 10
-					tr
-						td Total
-						td =
-						td(id="sum")=item_sell[0].price+10
-					tr
-						td
-						td
-						td 
-							button(type="button" class="btn btn-primary") Check Out
+				form( role = "form", method = "POST", action = "/checkout", enctype="multipart/form-data")
+					table(class="table")
+						tr 
+							td Price
+							td
+							td(id="price")=item_sell[0].price
+						tr
+							td
+							td x
+							td
+								input(id="spinner" value=1)
+						tr
+							td
+							td =
+							td(id="item_sum")=item_sell[0].price
+						tr
+							td Shipping
+							td +
+							td(id="shipping") 10
+						tr
+							td Total
+							td =
+							td(id="sum")=item_sell[0].price+10
+						tr
+							td
+							td
+								input(type="hidden", name="total", value=item_sell[0].price+10)
+							td 
+								button(type="sumbit", class="btn btn-primary") Check Out
 
 

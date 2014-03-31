@@ -1,0 +1,12 @@
+doctype html
+html
+	include catalog_header
+	script(src="/javascripts/browse_item.js")
+	body
+		include nav
+		div(class="container", id="browse_item_container")
+			.main-content
+				each msg in error
+					p=msg
+
+
