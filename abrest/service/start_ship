@@ -1,0 +1,2 @@
+echo "node shippingservice.js"
+node shippingservice.js

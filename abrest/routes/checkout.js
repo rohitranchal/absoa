@@ -18,7 +18,7 @@ exports.purchase = function(req, res){
 			var buf = fs.readFileSync(abpath);
 			var abfileStr = buf.toString('base64');
 
-			var client = restify.createStringClient({
+			var bankclient = restify.createStringClient({
 				url: 'http://localhost:6001'
 			});
 
@@ -28,7 +28,7 @@ exports.purchase = function(req, res){
 				'content-encoding': 'gzip'
 			};
 
-			client.put('/pay', option, function(err, request, response, data) {
+			bankclient.put('/pay', option, function(err, request, response, data) {
 				if(err) {
 					var err_msg = new Array();
 					err_msg.push("ERROR: "+data);
@@ -36,10 +36,29 @@ exports.purchase = function(req, res){
 					res.render('checkoutfailed', {title: 'E-Commerce',error:err_msg,login:login,user:user});				
 				}
 				else {
-					var abbuf = new Buffer(data,'base64');
-					// Write buffer to jar file
-					fs.writeFileSync(abpath,abbuf);
-					res.render('checkoutsucceed',{title: 'E-Commerce',login: login,user:user});				
+					// Payment was successful, now use shipping service
+					//
+					var shipclient = restify.createStringClient({
+						url: 'http://localhost:6002'
+					});
+
+					var ship_option =
+					{ 'abfile': data, 
+						'content-encoding': 'gzip'
+					};
+					shipclient.put('/ship', ship_option, function(err, request, response, data) {
+						if(err) {
+							var err_msg = new Array();
+							err_msg.push("ERROR: "+data);
+							console.log("ERROR: "+data);
+							res.render('checkoutfailed', {title: 'E-Commerce',error:err_msg,login:login,user:user});				
+						}
+						var abbuf = new Buffer(data,'base64');
+						// Write buffer to jar file
+						fs.writeFileSync(abpath,abbuf);
+
+						res.render('checkoutsucceed',{title: 'E-Commerce',login: login,user:user});				
+					})
 				}
 			});
 
