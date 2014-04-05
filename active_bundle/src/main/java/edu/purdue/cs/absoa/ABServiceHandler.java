@@ -9,6 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.security.PublicKey;
 import java.security.Signature;
+import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -37,12 +38,14 @@ public class ABServiceHandler implements ABService.Iface
 	private static HashMap<String, String> abData = new HashMap<String, String>();
 	private static HashMap<String, String> abSLA = new HashMap<String, String>();
 	private static HashMap<String, ABSession> sessionList = new HashMap<String, ABSession>();
+	private static boolean mode; // For node, this mode set to 1
 
 	public ABServiceHandler()
 	{
 		/*
 		 * Read data and sla from respective files
 		 */
+		mode = true;
 		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("data.txt");
 		//System.out.println(is == null);	
 		ABDataParser parser = new ABDataParser(is, "data");		
@@ -95,6 +98,7 @@ public class ABServiceHandler implements ABService.Iface
 	public String authenticateChallenge() throws TException
 	{	
 		String strTok = generateToken();
+		//String strTok = "active bundle";
 		System.out.println("Generated token: " + strTok);
 		issuedTokenSet.add(strTok);
 		String encodedTok;
@@ -115,9 +119,9 @@ public class ABServiceHandler implements ABService.Iface
 		try {
 			System.out.println("Encoded Signed Chall: " + signedChallenge);
 			byte[] decodeChall = dataDecode(signedChallenge);
-			//	System.out.println("Decode Chall: " + decodeChall);			
+			System.out.println("Decode Chall: " + decodeChall);			
 			byte[] decodeCert = dataDecode(certificate);
-			//	System.out.println("Decode Cert: " + decodeCert);			
+			System.out.println("Decode Cert: " + decodeCert);			
 			byte[] decodeToken = dataDecode(challenge);
 
 			//String storePath = "/Users/rohitranchal/Dropbox/Developer/workspace/absoa/keys/CA/ABCACert.cert";
@@ -125,6 +129,7 @@ public class ABServiceHandler implements ABService.Iface
 			byte[] CACert = loadCertificateFile(storePath);
 
 			if (validateSignature(decodeToken, decodeChall, decodeCert, CACert)) {
+				System.out.println("Token sign and Service cert verified");
 				byte[] sessionKey = generateSessionKey(decodeCert);
 				String sessionID = generateToken();				
 				//	System.out.println("Session ID Created: " + sessionID);
@@ -178,11 +183,22 @@ public class ABServiceHandler implements ABService.Iface
 
 	private static boolean validateSignature(byte[] token, byte[] signedMessage, byte[] certificate, byte[] CAcertificate) throws Exception
 	{
-		ByteArrayInputStream bis = new ByteArrayInputStream(certificate);
-		ObjectInput in = new ObjectInputStream(bis);
-		X509Certificate cert = (X509Certificate) in.readObject(); 
-		//System.out.println("service issued dn: " + cert.getIssuerDN());
-		bis.close();			
+		X509Certificate cert;
+		
+		if (mode) {			
+			InputStream bis = new ByteArrayInputStream(certificate); 
+			//Certificate cert = CertificateFactory.getInstance("X.509").generateCertificate(bis);
+			CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
+			cert = (X509Certificate)certFactory.generateCertificate(bis);			
+			bis.close();			
+		} else {
+			ByteArrayInputStream bis = new ByteArrayInputStream(certificate);
+			ObjectInput in = new ObjectInputStream(bis);
+			cert = (X509Certificate) in.readObject(); 
+			//System.out.println("service issued dn: " + cert.getIssuerDN());
+			bis.close(); 
+		}
+		
 		try {
 			cert.checkValidity(); // checks that the cert is valid against current datatime
 		} catch(Exception e) {
@@ -193,11 +209,11 @@ public class ABServiceHandler implements ABService.Iface
 		ObjectInput cain = new ObjectInputStream(cabis);
 		X509Certificate cacert = (X509Certificate) cain.readObject(); 
 		//System.out.println("CA subject dn: " + cacert.getSubjectDN());
-		cabis.close();	
+		cabis.close();  
 
 		if(cert.getIssuerDN().equals(cacert.getSubjectDN())) {
 			try {
-				cert.verify(cacert.getPublicKey());				
+				cert.verify(cacert.getPublicKey());                             
 			} catch(Exception e) {
 				throw new CertificateException("Certificate not signed by AB CA",e);
 			}
@@ -208,11 +224,11 @@ public class ABServiceHandler implements ABService.Iface
 			//verifySign.update(tokenList.get("service1").getBytes());
 			if (issuedTokenSet.contains(new String(token))) {
 				verifySign.update(token);
-				return verifySign.verify(signedMessage);					
-			} else System.out.println("Wrong token");			
+				return verifySign.verify(signedMessage);                                        
+			} else System.out.println("Wrong token");                       
 		} else System.out.println("Service Issuer doesn't match CA Subject");
 
-		return false;		
+		return false;
 	}
 
 	private static byte[] generateSessionKey(byte[] serviceCert)
@@ -229,10 +245,19 @@ public class ABServiceHandler implements ABService.Iface
 
 			System.out.println("Session Key created on server: " + new String(data));
 
-			ByteArrayInputStream bis = new ByteArrayInputStream(serviceCert);
-			ObjectInput in = new ObjectInputStream(bis);
-			X509Certificate cert = (X509Certificate) in.readObject(); 
-			bis.close();			
+			X509Certificate cert;
+			if (mode) {
+				InputStream bis = new ByteArrayInputStream(serviceCert); 
+				CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
+				cert = (X509Certificate)certFactory.generateCertificate(bis);			
+				bis.close();
+			} else {
+				ByteArrayInputStream bis = new ByteArrayInputStream(serviceCert);
+				ObjectInput in = new ObjectInputStream(bis);
+				cert = (X509Certificate) in.readObject(); 
+				bis.close();			
+			}
+
 			PublicKey serviceKey = cert.getPublicKey();
 			byte[] cipherText = null;
 			try {

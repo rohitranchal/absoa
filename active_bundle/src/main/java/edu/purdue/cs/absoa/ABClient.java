@@ -40,7 +40,7 @@ public class ABClient
 			System.out.println("Decoded token: " + tok);
 
 			byte[] signedChall = signData(tok);
-			//	System.out.println("Signed token: " + signedChall);			
+				System.out.println("Signed token: " + signedChall);			
 			String encodedSignedChall = dataEncode(signedChall);
 			System.out.println("Encoded Signed token: " + encodedSignedChall);			
 

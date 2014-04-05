@@ -15,64 +15,65 @@ client.getSLA(function(err, response) {
 	if(err) {
 		console.error(err);
 	} else {
-		console.log('Client: get SLA', response);
+		//console.log('Client: get SLA', response);
 
 		// AuthenticateChallenge
 		client.authenticateChallenge(function(err, response) {
 			if(err) {
 				console.error(err);
 			} else {
-				console.log('Client: auth challenge', response);
-				var encodedMsg = response;
+				var encoded_msg = response;
 				// Decode
-				var decodedMsg = new Buffer(encodedMsg, 'base64');
+				var decoded_msg = new Buffer(encoded_msg, 'base64');
+				console.log('Client: decoded auth challenge: ', decoded_msg.toString());
 
 				// Sign and encode
-				var signedData = signData(decodedMsg);
-				console.log("SignedData: "+signedData);
+				var signed_chall = signData(decoded_msg);
 
-				// Get Certificate 
+				// Get Certificate
 				var cert = getCert()
-			console.log("Cert: "+cert);
 
-		// Get session
-		client.authenticateResponse(encodedMsg,signedData,cert,function(err,response){
-			var sessionKey = response;
-			console.log("Session: "+sessionKey);
-			var dataKey = 'ab.user.name';
+				// Get session
+				client.authenticateResponse(encoded_msg, signed_chall, cert, function(err,response){
+					var session_key = response.sessionKey;
+					var session_id = response.sessionID;
+					console.log("Session ID: " + session_id);
+					var data_key = 'ab.user.name';
 
-			// getValue
-			client.getValue(sessionKey, dataKey, function(err, response) {
-				if(err) {
-					console.error(err);
-				} else {
-					console.log('Client: get value', response);
-					connection.end();
-				}
-			});
-		});
+					// getValue
+					client.getValue(session_id, data_key, function(err, response) {
+						if(err) {
+							console.error(err);
+						} else {
+							console.log('Client: getValue: ', response);
+							connection.end();
+						}
+					});
+				});
 			}
 		});
 	}
 });
 
-function signData(msg){
+function signData(msg) {
 	var crypto = require('crypto');
 	var signer = crypto.createSign('RSA-SHA256');
-	console.log("Message: "+msg);
 	signer.write(msg);
 	var fs = require('fs');
-	var stream = fs.readFileSync("service1/ABCAKey.pem");
-	var privateKey = stream.toString('ascii');
-	signedData = signer.sign(privateKey,'base64')
-	return signedData;
+	var svc_key = fs.readFileSync("resources/ecom-private.pem");
+	//var svc_cert = process.env.ECOM_CERT;
+	var private_key = svc_key.toString('ascii');
+	var signed_data = signer.sign(private_key,'base64')
+	console.log("Signed challenge: " + signed_data.toString());
+	return signed_data;
 }
 
-function getCert(){
+function getCert() {
 	var fs = require('fs');
-	var stream = fs.readFileSync("service1/ABCACert.pem");
-	var certData = stream.toString('ascii');
-	return certData;
+	var stream = fs.readFileSync("resources/ecom-cert.pem");
+	var cert_data = stream.toString('base64');
+	console.log("Cert: "+cert_data);
+	return cert_data;
 }
 
 
