@@ -7,6 +7,7 @@ var routes = require('./routes');
 var register = require('./routes/register');
 var login = require('./routes/login');
 var catalog = require('./routes/catalog');
+var checkout = require('./routes/checkout');
 //var tmp = require('./routes/tmp');
 
 var service_port = 5000;
@@ -53,6 +54,8 @@ app.get('/register', register.create_account);
 //app.get('/tmp', tmp.account_list);
 
 app.post('/register', register.add_account);
+
+app.post('/checkout', checkout.purchase);
 
 app.get('/catalog', catalog.browse);
 

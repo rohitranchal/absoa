@@ -22,9 +22,20 @@ CREATE TABLE Item(
 	picture VARCHAR(512)
 ) ENGINE=InnoDB;
 
-INSERT INTO Account(id, username, password, status) VALUES
-(1, 'user1', 'pass1', -1),
-(2, 'user2', 'pass2', -1);
+DROP TABLE IF EXISTS BankAccount;
+
+CREATE TABLE BankAccount(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(128) NOT NULL,
+	creditcard VARCHAR(16) NOT NULL,
+	csv VARCHAR(3) NOT NULL,
+	amount INTEGER UNSIGNED NOT NULL,
+	billing_address VARCHAR(512)
+) ENGINE=InnoDB;
+
+INSERT INTO Account(id, username, password, active_bundle,status) VALUES
+(1, 'user1', 'pass1','./abfiles/user1.jar', -1),
+(2, 'user2', 'pass2','./abfiles/user2.jar', -1);
 
 INSERT INTO Item(id, itemname, price,amount,picture) VALUES
 (1, '13-inch MacBook Pro', 1299,10,'http://g-ecx.images-amazon.com/images/G/01/electronics/apple/apple-12q2-macbook-pro-ret-zebra-lg.jpg'),
@@ -37,3 +48,6 @@ INSERT INTO Item(id, itemname, price,amount,picture) VALUES
 (8, 'iPhone 5s',649,10,'http://www.extremetech.com/wp-content/uploads/2013/09/iph.jpg'),
 (9, 'iPhone 5c', 549,10,'http://a.abcnews.com/images/Technology/HT_iphone_5C-colors_thg-130910_16x9_992.jpg');
 
+INSERT INTO BankAccount(id,name, creditcard, csv, amount,billing_address) VALUES
+(1, 'user1', '1111222233334444', '123',3000,''),
+(2, 'user2', '1111222233335555', '123',3000,'');
