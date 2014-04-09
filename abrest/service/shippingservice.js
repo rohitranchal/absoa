@@ -1,7 +1,7 @@
 // This is a bank RESTful service
 var restify = require('restify');
 var fs = require('fs');
-
+var abClient = require('../ab-service-communication/client');
 var exec = require('child_process').exec;
 
 
