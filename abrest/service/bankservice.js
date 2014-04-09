@@ -3,6 +3,7 @@ var restify = require('restify');
 var fs = require('fs');
 //var bank = require('./routes/bankapp');
 var db = require('../db/bankdb');
+var abClient = require('../ab-service-communication/client');
 
 var exec = require('child_process').exec;
 
@@ -22,6 +23,7 @@ var ip_addr = 'localhost';
 
 // User pays money to service
 server.put('/pay',function (req, res, next) {
+	console.log('Receive a request');
 	if (req.params.abfile === undefined) {
 		return next(new restify.InvalidArgumentError('Active Bundle must be supplied'))
 	}
@@ -37,39 +39,73 @@ server.put('/pay',function (req, res, next) {
 	var runABCmd = "java -jar "+abname;
 	console.log("Start Active Bundle");
 	var child =	exec(runABCmd);
-
-	// TODO: Query the Active Bundle to get the user's Name, Credit Card No., CSV
-	var name = "user1";
-	var creditcard = "1111222233334444";
-	var csv = "123";
-	var money = req.params.amount;
-
-	console.log("Terminate Active Bundle");
-	child.kill();	
-	var buf = fs.readFileSync(abname);
-	var abfileRet = buf.toString('base64');
-	// Delete active bundle
-	fs.unlink(abname);
-
-	db.deduct(name,creditcard,csv,money, function(cb){
-		if(cb==0){
-			var err_msg = "ERROR: Payment processing failed";
-			console.log(err_msg);
-			res.send(400, err_msg);
-		}
-		else if(cb==-1){
-			var err_msg = "ERROR: Incorrect credit card information. Payment failed";
-			console.log(err_msg);
-			res.send(400, err_msg);
-		}
-		else if(cb==1){
-			console.log("LOG: $%d was successfully deducted from %s's account.",money,name);
-			res.send(200, abfileRet);
-		}
+	child.stdout.on('data', function (data) {
+		console.log(data);
+	});
+	child.stderr.on('data', function (data) {
+		console.log(data);
+	});
+	child.on('close', function (code, signal) {
+		  console.log('child process terminated due to receipt of signal '+signal);
 	});
 
-	return next();
-	// Total money to be deducted from the user's bank account
+	setTimeout(function() {
+			// TODO: Query the Active Bundle to get the user's Name, Credit Card No., CSV
+			//var name = "user1";
+			//var creditcard = "1111222233334444";
+			//var csv = "123";
+
+			var attr1 = "ab.user.name";
+			var attr2 = "ab.user.credit_card_number";
+			var attr3 = "ab.user.csv";
+			var inputList = new Array();
+			inputList.push(attr1);
+			inputList.push(attr2);
+			inputList.push(attr3);
+
+			abClient.getValue(inputList,function(response){
+
+				var money = req.params.amount;
+				var name = response[0];
+				var creditcard = response[1];
+				var csv = response[2];
+
+				child.kill();	
+				var buf = fs.readFileSync(abname);
+				var abfileRet = buf.toString('base64');
+				// Delete active bundle
+				fs.unlink(abname);
+
+				db.deduct(name,creditcard,csv,money, function(cb){
+					if(cb==0){
+						var err_msg = "ERROR: Payment processing failed";
+						console.log(err_msg);
+						var retMsg = {
+							'error':err_msg
+						}
+						res.send(400, err_msg);
+					}
+					else if(cb==-1){
+						var err_msg = "ERROR: Incorrect credit card information. Payment failed";
+						console.log(err_msg);
+						var retMsg = {
+							'error':err_msg
+						}
+						res.send(400, err_msg);
+					}
+					else if(cb==1){
+						console.log("LOG: $%d was successfully deducted from %s's account.",money,name);
+						var retMsg = {
+							'abfile':abfileRet
+						}
+						res.send(200, abfileRet);
+					}
+				});
+
+				return next();
+				// Total money to be deducted from the user's bank account
+			});
+		},500);
 
 })
 

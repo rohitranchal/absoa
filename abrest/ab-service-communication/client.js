@@ -2,58 +2,118 @@ var thrift = require('thrift');
 
 var abservice = require('./ABService.js');
 var ttypes = require('./ActiveBundle_types.js');
+var Step = require('step');
 
-var connection = thrift.createConnection('localhost', 5555);
-var client = thrift.createClient(abservice, connection);
+// function getValue :
+// Input: a list of attributes, e.g. name, credit_card_number
+// Output: a list the results
 
-connection.on('error', function(err) {
-	console.error(err);
-});
+exports.getValue = function(attrs,callback){
 
-// GetSLA
-client.getSLA(function(err, response) {
-	if(err) {
+	var connection = thrift.createConnection('localhost', 5555);
+	var client = thrift.createClient(abservice, connection);
+
+
+	var retMap = new Array();
+
+	connection.on('error', function(err) {
 		console.error(err);
-	} else {
-		//console.log('Client: get SLA', response);
+	});
 
-		// AuthenticateChallenge
-		client.authenticateChallenge(function(err, response) {
-			if(err) {
-				console.error(err);
-			} else {
-				var encoded_msg = response;
-				// Decode
-				var decoded_msg = new Buffer(encoded_msg, 'base64');
-				console.log('Client: decoded auth challenge: ', decoded_msg.toString());
+	// GetSLA
+	client.getSLA(function(err, response) {
+		if(err) {
+			console.error(err);
+		} else {
+			//console.log('Client: get SLA', response);
 
-				// Sign and encode
-				var signed_chall = signData(decoded_msg);
+			// AuthenticateChallenge
+			client.authenticateChallenge(function(err, response) {
+				if(err) {
+					console.error(err);
+				} else {
+					var encoded_msg = response;
+					// Decode
+					var decoded_msg = new Buffer(encoded_msg, 'base64');
+					console.log('Client: decoded auth challenge: ', decoded_msg.toString());
 
-				// Get Certificate
-				var cert = getCert()
+					// Sign and encode
+					var signed_chall = signData(decoded_msg);
 
-				// Get session
-				client.authenticateResponse(encoded_msg, signed_chall, cert, function(err,response){
-					var session_key = response.sessionKey;
-					var session_id = response.sessionID;
-					console.log("Session ID: " + session_id);
-					var data_key = 'ab.user.name';
+					// Get Certificate
+					var cert = getCert();
 
-					// getValue
-					client.getValue(session_id, data_key, function(err, response) {
-						if(err) {
-							console.error(err);
-						} else {
-							console.log('Client: getValue: ', response);
-							connection.end();
+					// Get session
+					client.authenticateResponse(encoded_msg, signed_chall, cert, function(err,response){
+						var session_key = response.sessionKey;
+						var session_id = response.sessionID;
+						console.log("Session ID: " + session_id);
+						if(attrs.length==1){
+							Step(
+								function a(){
+									client.getValue(session_id, attrs[0], this);
+								}
+								,
+								function callBack(err,data){
+									retMap[0] = data;
+									console.log("Connection closed");
+									connection.end();
+									callback(retMap);
+								}
+								);
+						}
+						else if(attrs.length==2){
+							Step(
+									function a(){
+										client.getValue(session_id, attrs[0], this);
+									}
+									,
+									function b(err,data){
+										retMap[0] = data;
+										client.getValue(session_id, attrs[1], this);
+									}
+									,
+									function callBack(err,data){
+										retMap[1] = data;
+										console.log("Connection closed");
+										connection.end();
+										callback(retMap);
+									}
+									);
+						}
+						else if(attrs.length==3){
+							Step(
+									function a(){
+										client.getValue(session_id, attrs[0], this);
+									}
+									,
+									function b(err,data){
+										retMap[0] = data;
+										console.log("GetValue: "+data);
+										client.getValue(session_id, attrs[1], this);
+									}
+									,
+									function c(err,data){
+										retMap[1] = data;
+										console.log("GetValue: "+data);
+										client.getValue(session_id, attrs[2], this);
+									}
+									,
+									function callBack(err,data){
+										console.log("GetValue: "+data);
+										retMap[2] = data;
+										console.log("Connection closed");
+										connection.end();
+										callback(retMap);
+									}
+							);
 						}
 					});
-				});
-			}
-		});
-	}
-});
+				}
+			});
+		}
+	});
+}
 
 function signData(msg) {
 	var crypto = require('crypto');

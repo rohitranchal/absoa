@@ -15,6 +15,7 @@ exports.verify = function(req, res) {
 				if (abpath) {
 					console.log('abpath: ' + abpath);
 					// start ab
+					/*
 					var exec = require('child_process').exec;
 					ab_exec = "java -jar " + abpath;
 					ab_proc = exec(ab_exec);
@@ -26,6 +27,7 @@ exports.verify = function(req, res) {
 					});
 
 					db.set_account_status(uname, ab_proc.pid);
+					*/
 
 					console.log(uname + ": Login Successful");
 

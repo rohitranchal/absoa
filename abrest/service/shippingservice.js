@@ -36,28 +36,45 @@ server.put('/ship',function (req, res, next) {
 	var runABCmd = "java -jar "+abname;
 	console.log("Start Active Bundle");
 	var child =	exec(runABCmd);
+	child.stdout.on('data', function (data) {
+		console.log(data);
+	});
+	child.stderr.on('data', function (data) {
+		console.log(data);
+	});
+	child.on('close', function (code, signal) {
+		  console.log('child process terminated due to receipt of signal '+signal);
+	});
 	
-	// TODO: Query the Active Bundle to get the shipping address, email
-	var name = "John Doe";
-	var address = "610 Purdue Mall, West Lafayette, IN 47907";
-	var email = "jdoe@purdue.edu";
+	setTimeout(function() {
+		// TODO: Query the Active Bundle to get the shipping address, email
+		var attr1 = "ab.user.name";
+		var attr2 = "ab.user.address";
+		var inputList = new Array();
+		inputList.push(attr1);
+		inputList.push(attr2);
 
-	console.log("Terminate Active Bundle");
-	child.kill();	
-	var buf = fs.readFileSync(abname);
-	var abfileRet = buf.toString('base64');
-	// Delete active bundle
-	fs.unlink(abname);
+		abClient.getValue(inputList,function(response){
+			var name = response[0];
+			var address = response[1];
 
-	// Generate a fake package id.
-	var ship_id = Math.floor((Math.random()*10000000)+1);
-  ship_id = leftPad(ship_id);
+			child.kill();	
+			var buf = fs.readFileSync(abname);
+			var abfileRet = buf.toString('base64');
+			// Delete active bundle
+			fs.unlink(abname);
 
-	console.log("Package #"+ship_id+" has been shipped for customer "+name);
+			// Generate a fake package id.
+			var ship_id = Math.floor((Math.random()*10000000)+1);
+			ship_id = leftPad(ship_id);
 
-	// Send OK back, as well as the active bundle
-	res.send(200, abfileRet);
-	return next();
+			console.log("Package #"+ship_id+" has been shipped for customer "+name+" at address: "+address);
+
+			// Send OK back, as well as the active bundle
+			res.send(200, abfileRet);
+			return next();
+		});
+	},500);
 })
 
 function leftPad (str, length) {
