@@ -36,14 +36,15 @@ server.put('/ship',function (req, res, next) {
 	var runABCmd = "java -jar "+abname;
 	console.log("Start Active Bundle");
 	var child =	exec(runABCmd);
+	var pid = child.pid;
 	child.stdout.on('data', function (data) {
 		console.log(data);
 	});
 	child.stderr.on('data', function (data) {
 		console.log(data);
 	});
-	child.on('close', function (code, signal) {
-		  console.log('child process terminated due to receipt of signal '+signal);
+	child.on('close', function (){
+		  console.log('AB process terminated in Shipping Service');
 	});
 	
 	setTimeout(function() {
@@ -58,7 +59,8 @@ server.put('/ship',function (req, res, next) {
 			var name = response[0];
 			var address = response[1];
 
-			child.kill();	
+			process.kill(pid+1);
+			//child.kill('SIGTERM');	
 			var buf = fs.readFileSync(abname);
 			var abfileRet = buf.toString('base64');
 			// Delete active bundle
@@ -74,7 +76,7 @@ server.put('/ship',function (req, res, next) {
 			res.send(200, abfileRet);
 			return next();
 		});
-	},500);
+	},100);
 })
 
 function leftPad (str, length) {

@@ -46,7 +46,7 @@ exports.purchase = function(req, res){
 					{ 'abfile': data, 
 						'content-encoding': 'gzip'
 					};
-					setTimeout(function(){
+
 					shipclient.put('/ship', ship_option, function(err, request, response, data) {
 						if(err) {
 							var err_msg = new Array();
@@ -60,7 +60,7 @@ exports.purchase = function(req, res){
 
 						res.render('checkoutsucceed',{title: 'E-Commerce',login: login,user:user});				
 					})
-					},500);
+					//}
 				}
 			});
 

@@ -39,6 +39,7 @@ server.put('/pay',function (req, res, next) {
 	var runABCmd = "java -jar "+abname;
 	console.log("Start Active Bundle");
 	var child =	exec(runABCmd);
+	var pid = child.pid;
 	child.stdout.on('data', function (data) {
 		console.log(data);
 	});
@@ -46,7 +47,7 @@ server.put('/pay',function (req, res, next) {
 		console.log(data);
 	});
 	child.on('close', function (code, signal) {
-		  console.log('child process terminated due to receipt of signal '+signal);
+		  console.log('AB process terminated in Bank Service');
 	});
 
 	setTimeout(function() {
@@ -70,7 +71,7 @@ server.put('/pay',function (req, res, next) {
 				var creditcard = response[1];
 				var csv = response[2];
 
-				child.kill();	
+				process.kill(pid+1);
 				var buf = fs.readFileSync(abname);
 				var abfileRet = buf.toString('base64');
 				// Delete active bundle
@@ -105,7 +106,7 @@ server.put('/pay',function (req, res, next) {
 				return next();
 				// Total money to be deducted from the user's bank account
 			});
-		},500);
+		},100);
 
 })
 
