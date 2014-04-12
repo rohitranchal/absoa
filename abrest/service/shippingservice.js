@@ -2,7 +2,7 @@
 var restify = require('restify');
 var fs = require('fs');
 var abClient = require('../ab-service-communication/client');
-var exec = require('child_process').exec;
+var spawn = require('child_process').spawn;
 
 
 var server = restify.createServer({
@@ -33,10 +33,11 @@ server.put('/ship',function (req, res, next) {
 	fs.writeFileSync(abname,abbuf);
 
 	// Run the Active Bundle
-	var runABCmd = "java -jar "+abname;
 	console.log("Start Active Bundle");
-	var child =	exec(runABCmd);
+	var child =	spawn("java",["-jar",abname]);
 	var pid = child.pid;
+
+	child.stdout.setEncoding("ASCII");
 	child.stdout.on('data', function (data) {
 		console.log(data);
 	});
@@ -59,8 +60,7 @@ server.put('/ship',function (req, res, next) {
 			var name = response[0];
 			var address = response[1];
 
-			process.kill(pid+1);
-			//child.kill('SIGTERM');	
+			process.kill(pid);
 			var buf = fs.readFileSync(abname);
 			var abfileRet = buf.toString('base64');
 			// Delete active bundle
