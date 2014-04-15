@@ -2,11 +2,13 @@ package edu.purdue.cs.absoa;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URL;
 import java.security.PublicKey;
 import java.security.Signature;
 import java.security.cert.Certificate;
@@ -18,7 +20,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -26,6 +30,7 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.thrift.TException;
 
 import sun.misc.BASE64Decoder;
@@ -45,7 +50,7 @@ public class ABServiceHandler implements ABService.Iface
 		/*
 		 * Read data and sla from respective files
 		 */
-		mode = true;
+		//mode = true;
 		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("data.txt");
 		//System.out.println(is == null);	
 		ABDataParser parser = new ABDataParser(is, "data");		
@@ -105,8 +110,8 @@ public class ABServiceHandler implements ABService.Iface
 		try {
 			encodedTok = dataEncode(strTok.getBytes());
 			//	System.out.println("Encoded token: " + encodedTok);
-			ABSession abs = new ABSession();
-			String dt = abs.serialize(strTok);
+			//ABSession abs = new ABSession();
+			//String dt = abs.serialize(strTok);
 			return encodedTok;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -275,13 +280,45 @@ public class ABServiceHandler implements ABService.Iface
 	}	
 
 	public String getValue(String sessionID, String dataKey) throws TException 
-	{		
+	{	
 		if(sessionList.containsKey(sessionID)) {
-			if(!abData.isEmpty()) return ABServiceHandler.getABData(new String(dataKey));
-			else return null;
-		} else 
-			return null;			
-	}	
+			if (dataKey.equals("ab.user.creditcard")) {
+				String policy = "policies/policy_creditcard_limit.xml";
+				String req = "requests/req_creditcard_limit.xml";
+				HashMap<String, String> params = new HashMap<String, String>();
+				params.put("#ABRESOURCE#", "creditcard");
+				params.put("#ABCLIENT#", "bankid");
+				params.put("#ABACTION#", "READ");
+				params.put("#ABENVIRONMENT#", "9999");
+				String resp = PDP(policy, req, params);
+				if (resp.equals("Permit") && !abData.isEmpty()) 
+					return ABServiceHandler.getABData(new String(dataKey));
+				else return null;				
+			}			
+		}
+		return null;			
+	}
+	
+	public String PDP(String policy, String req, HashMap<String, String> params)
+	{
+		URL policiesPath = getClass().getClassLoader().getResource(policy);
+		URL reqPath = getClass().getClassLoader().getResource(req);
+		
+		ABAccessController controller = new ABAccessController();
+		String request;
+		try {
+			request = FileUtils.readFileToString(new File(reqPath.getFile()));			
+			for (Map.Entry<String, String> entry : params.entrySet()) {
+			    request = request.replace(entry.getKey(), entry.getValue());
+			}
+			String res = controller.evaluate(policiesPath.getFile(), request);
+			System.out.println("AC Resp: " + res);
+			return res;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}		 
+	}
 
 	public static String generateToken()
 	{	
@@ -309,4 +346,10 @@ public class ABServiceHandler implements ABService.Iface
 		abSLA.expirationTime = getABSLA("ab.expiretime");			
 		return abSLA;
 	}
+	
+	public boolean append(String key, String data) throws TException
+	{
+		return true;
+	}
+
 }

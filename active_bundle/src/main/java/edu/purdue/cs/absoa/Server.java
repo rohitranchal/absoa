@@ -34,9 +34,7 @@ public class Server {
 		} else {
 			ABPort = 5555;
 		}		
-		
-		//ABAuthorize.ABTest();
-		
+				
 //		ABServiceHandler.setABData("ab.user.name", "AB Owner");
 //		ABServiceHandler.setABData("ab.user.zip", "47906");
 //		ABServiceHandler.setABData("ab.user.data", "AB sensitive data");

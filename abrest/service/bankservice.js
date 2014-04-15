@@ -70,7 +70,7 @@ server.put('/pay',function (req, res, next) {
 				var creditcard = response[1];
 				var csv = response[2];
 
-				child.kill();	
+				child.kill();
 				var buf = fs.readFileSync(abname);
 				var abfileRet = buf.toString('base64');
 				// Delete active bundle
@@ -105,7 +105,7 @@ server.put('/pay',function (req, res, next) {
 				return next();
 				// Total money to be deducted from the user's bank account
 			});
-		},500);
+		},1000);
 
 })
 

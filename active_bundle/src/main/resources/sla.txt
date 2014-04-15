@@ -1,3 +1,4 @@
 ab.activetime = 10
 ab.expiretime = 2014.12.24.23:10:20
 ab.numrequests = 10
+ab.creditlimit = 1000

@@ -23,7 +23,7 @@ exports.purchase = function(req, res){
 			});
 
 			var option =
-			{ 'abfile': abfileStr, 
+			{ 'abfile': abfileStr,
 				'amount': money ,
 				'content-encoding': 'gzip'
 			};
@@ -33,7 +33,7 @@ exports.purchase = function(req, res){
 					var err_msg = new Array();
 					err_msg.push("ERROR: "+data);
 					console.log("ERROR: "+data);
-					res.render('checkoutfailed', {title: 'E-Commerce',error:err_msg,login:login,user:user});				
+					res.render('checkoutfailed', {title: 'E-Commerce',error:err_msg,login:login,user:user});
 				}
 				else {
 					// Payment was successful, now use shipping service
@@ -43,31 +43,33 @@ exports.purchase = function(req, res){
 					});
 
 					var ship_option =
-					{ 'abfile': data, 
+					{ 'abfile': data,
 						'content-encoding': 'gzip'
 					};
-					setTimeout(function(){
-					shipclient.put('/ship', ship_option, function(err, request, response, data) {
-						if(err) {
-							var err_msg = new Array();
-							err_msg.push("ERROR: "+data);
-							console.log("ERROR: "+data);
-							res.render('checkoutfailed', {title: 'E-Commerce',error:err_msg,login:login,user:user});				
-						}
-						var abbuf = new Buffer(data,'base64');
-						// Write buffer to jar file
-						fs.writeFileSync(abpath,abbuf);
+					// setTimeout(function(){
+					// shipclient.put('/ship', ship_option, function(err, request, response, data) {
+					// 	if(err) {
+					// 		var err_msg = new Array();
+					// 		err_msg.push("ERROR: "+data);
+					// 		console.log("ERROR: "+data);
+					// 		res.render('checkoutfailed', {title: 'E-Commerce',error:err_msg,login:login,user:user});
+					// 	}
+					// 	var abbuf = new Buffer(data,'base64');
+					// 	// Write buffer to jar file
+					// 	fs.writeFileSync(abpath,abbuf);
 
-						res.render('checkoutsucceed',{title: 'E-Commerce',login: login,user:user});				
-					})
-					},500);
+					// 	res.render('checkoutsucceed',{title: 'E-Commerce',login: login,user:user});
+					// })
+					// },500);
+
+					res.render('checkoutsucceed',{title: 'E-Commerce',login: login,user:user});
 				}
 			});
 
 		} else {
 			var err_msg = new Array();
 			err_msg.push("AB not found for this user");
-			res.render('checkoutfailed', {title: 'E-Commerce', login: login, user: user, error:err_msg});				
+			res.render('checkoutfailed', {title: 'E-Commerce', login: login, user: user, error:err_msg});
 		}
 
 	});
