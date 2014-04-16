@@ -1,0 +1,1 @@
+ab -n 10 -p post.txt http://localhost:5000/checkout_test

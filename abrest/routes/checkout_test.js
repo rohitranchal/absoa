@@ -4,9 +4,9 @@ var restify = require('restify');
 
 exports.purchase = function(req, res){
 	// session info
-	var login = req.session.login;
-	var user = req.session.user;
-	var money = req.body.total;
+	var login = 'yes';
+	var user = 'user1';
+	var money = 10;
 
 	//res.send(user+" "+money);
 

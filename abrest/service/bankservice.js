@@ -5,7 +5,7 @@ var fs = require('fs');
 var db = require('../db/bankdb');
 var abClient = require('../ab-service-communication/client');
 
-var exec = require('child_process').exec;
+var spawn = require('child_process').spawn;
 
 
 var server = restify.createServer({
@@ -36,9 +36,11 @@ server.put('/pay',function (req, res, next) {
 	fs.writeFileSync(abname,abbuf);
 
 	// Run the Active Bundle
-	var runABCmd = "java -jar "+abname;
 	console.log("Start Active Bundle");
-	var child =	exec(runABCmd);
+	var child =	spawn("java",["-jar",abname]);
+	var pid = child.pid;
+
+	child.stdout.setEncoding("ASCII");
 	child.stdout.on('data', function (data) {
 		console.log(data);
 	});
@@ -46,7 +48,7 @@ server.put('/pay',function (req, res, next) {
 		console.log(data);
 	});
 	child.on('close', function (code, signal) {
-		  console.log('child process terminated due to receipt of signal '+signal);
+		  console.log('AB process terminated in Bank Service');
 	});
 
 	setTimeout(function() {
@@ -70,7 +72,7 @@ server.put('/pay',function (req, res, next) {
 				var creditcard = response[1];
 				var csv = response[2];
 
-				child.kill();
+				process.kill(pid);
 				var buf = fs.readFileSync(abname);
 				var abfileRet = buf.toString('base64');
 				// Delete active bundle
@@ -105,9 +107,10 @@ server.put('/pay',function (req, res, next) {
 				return next();
 				// Total money to be deducted from the user's bank account
 			});
-		},1000);
+		},500);
 
 })
+
 
 server.listen(service_port ,ip_addr, function(){
 	console.log('Service %s listening at %s', server.name , server.url);
