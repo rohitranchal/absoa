@@ -33,7 +33,15 @@ public class Server {
 			ABPort = Integer.parseInt(args[0]);		
 		} else {
 			ABPort = 5555;
-		}		
+		}
+		
+		try {
+			ABMonitor abm = new ABMonitor();
+			abm.ABState();
+			abm.ABLog();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 				
 //		ABServiceHandler.setABData("ab.user.name", "AB Owner");
 //		ABServiceHandler.setABData("ab.user.zip", "47906");

@@ -29,7 +29,7 @@ public class JarManager {
 	}
 
 	public static void main(String[] args) throws Exception {
-		// read archive and write to archive new
+		// read archive and write to new archive
 		ZipFile war = new ZipFile("AB.jar");
 		ZipOutputStream append = new ZipOutputStream(new FileOutputStream("ABNew.jar"));
 

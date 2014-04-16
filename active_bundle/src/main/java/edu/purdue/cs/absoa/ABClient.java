@@ -79,12 +79,10 @@ public class ABClient
 					ex.printStackTrace();
 				}					
 				System.out.println("Session key received on Service: " + new String(decryptedText));
-				//String abName = client.getValue(abSessionObject.sessionID, "ab.user.name");
-				//String abZip = client.getValue(abSessionObject.sessionID, "ab.user.zip");
-				//System.out.println("AB Data Name: " + abName + " Zip: " + abZip);
-				String abData = client.getValue(abSessionObject.sessionID, "ab.user.creditcard");
-				//System.out.println("AB Data Name: " + abName + " Zip: " + abZip + " Data: " + abData);
-				System.out.println("AB Data: " + abData);
+				String abName = client.getValue(abSessionObject.sessionID, "ab.user.name");
+				String abZip = client.getValue(abSessionObject.sessionID, "ab.user.zip");
+				String abData = client.getValue(abSessionObject.sessionID, "ab.user.creditcard");			
+				System.out.println("AB Data Name: " + abName + " Zip: " + abZip + " Card: " + abData);
 			} else 	System.out.println("Null Session ID received on Service ");
 
 			transport.close();
@@ -97,7 +95,6 @@ public class ABClient
 
 	private byte[] loadCertificateStore(String path) throws Exception
 	{
-		//final FileInputStream storeFile = new FileInputStream(path);		
 		final InputStream storeFile;			
 		storeFile = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
 
@@ -136,19 +133,7 @@ public class ABClient
 			e.printStackTrace();
 		}
 		return null;	
-	}	
-
-	//	private String dataEncode(String strData) throws Exception
-	//	{
-	//		byte[] byteTok = strData.getBytes("UTF8");		        
-	//		return new BASE64Encoder().encode(byteTok);	
-	//	}
-	//
-	//	private String dataDecode(String strData) throws Exception
-	//	{
-	//		byte[] byteMsg = new BASE64Decoder().decodeBuffer(strData);
-	//		return new String(byteMsg, "UTF8");		
-	//	}
+	}
 
 	private String dataEncode(byte[] byteTok) throws Exception
 	{

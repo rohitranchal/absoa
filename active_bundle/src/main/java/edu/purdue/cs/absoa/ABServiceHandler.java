@@ -294,7 +294,11 @@ public class ABServiceHandler implements ABService.Iface
 				if (resp.equals("Permit") && !abData.isEmpty()) 
 					return ABServiceHandler.getABData(new String(dataKey));
 				else return null;				
-			}			
+			} else {
+				if (!abData.isEmpty()) 
+					return ABServiceHandler.getABData(new String(dataKey));
+                else return null;
+			}
 		}
 		return null;			
 	}

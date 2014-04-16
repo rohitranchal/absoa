@@ -13,14 +13,14 @@ public class TestAccessController extends TestCase {
 	
 	public void testEvaluateServiceCreditCardPolicy() throws Exception {
 		URL policiesPath = getClass().getClassLoader().getResource("policies/policy_creditcard_limit.xml");
-		URL reqPath = getClass().getClassLoader().getResource("req1.xml");
+		URL reqPath = getClass().getClassLoader().getResource("requests/test/req1.xml");
 		
 		ABAccessController controller = new ABAccessController();
 		String request = FileUtils.readFileToString(new File(reqPath.getFile()));
 		String res = controller.evaluate(policiesPath.getFile(), request);
 		assertEquals("Permit", res);
 		
-		reqPath = getClass().getClassLoader().getResource("req1.1.xml");
+		reqPath = getClass().getClassLoader().getResource("requests/test/req1.1.xml");
 		request = FileUtils.readFileToString(new File(reqPath.getFile()));
 		res = controller.evaluate(policiesPath.getFile(), request);
 		assertEquals("Deny", res);
