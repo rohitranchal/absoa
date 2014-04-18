@@ -6,13 +6,8 @@
 		</Attribute>
 	</Attributes>
 	<Attributes Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject">
-		<Attribute AttributeId="http://absoa.cs.purdue.edu/policy/creditcard/limit" IncludeInResult="false">
+		<Attribute AttributeId="http://ship.org/roleid" IncludeInResult="false">
 			<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">#ABCLIENT#</AttributeValue>
-		</Attribute>
-	</Attributes>
-	<Attributes Category="urn:oasis:names:tc:xacml:3.0:attribute-category:environment">
-		<Attribute AttributeId="http://ecom.org/price" IncludeInResult="false">
-			<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#integer">#ABENVIRONMENT#</AttributeValue>
 		</Attribute>
 	</Attributes>
 </Request>

@@ -40,4 +40,19 @@ public class TestAccessController extends TestCase {
 		res = controller.evaluate(policiesPath.getFile(), request);
 		assertEquals("Deny", res);
 	}
+	
+	public void testEvaluateServiceShippingPreferencePolicy() throws Exception {
+		URL policiesPath = getClass().getClassLoader().getResource("policies/policy_shipping_preference.xml");
+		URL reqPath = getClass().getClassLoader().getResource("requests/test/req3.xml");
+		
+		ABAccessController controller = new ABAccessController();
+		String request = FileUtils.readFileToString(new File(reqPath.getFile()));
+		String res = controller.evaluate(policiesPath.getFile(), request);
+		assertEquals("Permit", res);
+		
+		reqPath = getClass().getClassLoader().getResource("requests/test/req3.1.xml");
+		request = FileUtils.readFileToString(new File(reqPath.getFile()));
+		res = controller.evaluate(policiesPath.getFile(), request);
+		assertEquals("Deny", res);
+	}
 }

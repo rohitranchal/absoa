@@ -80,9 +80,11 @@ public class ABClient
 				}					
 				System.out.println("Session key received on Service: " + new String(decryptedText));
 				String abName = client.getValue(abSessionObject.sessionID, "ab.user.name");
-				String abZip = client.getValue(abSessionObject.sessionID, "ab.user.zip");
-				String abData = client.getValue(abSessionObject.sessionID, "ab.user.creditcard");			
-				System.out.println("AB Data Name: " + abName + " Zip: " + abZip + " Card: " + abData);
+				String abAddr = client.getValue(abSessionObject.sessionID, "ab.user.shipping.address");
+				String abShipPref = client.getValue(abSessionObject.sessionID, "ab.user.shipping.preference");
+				String abCCard = client.getValue(abSessionObject.sessionID, "ab.user.creditcard");
+				String abCCardType = client.getValue(abSessionObject.sessionID, "ab.user.creditcard.type");
+				System.out.println("AB Data Name: " + abName + " Addr: " + abAddr + " CCard: " + abCCard + " CardType: " + abCCardType + " ShipPref: " + abShipPref);
 			} else 	System.out.println("Null Session ID received on Service ");
 
 			transport.close();

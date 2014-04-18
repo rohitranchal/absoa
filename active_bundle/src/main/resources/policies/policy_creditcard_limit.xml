@@ -3,7 +3,7 @@
       <AnyOf>
          <AllOf>
             <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">creditcard</AttributeValue>
+               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">ab.user.creditcard</AttributeValue>
                <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
             </Match>
          </AllOf>
@@ -11,15 +11,7 @@
       <AnyOf>
          <AllOf>
             <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">READ</AttributeValue>
-               <AttributeDesignator AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id" Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
-            </Match>
-         </AllOf>
-      </AnyOf>
-      <AnyOf>
-         <AllOf>
-            <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
-               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">bankid</AttributeValue>
+               <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">bankfpr</AttributeValue>
                <AttributeDesignator AttributeId="http://absoa.cs.purdue.edu/policy/creditcard/limit" Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true"/>
             </Match>
          </AllOf>

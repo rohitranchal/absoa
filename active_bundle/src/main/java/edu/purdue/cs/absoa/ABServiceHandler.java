@@ -50,7 +50,7 @@ public class ABServiceHandler implements ABService.Iface
 		/*
 		 * Read data and sla from respective files
 		 */
-		mode = true;
+		//mode = true;
 		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("data.txt");
 		//System.out.println(is == null);	
 		ABDataParser parser = new ABDataParser(is, "data");		
@@ -286,9 +286,8 @@ public class ABServiceHandler implements ABService.Iface
 				String policy = "policies/policy_creditcard_limit.xml";
 				String req = "requests/req_creditcard_limit.xml";
 				HashMap<String, String> params = new HashMap<String, String>();
-				params.put("#ABRESOURCE#", "creditcard");
-				params.put("#ABCLIENT#", "bankid");
-				params.put("#ABACTION#", "READ");
+				params.put("#ABRESOURCE#", "ab.user.creditcard");
+				params.put("#ABCLIENT#", "bankfpr");
 				params.put("#ABENVIRONMENT#", "9999");
 				String resp = PDP(policy, req, params);
 				if (resp.equals("Permit") && !abData.isEmpty()) 
@@ -296,24 +295,20 @@ public class ABServiceHandler implements ABService.Iface
 				else return null;				
 			} else if (dataKey.equals("ab.user.creditcard.type")) {
 				String policy = "policies/policy_creditcard_type.xml";
-				String req = "requests/req_creditcard_limit.xml";
+				String req = "requests/req_creditcard_type.xml";
 				HashMap<String, String> params = new HashMap<String, String>();
-				params.put("#ABRESOURCE#", "creditcard");
-				params.put("#ABCLIENT#", "bankid");
-				params.put("#ABACTION#", "READ");
-				params.put("#ABENVIRONMENT#", "9999");
+				params.put("#ABRESOURCE#", "ab.user.creditcard.type");
+				params.put("#ABCLIENT#", "ecomfpr");
 				String resp = PDP(policy, req, params);
 				if (resp.equals("Permit") && !abData.isEmpty()) 
 					return ABServiceHandler.getABData(new String(dataKey));
 				else return null;			
 			} else if (dataKey.equals("ab.user.shipping.preference")) {
-				String policy = "policies/policy_creditcard_limit.xml";
-				String req = "requests/req_creditcard_limit.xml";
+				String policy = "policies/policy_shipping_preference.xml";
+				String req = "requests/req_shipping_preference.xml";
 				HashMap<String, String> params = new HashMap<String, String>();
-				params.put("#ABRESOURCE#", "creditcard");
-				params.put("#ABCLIENT#", "bankid");
-				params.put("#ABACTION#", "READ");
-				params.put("#ABENVIRONMENT#", "9999");
+				params.put("#ABRESOURCE#", "ab.user.shipping.preference");
+				params.put("#ABCLIENT#", "shipfpr");
 				String resp = PDP(policy, req, params);
 				if (resp.equals("Permit") && !abData.isEmpty()) 
 					return ABServiceHandler.getABData(new String(dataKey));
@@ -340,7 +335,7 @@ public class ABServiceHandler implements ABService.Iface
 				request = request.replace(entry.getKey(), entry.getValue());
 			}
 			String res = controller.evaluate(policiesPath.getFile(), request);
-			System.out.println("AC Resp: " + res);
+			System.out.println("Policy: " + policy + " AC Resp: " + res);
 			return res;
 		} catch (IOException e) {
 			e.printStackTrace();
