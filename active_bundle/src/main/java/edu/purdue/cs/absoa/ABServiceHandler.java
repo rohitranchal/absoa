@@ -11,16 +11,13 @@ import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.security.PublicKey;
 import java.security.Signature;
-import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -35,7 +32,6 @@ import org.apache.thrift.TException;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
-//import edu.purdue.cs.absoa.ABService.Iface;
 
 public class ABServiceHandler implements ABService.Iface 
 {
@@ -43,16 +39,13 @@ public class ABServiceHandler implements ABService.Iface
 	private static HashMap<String, String> abData = new HashMap<String, String>();
 	private static HashMap<String, String> abSLA = new HashMap<String, String>();
 	private static HashMap<String, ABSession> sessionList = new HashMap<String, ABSession>();
-	private static boolean mode; // For node, this mode set to 1
 
 	public ABServiceHandler()
 	{
 		/*
 		 * Read data and sla from respective files
 		 */
-		//mode = true;
 		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("data.txt");
-		//System.out.println(is == null);	
 		ABDataParser parser = new ABDataParser(is, "data");		
 		try {
 			parser.processLineByLine();
@@ -189,20 +182,11 @@ public class ABServiceHandler implements ABService.Iface
 	private static boolean validateSignature(byte[] token, byte[] signedMessage, byte[] certificate, byte[] CAcertificate) throws Exception
 	{
 		X509Certificate cert;
-
-		if (mode) {			
-			InputStream bis = new ByteArrayInputStream(certificate); 
-			//Certificate cert = CertificateFactory.getInstance("X.509").generateCertificate(bis);
-			CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
-			cert = (X509Certificate)certFactory.generateCertificate(bis);			
-			bis.close();			
-		} else {
-			ByteArrayInputStream bis = new ByteArrayInputStream(certificate);
-			ObjectInput in = new ObjectInputStream(bis);
-			cert = (X509Certificate) in.readObject(); 
-			//System.out.println("service issued dn: " + cert.getIssuerDN());
-			bis.close(); 
-		}
+		InputStream bis = new ByteArrayInputStream(certificate); 
+		//Certificate cert = CertificateFactory.getInstance("X.509").generateCertificate(bis);
+		CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
+		cert = (X509Certificate)certFactory.generateCertificate(bis);			
+		bis.close();		
 
 		try {
 			cert.checkValidity(); // checks that the cert is valid against current datatime
@@ -251,17 +235,10 @@ public class ABServiceHandler implements ABService.Iface
 			System.out.println("Session Key created on server: " + new String(data));
 
 			X509Certificate cert;
-			if (mode) {
-				InputStream bis = new ByteArrayInputStream(serviceCert); 
-				CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
-				cert = (X509Certificate)certFactory.generateCertificate(bis);			
-				bis.close();
-			} else {
-				ByteArrayInputStream bis = new ByteArrayInputStream(serviceCert);
-				ObjectInput in = new ObjectInputStream(bis);
-				cert = (X509Certificate) in.readObject(); 
-				bis.close();			
-			}
+			InputStream bis = new ByteArrayInputStream(serviceCert); 
+			CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
+			cert = (X509Certificate)certFactory.generateCertificate(bis);			
+			bis.close();
 
 			PublicKey serviceKey = cert.getPublicKey();
 			byte[] cipherText = null;

@@ -2,6 +2,7 @@ package edu.purdue.cs.absoa;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.PrivateKey;
@@ -105,12 +106,15 @@ public class ABClient
 		kStore.load(storeFile, storePass.toCharArray());
 		X509Certificate serviceCert = (X509Certificate)kStore.getCertificate("service1");
 
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		ObjectOutputStream out = new ObjectOutputStream(bos);   
-		out.writeObject(serviceCert);
-		byte[] data = bos.toByteArray(); 
+		//ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		OutputStream bos = new ByteArrayOutputStream();
+		//ObjectOutputStream out = new ObjectOutputStream(bos); 
+		bos.write(serviceCert.getEncoded());
+		//out.writeObject(serviceCert);
+		//byte[] data = bos.toByteArray();
+		byte[] data = bos.toString().getBytes();
 		bos.close();
-		return data;		
+		return data;
 	}
 
 	private byte[] signData(byte[] msg) throws Exception
