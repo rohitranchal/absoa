@@ -50,7 +50,7 @@ public class ABServiceHandler implements ABService.Iface
 		/*
 		 * Read data and sla from respective files
 		 */
-		//mode = true;
+		mode = true;
 		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("data.txt");
 		//System.out.println(is == null);	
 		ABDataParser parser = new ABDataParser(is, "data");		
@@ -189,7 +189,7 @@ public class ABServiceHandler implements ABService.Iface
 	private static boolean validateSignature(byte[] token, byte[] signedMessage, byte[] certificate, byte[] CAcertificate) throws Exception
 	{
 		X509Certificate cert;
-		
+
 		if (mode) {			
 			InputStream bis = new ByteArrayInputStream(certificate); 
 			//Certificate cert = CertificateFactory.getInstance("X.509").generateCertificate(bis);
@@ -203,7 +203,7 @@ public class ABServiceHandler implements ABService.Iface
 			//System.out.println("service issued dn: " + cert.getIssuerDN());
 			bis.close(); 
 		}
-		
+
 		try {
 			cert.checkValidity(); // checks that the cert is valid against current datatime
 		} catch(Exception e) {
@@ -294,26 +294,50 @@ public class ABServiceHandler implements ABService.Iface
 				if (resp.equals("Permit") && !abData.isEmpty()) 
 					return ABServiceHandler.getABData(new String(dataKey));
 				else return null;				
-			} else {
+			} else if (dataKey.equals("ab.user.creditcard.type")) {
+				String policy = "policies/policy_creditcard_type.xml";
+				String req = "requests/req_creditcard_limit.xml";
+				HashMap<String, String> params = new HashMap<String, String>();
+				params.put("#ABRESOURCE#", "creditcard");
+				params.put("#ABCLIENT#", "bankid");
+				params.put("#ABACTION#", "READ");
+				params.put("#ABENVIRONMENT#", "9999");
+				String resp = PDP(policy, req, params);
+				if (resp.equals("Permit") && !abData.isEmpty()) 
+					return ABServiceHandler.getABData(new String(dataKey));
+				else return null;			
+			} else if (dataKey.equals("ab.user.shipping.preference")) {
+				String policy = "policies/policy_creditcard_limit.xml";
+				String req = "requests/req_creditcard_limit.xml";
+				HashMap<String, String> params = new HashMap<String, String>();
+				params.put("#ABRESOURCE#", "creditcard");
+				params.put("#ABCLIENT#", "bankid");
+				params.put("#ABACTION#", "READ");
+				params.put("#ABENVIRONMENT#", "9999");
+				String resp = PDP(policy, req, params);
+				if (resp.equals("Permit") && !abData.isEmpty()) 
+					return ABServiceHandler.getABData(new String(dataKey));
+				else return null;			
+			} else {			
 				if (!abData.isEmpty()) 
 					return ABServiceHandler.getABData(new String(dataKey));
-                else return null;
+				else return null;
 			}
 		}
 		return null;			
 	}
-	
+
 	public String PDP(String policy, String req, HashMap<String, String> params)
 	{
 		URL policiesPath = getClass().getClassLoader().getResource(policy);
 		URL reqPath = getClass().getClassLoader().getResource(req);
-		
+
 		ABAccessController controller = new ABAccessController();
 		String request;
 		try {
 			request = FileUtils.readFileToString(new File(reqPath.getFile()));			
 			for (Map.Entry<String, String> entry : params.entrySet()) {
-			    request = request.replace(entry.getKey(), entry.getValue());
+				request = request.replace(entry.getKey(), entry.getValue());
 			}
 			String res = controller.evaluate(policiesPath.getFile(), request);
 			System.out.println("AC Resp: " + res);
@@ -350,7 +374,7 @@ public class ABServiceHandler implements ABService.Iface
 		abSLA.expirationTime = getABSLA("ab.expiretime");			
 		return abSLA;
 	}
-	
+
 	public boolean append(String key, String data) throws TException
 	{
 		return true;
