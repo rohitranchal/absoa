@@ -1,0 +1,32 @@
+markjin1990@markideapad:~/projects/absoa/abrest/test$ ./ab_test 
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:921
+AB process terminated in Bank Service
+markjin1990@markideapad:~/projects/absoa/abrest/test$ ./ab_test 
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:958
+AB process terminated in Bank Service
+markjin1990@markideapad:~/projects/absoa/abrest/test$ ./ab_test 
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:934
+AB process terminated in Bank Service
+markjin1990@markideapad:~/projects/absoa/abrest/test$ ./ab_test 
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:964
+AB process terminated in Bank Service
+markjin1990@markideapad:~/projects/absoa/abrest/test$ ./ab_test 
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:939
+AB process terminated in Bank Service
+markjin1990@markideapad:~/projects/absoa/abrest/test$ 
+
