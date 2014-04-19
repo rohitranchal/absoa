@@ -1,8 +1,10 @@
 package edu.purdue.cs.absoa;
 
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInput;
@@ -20,6 +22,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.UUID;
 
@@ -301,23 +304,46 @@ public class ABServiceHandler implements ABService.Iface
 
 	public String PDP(String policy, String req, HashMap<String, String> params)
 	{
-		URL policiesPath = getClass().getClassLoader().getResource(policy);
-		URL reqPath = getClass().getClassLoader().getResource(req);
+		InputStream policyStream = getClass().getClassLoader().getResourceAsStream(policy);
+		InputStream reqStream = getClass().getClassLoader().getResourceAsStream(req);
 
-		ABAccessController controller = new ABAccessController();
-		String request;
+		String polStr = streamToString(policyStream);
+		StringBuffer sb = new StringBuffer(polStr);
+		String polPath = null;
 		try {
-			request = FileUtils.readFileToString(new File(reqPath.getFile()));			
-			for (Map.Entry<String, String> entry : params.entrySet()) {
-				request = request.replace(entry.getKey(), entry.getValue());
-			}
-			String res = controller.evaluate(policiesPath.getFile(), request);
-			System.out.println("Policy: " + policy + " AC Resp: " + res);
-			return res;
+			polPath = writeToFile(sb);
 		} catch (IOException e) {
 			e.printStackTrace();
-			return null;
-		}		 
+		}
+
+		ABAccessController controller = new ABAccessController();
+		String request = streamToString(reqStream);
+		for (Map.Entry<String, String> entry : params.entrySet()) {
+			request = request.replace(entry.getKey(), entry.getValue());
+		}
+		String res = controller.evaluate(polPath, request);
+		//System.out.println("Policy: " + policy + " AC Resp: " + res);
+		return res;		 
+	}
+
+	private static String streamToString(java.io.InputStream is) {
+		Scanner scanner = new Scanner(is);
+		Scanner s = scanner.useDelimiter("\\A");
+		String str = s.hasNext() ? s.next() : "";
+		scanner.close();
+		s.close();
+		return str;
+	}
+
+	public static String writeToFile(StringBuffer sb) throws IOException {
+		File tempFile = File.createTempFile("temp", ".tmp");
+		FileWriter fileWriter = new FileWriter(tempFile, true);
+		String tmpPath = tempFile.getAbsolutePath();
+		BufferedWriter bw = new BufferedWriter(fileWriter);
+		bw.write(sb.toString());
+		bw.close();
+		tempFile.deleteOnExit();
+		return tmpPath;
 	}
 
 	public static String generateToken()
