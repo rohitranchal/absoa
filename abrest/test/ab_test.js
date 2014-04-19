@@ -49,8 +49,11 @@ portscanner.findAPortNotInUse(4000, 5000, '127.0.0.1', function(error, port) {
 				var inputList = new Array();
 				inputList.push(attr1);
 
+				var start_timestamp = new Date().getTime();
 				abClient.getValue(inputList,port,function(response){
-
+					var end_timestamp = new Date().getTime();
+					var diff = end_timestamp - start_timestamp;
+					console.log("Time diff:"+diff);
 					var name = response[0];
 
 					process.kill(pid);
