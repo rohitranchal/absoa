@@ -48,6 +48,8 @@ portscanner.findAPortNotInUse(4000, 5000, '127.0.0.1', function(error, port) {
 				var attr1 = "ab.user.creditcard";
 				var inputList = new Array();
 				inputList.push(attr1);
+				attr1 = "ab.user.shipping.address";
+				inputList.push(attr1);
 
 				var start_timestamp = new Date().getTime();
 				abClient.getValue(inputList,port,function(response){
@@ -55,7 +57,9 @@ portscanner.findAPortNotInUse(4000, 5000, '127.0.0.1', function(error, port) {
 					var diff = end_timestamp - start_timestamp;
 					console.log("Time diff:"+diff);
 					var creditcard = response[0];
+					var shipping_addr = response[1];
 					console.log(creditcard);
+					console.log(shipping_addr);
 
 					process.kill(pid);
 				});
