@@ -86,6 +86,7 @@ public class ABClient
 				String abCCard = client.getValue(abSessionObject.sessionID, "ab.user.creditcard");
 				String abCCardType = client.getValue(abSessionObject.sessionID, "ab.user.creditcard.type");
 				System.out.println("AB Data Name: " + abName + " Addr: " + abAddr + " CCard: " + abCCard + " CardType: " + abCCardType + " ShipPref: " + abShipPref);
+				//System.out.println("AB Data Name: " + abName + " Addr: " + abAddr + " CCard: " + abCCard + " CardType: " + abCCardType);
 			} else 	System.out.println("Null Session ID received on Service ");
 
 			transport.close();
