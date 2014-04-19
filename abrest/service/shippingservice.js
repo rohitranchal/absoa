@@ -24,17 +24,17 @@ var ip_addr = 'localhost';
 server.put('/ship',function (req, res, next) {
 
 	if (req.params.abfile === undefined) {
+		console.log('ERROR: AB Not Received');
 		return next(new restify.InvalidArgumentError('Active Bundle must be supplied'))
 	}
 
 	var abfile = req.params.abfile;
+	console.log('LOG: Received AB');
 	// Decode base64 to buffer
 	var abbuf = new Buffer(abfile,'base64');
 
 	// Get a port not in use after 4000
 	portscanner.findAPortNotInUse(4000, 5000, '127.0.0.1', function(error, port) {
-
-		console.log('AVAILABLE PORT AT: ' + port);
 
 		// Create ab jar name
 		var abname = "ab_"+port+".jar";
@@ -42,19 +42,21 @@ server.put('/ship',function (req, res, next) {
 		fs.writeFileSync(abname,abbuf);
 
 		// Run the Active Bundle
-		console.log("Start Active Bundle");
 		var child =	spawn("java",["-jar",abname,port]);
+		console.log("LOG: Started AB");
 		var pid = child.pid;
 
 		child.stdout.setEncoding("ASCII");
 		child.stdout.on('data', function (data) {
+			console.log("LOG(AB): ");
 			console.log(data);
 		});
 		child.stderr.on('data', function (data) {
+			console.log("ERROR(AB): ");
 			console.log(data);
 		});
 		child.on('close', function (){
-			console.log('AB process terminated in Shipping Service');
+			console.log('LOG: Terminated AB');
 		});
 
 		var ifStarted = 0;
@@ -93,7 +95,7 @@ server.put('/ship',function (req, res, next) {
 						var ship_id = Math.floor((Math.random()*10000000)+1);
 						ship_id = leftPad(ship_id);
 
-						console.log("Package #"+ship_id+" has been shipped for customer "+name+" at address: "+address);
+						console.log("LOG: Package #"+ship_id+" has been shipped for customer "+name+" at address: "+address);
 
 						// Send OK back, as well as the active bundle
 						res.send(200, abfileRet);
@@ -116,5 +118,5 @@ function leftPad (str, length) {
 }
 
 server.listen(service_port ,ip_addr, function(){
-	console.log('Service %s listening at %s', server.name , server.url);
+	console.log('LOG: Service %s listening at %s', server.name , server.url);
 });

@@ -25,18 +25,18 @@ var ip_addr = 'localhost';
 
 // User pays money to service
 server.put('/pay',function (req, res, next) {
-	console.log('Receive a request');
 	if (req.params.abfile === undefined) {
+		console.log('ERROR: AB Not Received');
 		return next(new restify.InvalidArgumentError('Active Bundle must be supplied'))
 	}
 
 	var abfile = req.params.abfile;
+	console.log('LOG: Received AB');
 	// Decode base64 to buffer
 	var abbuf = new Buffer(abfile,'base64');
 
 	// Get a port not in use after 4000
 	portscanner.findAPortNotInUse(4000, 5000, '127.0.0.1', function(error, port) {
-		console.log('AVAILABLE PORT AT: ' + port);
 		
 		// Create ab jar name
 		var abname = "ab_"+port+".jar";
@@ -44,19 +44,21 @@ server.put('/pay',function (req, res, next) {
 		fs.writeFileSync(abname,abbuf);
 
 		// Run the Active Bundle
-		console.log("Start Active Bundle");
 		var child =	spawn("java",["-jar",abname,port]);
+		console.log("LOG: Started AB");
 		var pid = child.pid;
 
 		child.stdout.setEncoding("ASCII");
 		child.stdout.on('data', function (data) {
+			console.log("LOG(AB): ");
 			console.log(data);
 		});
 		child.stderr.on('data', function (data) {
+			console.log("ERROR(AB): ");
 			console.log(data);
 		});
 		child.on('close', function (code, signal) {
-			console.log('AB process terminated in Bank Service');
+			console.log('LOG: Terminated AB');
 		});
 		
 		var ifStarted = 0;
@@ -74,23 +76,19 @@ server.put('/pay',function (req, res, next) {
 				},
 				function (err) {
 					// AB is running
-					// TODO: Query the Active Bundle to get the user's Name, Credit Card No., CSV
+					// TODO: Query the Active Bundle to get the user's Name, Credit Card No.,
 
 					var attr1 = "ab.user.name";
-					var attr2 = "ab.user.credit_card_number";
-					var attr3 = "ab.user.csv";
+					var attr2 = "ab.user.creditcard";
 					var inputList = new Array();
 					inputList.push(attr1);
 					inputList.push(attr2);
-					inputList.push(attr3);
 
 					abClient.getValue(inputList,port,function(response){
 
 						var money = req.params.amount;
 						var name = response[0];
-						console.log("Name: "+name);
 						var creditcard = response[1];
-						var csv = response[2];
 
 						process.kill(pid);
 						var buf = fs.readFileSync(abname);
@@ -98,7 +96,7 @@ server.put('/pay',function (req, res, next) {
 						// Delete active bundle
 						fs.unlink(abname);
 
-						db.deduct(name,creditcard,csv,money, function(cb){
+						db.deduct(name,creditcard,money, function(cb){
 							if(cb==0){
 								var err_msg = "ERROR: Payment processing failed";
 								console.log(err_msg);
@@ -133,5 +131,5 @@ server.put('/pay',function (req, res, next) {
 
 
 server.listen(service_port ,ip_addr, function(){
-	console.log('Service %s listening at %s', server.name , server.url);
+	console.log('LOG: Service %s listening at %s', server.name , server.url);
 });
