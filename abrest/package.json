@@ -15,6 +15,8 @@
     "restify": "*",
     "thrift": "*",
     "step": "*",
+    "async": "*",
+    "portscanner": "*",
     "java": "*"
   }
 }
