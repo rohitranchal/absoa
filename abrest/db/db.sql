@@ -28,7 +28,6 @@ CREATE TABLE BankAccount(
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	name VARCHAR(128) NOT NULL,
 	creditcard VARCHAR(16) NOT NULL,
-	csv VARCHAR(3) NOT NULL,
 	amount INTEGER UNSIGNED NOT NULL,
 	billing_address VARCHAR(512)
 ) ENGINE=InnoDB;
@@ -48,6 +47,6 @@ INSERT INTO Item(id, itemname, price,amount,picture) VALUES
 (8, 'iPhone 5s',649,10,'http://www.extremetech.com/wp-content/uploads/2013/09/iph.jpg'),
 (9, 'iPhone 5c', 549,10,'http://a.abcnews.com/images/Technology/HT_iphone_5C-colors_thg-130910_16x9_992.jpg');
 
-INSERT INTO BankAccount(id,name, creditcard, csv, amount,billing_address) VALUES
-(1, 'user1', '1111222233334444', '123',3000,''),
-(2, 'user2', '1111222233335555', '123',3000,'');
+INSERT INTO BankAccount(id,name, creditcard, amount,billing_address) VALUES
+(1, 'Alice', '1111222233334444',30000,''),
+(2, 'user2', '1111222233335555',30000,'');
