@@ -1,3 +1,6 @@
+TEST STATION: Ubuntu
+TEST POLICY: name (no policy)
+TEST LOG:
 markjin1990@markideapad:~/projects/absoa/abrest/test$ ./ab_test 
 Start Active Bundle
 Starting server on port: 4000
@@ -29,4 +32,46 @@ Starting server on port: 4000
 Time diff:939
 AB process terminated in Bank Service
 markjin1990@markideapad:~/projects/absoa/abrest/test$ 
+
+===================================================================================
+
+TEST STATION: Ubuntu
+TEST POLICY: creditcard
+TEST LOG:
+markjin1990@markideapad:~/projects/absoa/abrest/test$ ./ab_test 
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:2313
+1234 5678 4321 8765
+AB process terminated in Bank Service
+markjin1990@markideapad:~/projects/absoa/abrest/test$ ./ab_test 
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:2308
+1234 5678 4321 8765
+AB process terminated in Bank Service
+markjin1990@markideapad:~/projects/absoa/abrest/test$ ./ab_test 
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:2361
+1234 5678 4321 8765
+AB process terminated in Bank Service
+markjin1990@markideapad:~/projects/absoa/abrest/test$ ./ab_test 
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:2252
+1234 5678 4321 8765
+AB process terminated in Bank Service
+markjin1990@markideapad:~/projects/absoa/abrest/test$ ./ab_test 
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:2374
+1234 5678 4321 8765
+AB process terminated in Bank Service
+
 
