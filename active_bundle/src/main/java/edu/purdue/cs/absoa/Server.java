@@ -1,11 +1,5 @@
 package edu.purdue.cs.absoa;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TThreadPoolServer;
 import org.apache.thrift.transport.TServerSocket;
@@ -34,18 +28,6 @@ public class Server {
 		} else {
 			ABPort = 5555;
 		}
-		
-//		try {
-//			ABMonitor abm = new ABMonitor();
-//			abm.ABState();
-//			abm.ABLog();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-				
-//		ABServiceHandler.setABData("ab.user.name", "AB Owner");
-//		ABServiceHandler.setABData("ab.user.zip", "47906");
-//		ABServiceHandler.setABData("ab.user.data", "AB sensitive data");
 	    
 		Server srv = new Server();
 		srv.start();
