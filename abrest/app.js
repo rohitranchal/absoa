@@ -11,7 +11,7 @@ var checkout = require('./routes/checkout');
 var checkout_test = require('./routes/checkout_test');
 //var tmp = require('./routes/tmp');
 
-var service_port = 5000;
+var service_port = 4000;
 var AB_dir = "/abfiles";
 
 console.log("LOG: Check "+__dirname+AB_dir);

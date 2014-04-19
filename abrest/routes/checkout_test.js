@@ -6,10 +6,7 @@ exports.purchase = function(req, res){
 	// session info
 	var login = 'yes';
 	var user = 'user1';
-	var money = 10;
-
-	//res.send(user+" "+money);
-
+	var money = 1;
 
 	// TODO: Get AB file
 
@@ -19,7 +16,7 @@ exports.purchase = function(req, res){
 			var abfileStr = buf.toString('base64');
 
 			var bankclient = restify.createStringClient({
-				url: 'http://localhost:6001'
+				url: 'http://localhost:1200'
 			});
 
 			var option =
@@ -39,7 +36,7 @@ exports.purchase = function(req, res){
 					// Payment was successful, now use shipping service
 					//
 					var shipclient = restify.createStringClient({
-						url: 'http://localhost:6002'
+						url: 'http://localhost:1300'
 					});
 
 					var ship_option =

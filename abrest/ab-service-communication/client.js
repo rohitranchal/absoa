@@ -3,14 +3,15 @@ var thrift = require('thrift');
 var abservice = require('./ABService.js');
 var ttypes = require('./ActiveBundle_types.js');
 var Step = require('step');
+var async = require('async');
 
 // function getValue :
-// Input: a list of attributes, e.g. name, credit_card_number
+// Input: a list of attributes, e.g. name, credit_card_number; port number
 // Output: a list the results
 
-exports.getValue = function(attrs,callback){
+exports.getValue = function(attrs,port,callback){
 
-	var connection = thrift.createConnection('localhost', 5555);
+	var connection = thrift.createConnection('localhost', port);
 	var client = thrift.createClient(abservice, connection);
 
 
@@ -48,66 +49,20 @@ exports.getValue = function(attrs,callback){
 						var session_key = response.sessionKey;
 						var session_id = response.sessionID;
 						console.log("Session ID: " + session_id);
-						if(attrs.length==1){
-							Step(
-								function a(){
-									client.getValue(session_id, attrs[0], this);
-								}
-								,
-								function callBack(err,data){
-									retMap[0] = data;
-									console.log("Connection closed");
-									connection.end();
-									callback(retMap);
-								}
-								);
-						}
-						else if(attrs.length==2){
-							Step(
-									function a(){
-										client.getValue(session_id, attrs[0], this);
-									}
-									,
-									function b(err,data){
-										retMap[0] = data;
-										client.getValue(session_id, attrs[1], this);
-									}
-									,
-									function callBack(err,data){
-										retMap[1] = data;
-										console.log("Connection closed");
-										connection.end();
-										callback(retMap);
-									}
-									);
-						}
-						else if(attrs.length==3){
-							Step(
-									function a(){
-										client.getValue(session_id, attrs[0], this);
-									}
-									,
-									function b(err,data){
-										retMap[0] = data;
-										console.log("GetValue: "+data);
-										client.getValue(session_id, attrs[1], this);
-									}
-									,
-									function c(err,data){
-										retMap[1] = data;
-										console.log("GetValue: "+data);
-										client.getValue(session_id, attrs[2], this);
-									}
-									,
-									function callBack(err,data){
-										console.log("GetValue: "+data);
-										retMap[2] = data;
-										console.log("Connection closed");
-										connection.end();
-										callback(retMap);
-									}
+						var i = 0;
+						async.whilst(
+							function () { return i < attrs.length; },
+							function (callback) {
+									client.getValue(session_id, attrs[i], function(err,data){
+										retMap[i] = data;
+										i++;
+										setTimeout(callback,1);
+									});
+							},
+							function (err) {
+								callback(retMap);
+							}
 							);
-						}
 					});
 				}
 			});
