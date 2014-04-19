@@ -45,7 +45,7 @@ portscanner.findAPortNotInUse(4000, 5000, '127.0.0.1', function(error, port) {
 				// AB is running
 				// TODO: Query the Active Bundle to get the user's Name, Credit Card No., CSV
 
-				var attr1 = "ab.user.name";
+				var attr1 = "ab.user.creditcard";
 				var inputList = new Array();
 				inputList.push(attr1);
 
@@ -54,7 +54,8 @@ portscanner.findAPortNotInUse(4000, 5000, '127.0.0.1', function(error, port) {
 					var end_timestamp = new Date().getTime();
 					var diff = end_timestamp - start_timestamp;
 					console.log("Time diff:"+diff);
-					var name = response[0];
+					var creditcard = response[0];
+					console.log(creditcard);
 
 					process.kill(pid);
 				});
