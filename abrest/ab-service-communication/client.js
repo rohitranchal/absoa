@@ -36,7 +36,7 @@ exports.getValue = function(attrs,port,callback){
 					var encoded_msg = response;
 					// Decode
 					var decoded_msg = new Buffer(encoded_msg, 'base64');
-					console.log('Client: decoded auth challenge: ', decoded_msg.toString());
+					//console.log('Client: decoded auth challenge: ', decoded_msg.toString());
 
 					// Sign and encode
 					var signed_chall = signData(decoded_msg);
@@ -48,7 +48,7 @@ exports.getValue = function(attrs,port,callback){
 					client.authenticateResponse(encoded_msg, signed_chall, cert, function(err,response){
 						var session_key = response.sessionKey;
 						var session_id = response.sessionID;
-						console.log("Session ID: " + session_id);
+						//console.log("Session ID: " + session_id);
 						var i = 0;
 						async.whilst(
 							function () { return i < attrs.length; },
@@ -79,7 +79,7 @@ function signData(msg) {
 	//var svc_cert = process.env.ECOM_CERT;
 	var private_key = svc_key.toString('ascii');
 	var signed_data = signer.sign(private_key,'base64')
-	console.log("Signed challenge: " + signed_data.toString());
+	//console.log("Signed challenge: " + signed_data.toString());
 	return signed_data;
 }
 
@@ -87,7 +87,7 @@ function getCert() {
 	var fs = require('fs');
 	var stream = fs.readFileSync("resources/ecom-cert.pem");
 	var cert_data = stream.toString('base64');
-	console.log("Cert: "+cert_data);
+	//console.log("Cert: "+cert_data);
 	return cert_data;
 }
 

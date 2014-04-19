@@ -76,7 +76,7 @@ server.put('/ship',function (req, res, next) {
 					// AB is running
 					// TODO: Query the Active Bundle to get the shipping address, email
 					var attr1 = "ab.user.name";
-					var attr2 = "ab.user.address";
+					var attr2 = "ab.user.shipping.address";
 					var inputList = new Array();
 					inputList.push(attr1);
 					inputList.push(attr2);
