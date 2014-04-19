@@ -72,6 +72,52 @@ Time diff:519
 AB process terminated in Bank Service
 
 
+-----
+
+TEST STATION: Ubuntu Desktop
+TEST POLICY: name (no policy)
+TEST LOG:
+
+root@dayton:~/Developer/absoa/abrest/test# ./ab_test
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:290
+AB process terminated in Bank Service
+root@dayton:~/Developer/absoa/abrest/test# ./ab_test
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:294
+AB process terminated in Bank Service
+root@dayton:~/Developer/absoa/abrest/test# ./ab_test
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:305
+AB process terminated in Bank Service
+root@dayton:~/Developer/absoa/abrest/test# ./ab_test
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:303
+AB process terminated in Bank Service
+root@dayton:~/Developer/absoa/abrest/test# ./ab_test
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:294
+AB process terminated in Bank Service
+root@dayton:~/Developer/absoa/abrest/test# ./ab_test
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:297
+AB process terminated in Bank Service
+root@dayton:~/Developer/absoa/abrest/test# ./ab_test
+Start Active Bundle
+Starting server on port: 4000
+
 ===================================================================================
 
 TEST STATION: Ubuntu
@@ -153,6 +199,48 @@ Start Active Bundle
 Starting server on port: 4000
 
 Time diff:1259
+1234 5678 4321 8765
+AB process terminated in Bank Service
+
+-----
+
+TEST STATION: Ubuntu Desktop
+TEST POLICY: creditcard
+TEST LOG:
+
+root@dayton:~/Developer/absoa/abrest/test# ./ab_test
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:696
+1234 5678 4321 8765
+AB process terminated in Bank Service
+root@dayton:~/Developer/absoa/abrest/test# ./ab_test
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:710
+1234 5678 4321 8765
+AB process terminated in Bank Service
+root@dayton:~/Developer/absoa/abrest/test# ./ab_test
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:722
+1234 5678 4321 8765
+AB process terminated in Bank Service
+root@dayton:~/Developer/absoa/abrest/test# ./ab_test
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:719
+1234 5678 4321 8765
+AB process terminated in Bank Service
+root@dayton:~/Developer/absoa/abrest/test# ./ab_test
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:709
 1234 5678 4321 8765
 AB process terminated in Bank Service
 
@@ -252,6 +340,55 @@ Univ St, Lafayette, IN, US
 AB process terminated in Bank Service
 
 
+------
+
+TEST STATION: Ubuntu Desktop
+TEST POLICY: creditcard & shipping.address
+TEST LOG:
+
+root@dayton:~/Developer/absoa/abrest/test# ./ab_test
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:725
+1234 5678 4321 8765
+Univ St, Lafayette, IN, US
+AB process terminated in Bank Service
+root@dayton:~/Developer/absoa/abrest/test# ./ab_test
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:721
+1234 5678 4321 8765
+Univ St, Lafayette, IN, US
+AB process terminated in Bank Service
+root@dayton:~/Developer/absoa/abrest/test# ./ab_test
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:705
+1234 5678 4321 8765
+Univ St, Lafayette, IN, US
+AB process terminated in Bank Service
+root@dayton:~/Developer/absoa/abrest/test# ./ab_test
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:704
+1234 5678 4321 8765
+Univ St, Lafayette, IN, US
+AB process terminated in Bank Service
+root@dayton:~/Developer/absoa/abrest/test# ./ab_test
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:713
+1234 5678 4321 8765
+Univ St, Lafayette, IN, US
+AB process terminated in Bank Service
+
+
+
 ===================================================================================
 
 TEST STATION: MacBook Pro
@@ -307,4 +444,52 @@ AB process terminated in Bank Service
 
 --------
 
+TEST STATION: Ubuntu Desktop
+TEST POLICY: creditcard & shipping.address & shipping.preference
+TEST LOG:
 
+root@dayton:~/Developer/absoa/abrest/test# ./ab_test
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:730
+1234 5678 4321 8765
+Univ St, Lafayette, IN, US
+2
+AB process terminated in Bank Service
+root@dayton:~/Developer/absoa/abrest/test# ./ab_test
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:724
+1234 5678 4321 8765
+Univ St, Lafayette, IN, US
+2
+AB process terminated in Bank Service
+root@dayton:~/Developer/absoa/abrest/test# ./ab_test
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:732
+1234 5678 4321 8765
+Univ St, Lafayette, IN, US
+2
+AB process terminated in Bank Service
+root@dayton:~/Developer/absoa/abrest/test# ./ab_test
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:738
+1234 5678 4321 8765
+Univ St, Lafayette, IN, US
+2
+AB process terminated in Bank Service
+root@dayton:~/Developer/absoa/abrest/test# ./ab_test
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:715
+1234 5678 4321 8765
+Univ St, Lafayette, IN, US
+2
+AB process terminated in Bank Service
