@@ -250,3 +250,61 @@ Time diff:1263
 1234 5678 4321 8765
 Univ St, Lafayette, IN, US
 AB process terminated in Bank Service
+
+
+===================================================================================
+
+TEST STATION: MacBook Pro
+TEST POLICY: creditcard & shipping.address & shipping.preference
+TEST LOG:
+
+pal-nat184-105-036:test rohitranchal$ ./ab_test
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:1297
+1234 5678 4321 8765
+Univ St, Lafayette, IN, US
+2
+AB process terminated in Bank Service
+pal-nat184-105-036:test rohitranchal$ ./ab_test
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:1278
+1234 5678 4321 8765
+Univ St, Lafayette, IN, US
+2
+AB process terminated in Bank Service
+pal-nat184-105-036:test rohitranchal$ ./ab_test
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:1266
+1234 5678 4321 8765
+Univ St, Lafayette, IN, US
+2
+AB process terminated in Bank Service
+pal-nat184-105-036:test rohitranchal$ ./ab_test
+Start Active Bundle
+Starting server on port: 4000
+
+
+Time diff:1343
+1234 5678 4321 8765
+Univ St, Lafayette, IN, US
+2
+AB process terminated in Bank Service
+pal-nat184-105-036:test rohitranchal$ ./ab_test
+Start Active Bundle
+Starting server on port: 4000
+
+Time diff:1262
+1234 5678 4321 8765
+Univ St, Lafayette, IN, US
+2
+AB process terminated in Bank Service
+
+--------
+
+
