@@ -2,221 +2,23 @@ Statistics:
 
 No policy
 Ubuntu Laptop  - 921 + 958 + 934 + 964 + 939 = 943
-Macbook Pro    - 538 + 532 + 547 + 559 + 519 = 539
+Macbook Pro    - 514 + 512 + 510 + 519 + 508 = 513
 Ubuntu Desktop - 290 + 294 + 305 + 303 + 294 = 297
 
 Creditcard 1 Policy
 Ubuntu Laptop  - 2313 + 2308 + 2361 + 2252 + 2374 = 2322
-Macbook Pro    - 1284 + 1244 + 1297 + 1254 + 1259 = 1268
+Macbook Pro    - 1186 + 1174 + 1203 + 1201 + 1293 = 1211
 Ubuntu Desktop - 696 + 710 + 722 + 719 + 709 = 711
 
 Creditcard & Creditcard type 2 Policies
 Ubuntu Laptop  -
 Macbook Pro    - 1241 + 1230 + 1202 + 1242 + 1224 = 1228
-Ubuntu Desktop -
+Ubuntu Desktop - 741 + 732 + 733 + 748 + 731 = 737
 
 Creditcard & Creditcard type & Shipping preference 3 Policies
 Ubuntu Laptop  -
-Macbook Pro    -
+Macbook Pro    - 1247 + 1245 + 1261 + 1241 + 1316 = 1262
 Ubuntu Desktop -
 
 
 
-TEST STATION: MacBook Pro
-TEST POLICY: creditcard & shipping.address
-TEST LOG:
-pal-nat184-105-036:test rohitranchal$ ./ab_test
-Start Active Bundle
-Starting server on port: 4000
-
-Time diff:1249
-1234 5678 4321 8765
-Univ St, Lafayette, IN, US
-AB process terminated in Bank Service
-pal-nat184-105-036:test rohitranchal$ ./ab_test
-Start Active Bundle
-Starting server on port: 4000
-
-Time diff:1297
-1234 5678 4321 8765
-Univ St, Lafayette, IN, US
-AB process terminated in Bank Service
-pal-nat184-105-036:test rohitranchal$ ./ab_test
-Start Active Bundle
-Starting server on port: 4000
-
-Time diff:1251
-1234 5678 4321 8765
-Univ St, Lafayette, IN, US
-AB process terminated in Bank Service
-pal-nat184-105-036:test rohitranchal$ ./ab_test
-Start Active Bundle
-Starting server on port: 4000
-
-Time diff:1356
-1234 5678 4321 8765
-Univ St, Lafayette, IN, US
-AB process terminated in Bank Service
-pal-nat184-105-036:test rohitranchal$ ./ab_test
-Start Active Bundle
-Starting server on port: 4000
-
-Time diff:1263
-1234 5678 4321 8765
-Univ St, Lafayette, IN, US
-AB process terminated in Bank Service
-
-
-------
-
-TEST STATION: Ubuntu Desktop
-TEST POLICY: creditcard & shipping.address
-TEST LOG:
-
-root@dayton:~/Developer/absoa/abrest/test# ./ab_test
-Start Active Bundle
-Starting server on port: 4000
-
-Time diff:725
-1234 5678 4321 8765
-Univ St, Lafayette, IN, US
-AB process terminated in Bank Service
-root@dayton:~/Developer/absoa/abrest/test# ./ab_test
-Start Active Bundle
-Starting server on port: 4000
-
-Time diff:721
-1234 5678 4321 8765
-Univ St, Lafayette, IN, US
-AB process terminated in Bank Service
-root@dayton:~/Developer/absoa/abrest/test# ./ab_test
-Start Active Bundle
-Starting server on port: 4000
-
-Time diff:705
-1234 5678 4321 8765
-Univ St, Lafayette, IN, US
-AB process terminated in Bank Service
-root@dayton:~/Developer/absoa/abrest/test# ./ab_test
-Start Active Bundle
-Starting server on port: 4000
-
-Time diff:704
-1234 5678 4321 8765
-Univ St, Lafayette, IN, US
-AB process terminated in Bank Service
-root@dayton:~/Developer/absoa/abrest/test# ./ab_test
-Start Active Bundle
-Starting server on port: 4000
-
-Time diff:713
-1234 5678 4321 8765
-Univ St, Lafayette, IN, US
-AB process terminated in Bank Service
-
-
-
-===================================================================================
-
-TEST STATION: MacBook Pro
-TEST POLICY: creditcard & shipping.address & shipping.preference
-TEST LOG:
-
-pal-nat184-105-036:test rohitranchal$ ./ab_test
-Start Active Bundle
-Starting server on port: 4000
-
-Time diff:1297
-1234 5678 4321 8765
-Univ St, Lafayette, IN, US
-2
-AB process terminated in Bank Service
-pal-nat184-105-036:test rohitranchal$ ./ab_test
-Start Active Bundle
-Starting server on port: 4000
-
-Time diff:1278
-1234 5678 4321 8765
-Univ St, Lafayette, IN, US
-2
-AB process terminated in Bank Service
-pal-nat184-105-036:test rohitranchal$ ./ab_test
-Start Active Bundle
-Starting server on port: 4000
-
-Time diff:1266
-1234 5678 4321 8765
-Univ St, Lafayette, IN, US
-2
-AB process terminated in Bank Service
-pal-nat184-105-036:test rohitranchal$ ./ab_test
-Start Active Bundle
-Starting server on port: 4000
-
-
-Time diff:1343
-1234 5678 4321 8765
-Univ St, Lafayette, IN, US
-2
-AB process terminated in Bank Service
-pal-nat184-105-036:test rohitranchal$ ./ab_test
-Start Active Bundle
-Starting server on port: 4000
-
-Time diff:1262
-1234 5678 4321 8765
-Univ St, Lafayette, IN, US
-2
-AB process terminated in Bank Service
-
---------
-
-TEST STATION: Ubuntu Desktop
-TEST POLICY: creditcard & shipping.address & shipping.preference
-TEST LOG:
-
-root@dayton:~/Developer/absoa/abrest/test# ./ab_test
-Start Active Bundle
-Starting server on port: 4000
-
-Time diff:730
-1234 5678 4321 8765
-Univ St, Lafayette, IN, US
-2
-AB process terminated in Bank Service
-root@dayton:~/Developer/absoa/abrest/test# ./ab_test
-Start Active Bundle
-Starting server on port: 4000
-
-Time diff:724
-1234 5678 4321 8765
-Univ St, Lafayette, IN, US
-2
-AB process terminated in Bank Service
-root@dayton:~/Developer/absoa/abrest/test# ./ab_test
-Start Active Bundle
-Starting server on port: 4000
-
-Time diff:732
-1234 5678 4321 8765
-Univ St, Lafayette, IN, US
-2
-AB process terminated in Bank Service
-root@dayton:~/Developer/absoa/abrest/test# ./ab_test
-Start Active Bundle
-Starting server on port: 4000
-
-Time diff:738
-1234 5678 4321 8765
-Univ St, Lafayette, IN, US
-2
-AB process terminated in Bank Service
-root@dayton:~/Developer/absoa/abrest/test# ./ab_test
-Start Active Bundle
-Starting server on port: 4000
-
-Time diff:715
-1234 5678 4321 8765
-Univ St, Lafayette, IN, US
-2
-AB process terminated in Bank Service
