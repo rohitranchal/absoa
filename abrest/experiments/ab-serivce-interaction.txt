@@ -11,12 +11,12 @@ Macbook Pro    - 1186 + 1174 + 1203 + 1201 + 1293 = 1211
 Ubuntu Desktop - 696 + 710 + 722 + 719 + 709 = 711
 
 Creditcard & Creditcard type 2 Policies
-Ubuntu Laptop  - 692 + 700 + 705 + 702 + 685 = 697
+Ubuntu Laptop  - 693 + 695 + 674 + 680 + 686 = 686
 Macbook Pro    - 1241 + 1230 + 1202 + 1242 + 1224 = 1228
 Ubuntu Desktop - 728 + 733 + 743 + 727 + 724 = 731
 
 Creditcard & Creditcard type & Shipping preference 3 Policies
-Ubuntu Laptop  - 685 + 710 + 677 + 678 + 717 = 693
+Ubuntu Laptop  - 685 + 718 + 684 + 688 + 710 = 697
 Macbook Pro    - 1247 + 1245 + 1261 + 1241 + 1316 = 1262
 Ubuntu Desktop - 738 + 737 + 740 + 765 + 742 = 744
 
