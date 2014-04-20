@@ -1,22 +1,22 @@
 Statistics:
 
 No policy
-Ubuntu Laptop  - 921 + 958 + 934 + 964 + 939 = 943
+Ubuntu Laptop  - 292 + 294 + 287 + 292 + 272 = 287
 Macbook Pro    - 514 + 512 + 510 + 519 + 508 = 513
 Ubuntu Desktop - 290 + 294 + 305 + 303 + 294 = 297
 
 Creditcard 1 Policy
-Ubuntu Laptop  - 2313 + 2308 + 2361 + 2252 + 2374 = 2322
+Ubuntu Laptop  - 679 + 673 + 649 + 674 + 670 = 669
 Macbook Pro    - 1186 + 1174 + 1203 + 1201 + 1293 = 1211
 Ubuntu Desktop - 696 + 710 + 722 + 719 + 709 = 711
 
 Creditcard & Creditcard type 2 Policies
-Ubuntu Laptop  -
+Ubuntu Laptop  - 692 + 700 + 705 + 702 + 685 = 697
 Macbook Pro    - 1241 + 1230 + 1202 + 1242 + 1224 = 1228
 Ubuntu Desktop - 741 + 732 + 733 + 748 + 731 = 737
 
 Creditcard & Creditcard type & Shipping preference 3 Policies
-Ubuntu Laptop  -
+Ubuntu Laptop  - 685 + 710 + 677 + 678 + 717 = 693
 Macbook Pro    - 1247 + 1245 + 1261 + 1241 + 1316 = 1262
 Ubuntu Desktop -
 
