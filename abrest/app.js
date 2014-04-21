@@ -9,6 +9,8 @@ var login = require('./routes/login');
 var catalog = require('./routes/catalog');
 var checkout = require('./routes/checkout');
 var checkout_test = require('./routes/checkout_test');
+var checkout_network = require('./routes/checkout_network');
+var checkout_baseline = require('./routes/checkout_baseline');
 //var tmp = require('./routes/tmp');
 
 var service_port = 1100;
@@ -59,6 +61,10 @@ app.post('/register', register.add_account);
 app.post('/checkout', checkout.purchase);
 
 app.post('/checkout_test', checkout_test.purchase);
+
+app.post('/checkout_baseline', checkout_baseline.purchase);
+
+app.post('/checkout_network', checkout_network.purchase);
 
 app.get('/catalog', catalog.browse);
 
