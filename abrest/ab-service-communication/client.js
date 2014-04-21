@@ -14,7 +14,6 @@ exports.getValue = function(attrs,port,callback){
 	var connection = thrift.createConnection('localhost', port);
 	var client = thrift.createClient(abservice, connection);
 
-
 	var retMap = new Array();
 
 	connection.on('error', function(err) {

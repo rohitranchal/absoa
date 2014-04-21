@@ -1,7 +1,7 @@
 // This is a bank RESTful service
 var portscanner = require('portscanner');
 var async = require('async');
-var abClient = require('../ab-service-communication/client');
+var abClient = require('../../ab-service-communication/client');
 
 var spawn = require('child_process').spawn;
 
@@ -10,7 +10,7 @@ var spawn = require('child_process').spawn;
 portscanner.findAPortNotInUse(4000, 5000, '127.0.0.1', function(error, port) {
 
 	// Create ab jar name
-	var abname = "../abfiles/user1.jar";
+	var abname = "../../abfiles/user1.jar";
 
 	// Run the Active Bundle
 	console.log("Start Active Bundle");
@@ -50,10 +50,10 @@ portscanner.findAPortNotInUse(4000, 5000, '127.0.0.1', function(error, port) {
 				inputList.push(attr1);
 				attr1 = "ab.user.creditcard.type";
 				inputList.push(attr1);
-				attr1 = "ab.user.shipping.preference";
-				inputList.push(attr1);
-				//var attr1 = "ab.user.name";
-				//inputList.push(attr1);
+		//		attr1 = "ab.user.shipping.preference";
+		//		inputList.push(attr1);
+			//	var attr1 = "ab.user.name";
+			//	inputList.push(attr1);
 
 
 				var start_timestamp = new Date().getTime();
@@ -63,10 +63,10 @@ portscanner.findAPortNotInUse(4000, 5000, '127.0.0.1', function(error, port) {
 					console.log("Time diff:"+diff);
 					var creditcard = response[0];
 					var creditcard_type = response[1];
-					var shipping_pref = response[2];
+			//		var shipping_pref = response[2];
 					console.log(creditcard);
 					console.log(creditcard_type);
-					console.log(shipping_pref);
+			//		console.log(shipping_pref);
 
 					process.kill(pid);
 				});
