@@ -1,0 +1,9 @@
+To test AB - Service interaction time basically AB processing time
+
+Start service using start_abservice
+
+Start apache bench testing using ab_test
+
+Try different get value parameters in service to try multiple policies
+
+Try different loads using apache bench
