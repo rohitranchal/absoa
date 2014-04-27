@@ -55,7 +55,14 @@ server.get('/get',function (req, res, next) {
 		// Found a port that is available
 		function (err) {
 			// Create ab jar name
-			var abname = "../../abfiles/user1.jar";
+			var abname = "../../abfiles/ab_"+port+".jar";
+
+			var exist = fs.existsSync(abname)
+			if(!exist){
+				fs.writeFileSync(abname, fs.readFileSync("../../abfiles/user1.jar"));
+			}
+			
+
 
 			// Run the Active Bundle
 			var child =	spawn("java",["-jar",abname,port]);
