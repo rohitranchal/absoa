@@ -1,8 +1,3 @@
-- Equivalence bw confidentiality and intergrity paper by fred schneider
-- policies in code then output depends input, issue in paper by schneider enforceable security policies
-- appropriate key for enforcing the policy, issue in paper by schneider enforceable security policies
-
-
 Ubuntu Desktop
 Processor: Intel Core i7 CPU 860 @ 2.80 GHz x 8
 Memory: 8 GB
