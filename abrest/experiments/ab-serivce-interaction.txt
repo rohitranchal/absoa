@@ -1,29 +1,96 @@
-Ubuntu Desktop
+- Equivalence bw confidentiality and intergrity paper by fred schneider
+- policies in code then output depends input, issue in paper by schneider enforceable security policies
+- appropriate key for enforcing the policy, issue in paper by schneider enforceable security policies
 
+
+Ubuntu Desktop
 Processor: Intel Core i7 CPU 860 @ 2.80 GHz x 8
 Memory: 8 GB
-OS: Ubuntu 12.04 LTS 64 bit
+OS: Ubuntu 14.04 LTS 64 bit
 
-Statistics:
+Amazon EC2 M1 instances
 
-No policy
-Ubuntu Laptop  - 292 + 294 + 287 + 292 + 272 = 287
-Macbook Pro    - 514 + 512 + 510 + 519 + 508 = 513
-Ubuntu Desktop - 290 + 294 + 305 + 303 + 294 = 297
+Test: AB-Service Interaction
+(5 runs, each run with 50 reqs)
+
+No policy - name
+Ubuntu Desktop - 478 + 478 + 473 + 476 + 477      = 476  = 0.47
+EC2 Medium     - 1639 + 1640 + 1643 + 1631 + 1643 = 1639 = 1.63
+EC2 Large      - 693 + 695 + 693 + 692 + 692      = 693  = 0.69
+XLarge         - 588 + 584 + 585 + 584 + 585      = 585  = 0.58
+
 
 Creditcard 1 Policy
-Ubuntu Laptop  - 679 + 673 + 649 + 674 + 670 = 669
-Macbook Pro    - 1186 + 1174 + 1203 + 1201 + 1293 = 1211
-Ubuntu Desktop - 696 + 710 + 722 + 719 + 709 = 711
+Ubuntu Desktop - 859 + 852 + 857 + 856 + 855      = 856  = 0.85
+EC2 Medium     - 3074 + 3065 + 3070 + 3079 + 3063 = 3070 = 3.07
+EC2 Large      - 1292 + 1293 + 1292 + 1292 + 1292 = 1292 = 1.29
+XLarge         - 1142 + 1140 + 1142 + 1142 + 1143 = 1141 = 1.14
+
 
 Creditcard & Creditcard type 2 Policies
-Ubuntu Laptop  - 693 + 695 + 674 + 680 + 686 = 686
-Macbook Pro    - 1241 + 1230 + 1202 + 1242 + 1224 = 1228
-Ubuntu Desktop - 728 + 733 + 743 + 727 + 724 = 731
+Ubuntu Desktop - 869 + 868 + 868 + 868 + 870      = 869  = 0.86
+EC2 Medium     - 3105 + 3101 + 3120 + 3118 + 3127 = 3114 = 3.11
+EC2 Large      - 1310 + 1310 + 1311 + 1308 + 1311 = 1310 = 1.31
+XLarge         - 1154 + 1164 + 1156 + 1162 + 1158 = 1158 = 1.15
+
 
 Creditcard & Creditcard type & Shipping preference 3 Policies
-Ubuntu Laptop  - 685 + 718 + 684 + 688 + 710 = 697
-Macbook Pro    - 1247 + 1245 + 1261 + 1241 + 1316 = 1262
-Ubuntu Desktop - 738 + 737 + 740 + 765 + 742 = 744
+Ubuntu Desktop - 875 + 876 + 879 + 872 + 876      = 876  = 0.87
+EC2 Medium     - 3158 + 3181 + 3164 + 3177 + 3177 = 3171 = 3.17
+EC2 Large      - 1329 + 1329 + 1328 + 1329 + 1327 = 1328 = 1.32
+XLarge         - 1173 + 1170 + 1174 + 1165 + 1164 = 1169 = 1.16
 
 
+Test: Baseline
+(5 runs, each run with 50 reqs)
+
+No policy/ No Authent / No Authoriz
+Ubuntu Desktop - 89 + 89 + 90 + 88 + 89 = 89
+EC2 Medium     - 87 + 87 + 87 + 88 + 87 = 87
+EC2 Large      - 56 + 56 + 56 + 54 + 54 = 55
+EC2 XLarge     - 51 + 48 + 47 + 45 + 47 = 47
+
+
+Test: AB RTT
+(5 runs, each run with 50 reqs)
+1 policy enforcef on bank and 1 policy on ship. It is assumed that e-com has all the info and just forwards the AB to bank and service
+
+1 policy on bank-creditcard and 1 policy on ship-shipping.preference
+Ubuntu Desktop - 4434 + 4406 + 4441 + 4431 + 4432 = 4429
+EC2 Medium     -  +  +  +  +  =
+EC2 Large      -  +  +  +  +  =
+
+
+
+
+
+
+
+
+I launched an m3.medium instance at
+ssh -i ~/.ssh/shared-key-east1a.pem ubuntu@ec2-54-87-109-137.compute-1.amazonaws.com
+
+m3.large instance at
+ssh -i ~/.ssh/shared-key-east1a.pem ubuntu@ec2-54-224-93-106.compute-1.amazonaws.com
+
+connect to the xlarge one using:
+
+ssh -i ~/.ssh/shared-key-east1a.pem ubuntu@ec2-54-235-224-185.compute-1.amazonaws.com
+
+General Purpose
+M3
+This family includes the M3 instance types and provides a balance of compute, memory, and network resources, and it is a good choice for many applications.
+
+Features:
+
+High Frequency Intel Xeon E5-2670 (Sandy Bridge) Processors
+SSD-based instance storage for fast I/O performance
+Balance of compute, memory, and network resources
+Model vCPU  Mem (GiB) SSD Storage (GB)
+m3.medium 1 3.75  1 x 4
+m3.large  2 7.5 1 x 32
+m3.xlarge 4 15  2 x 40
+m3.2xlarge  8 30  2 x 80
+Use Cases
+
+Small and mid-size databases, data processing tasks that require additional memory, caching fleets, and for running backend servers for SAP, Microsoft SharePoint, and other enterprise applications.
