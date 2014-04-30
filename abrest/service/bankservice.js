@@ -31,6 +31,7 @@ for(index=4000;index<5000;index++){
 
 // User pays money to service
 server.put('/pay',function (req, res, next) {
+	console.time("Req");
 	if (req.params.abfile === undefined) {
 		console.log('ERROR: AB Not Received');
 		return next(new restify.InvalidArgumentError('Active Bundle must be supplied'))
@@ -60,7 +61,7 @@ server.put('/pay',function (req, res, next) {
 				}
 				callback();
 			})
-		},	
+		},
 		// Found a port that is available
 		function (err) {
 			// Create ab jar name
@@ -117,7 +118,7 @@ server.put('/pay',function (req, res, next) {
 							var creditcard = response[1];
 
 							process.kill(pid);
-							
+
 							// AB is stopped, put the port back into portQ so that other concurrent
 							// request can use
 							portQ.enqueue(port);
@@ -149,6 +150,7 @@ server.put('/pay',function (req, res, next) {
 									var retMsg = {
 										'abfile':abfileRet
 									}
+									console.timeEnd("Req");
 									res.send(200, abfileRet);
 								}
 							});

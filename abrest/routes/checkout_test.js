@@ -2,6 +2,8 @@ var db = require('../db');
 var fs = require('fs');
 var restify = require('restify');
 
+console.time("Req");
+
 exports.purchase = function(req, res){
 	// session info
 	var login = 'yes';
@@ -20,7 +22,7 @@ exports.purchase = function(req, res){
 			});
 
 			var option =
-			{ 'abfile': abfileStr, 
+			{ 'abfile': abfileStr,
 				'amount': money ,
 				'content-encoding': 'gzip'
 			};
@@ -30,17 +32,17 @@ exports.purchase = function(req, res){
 					var err_msg = new Array();
 					err_msg.push("ERROR: "+data);
 					console.log("ERROR: "+data);
-					res.render('checkoutfailed', {title: 'E-Commerce',error:err_msg,login:login,user:user});				
+					res.render('checkoutfailed', {title: 'E-Commerce',error:err_msg,login:login,user:user});
 				}
 				else {
 					// Payment was successful, now use shipping service
 					//
 					var shipclient = restify.createStringClient({
-						url: 'http://localhost:1300'
+						url: 'http://128.10.130.88:1300'
 					});
 
 					var ship_option =
-					{ 'abfile': data, 
+					{ 'abfile': data,
 						'content-encoding': 'gzip'
 					};
 
@@ -49,13 +51,13 @@ exports.purchase = function(req, res){
 							var err_msg = new Array();
 							err_msg.push("ERROR: "+data);
 							console.log("ERROR: "+data);
-							res.render('checkoutfailed', {title: 'E-Commerce',error:err_msg,login:login,user:user});				
+							res.render('checkoutfailed', {title: 'E-Commerce',error:err_msg,login:login,user:user});
 						}
 						var abbuf = new Buffer(data,'base64');
 						// Write buffer to jar file
 						fs.writeFileSync(abpath,abbuf);
-
-						res.render('checkoutsucceed',{title: 'E-Commerce',login: login,user:user});				
+						console.timeEnd("Req");
+						res.render('checkoutsucceed',{title: 'E-Commerce',login: login,user:user});
 					})
 					//}
 				}
@@ -64,7 +66,7 @@ exports.purchase = function(req, res){
 		} else {
 			var err_msg = new Array();
 			err_msg.push("AB not found for this user");
-			res.render('checkoutfailed', {title: 'E-Commerce', login: login, user: user, error:err_msg});				
+			res.render('checkoutfailed', {title: 'E-Commerce', login: login, user: user, error:err_msg});
 		}
 
 	});

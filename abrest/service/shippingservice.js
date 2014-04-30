@@ -28,6 +28,7 @@ for(index=4000;index<5000;index++){
 
 // User pays money to service
 server.put('/ship',function (req, res, next) {
+	console.time("Req");
 
 	if (req.params.abfile === undefined) {
 		console.log('ERROR: AB Not Received');
@@ -58,7 +59,7 @@ server.put('/ship',function (req, res, next) {
 				}
 			callback();
 			})
-		},	
+		},
 		// Found a port that is available
 		function (err) {
 
@@ -129,6 +130,7 @@ server.put('/ship',function (req, res, next) {
 							console.log("LOG: Package #"+ship_id+" has been shipped for customer "+name+" at address: "+address);
 
 							// Send OK back, as well as the active bundle
+							console.timeEnd("Req");
 							res.send(200, abfileRet);
 							return next();
 						});
