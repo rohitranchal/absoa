@@ -1,0 +1,8 @@
+This tests the AB - Service interaction rtt. E-com sends AB to bank service and bank processes and responds.
+E-com then sends AB to ship service and then ship processes and responds.
+E-com then responds back to user.
+
+Start E-com service using start_dev in main directory
+Start bank and ship service using start_bank and start_ship in service directory in main directory
+Run rtt_test to send apache bench requests
+Try different parameters in apache bench and different get values for enabling different policies
