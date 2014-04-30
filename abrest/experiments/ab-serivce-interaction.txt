@@ -1,3 +1,13 @@
+1. Test it with another httpperf and use keep-alive option
+
+2. For concurrent testing, we need multiple jars and try it and see the results and then change other tests accordingly
+
+3. Another Baseline: e-com authentication with other services and e-com authorization for items
+
+
+
+
+
 Ubuntu Desktop
 Processor: Intel Core i7 CPU 860 @ 2.80 GHz x 8
 Memory: 8 GB
