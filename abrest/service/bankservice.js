@@ -31,7 +31,7 @@ for(index=4000;index<5000;index++){
 
 // User pays money to service
 server.put('/pay',function (req, res, next) {
-	console.time("Req");
+	//console.time("Req");
 	if (req.params.abfile === undefined) {
 		console.log('ERROR: AB Not Received');
 		return next(new restify.InvalidArgumentError('Active Bundle must be supplied'))
@@ -123,8 +123,8 @@ server.put('/pay',function (req, res, next) {
 							// request can use
 							portQ.enqueue(port);
 
-							var buf = fs.readFileSync(abname);
-							var abfileRet = buf.toString('base64');
+							//var buf = fs.readFileSync(abname);
+							//var abfileRet = buf.toString('base64');
 							// Delete active bundle
 							fs.unlink(abname);
 
@@ -147,11 +147,12 @@ server.put('/pay',function (req, res, next) {
 								}
 								else if(cb==1){
 									console.log("LOG: $%d was successfully deducted from %s's account.",money,name);
-									var retMsg = {
-										'abfile':abfileRet
-									}
-									console.timeEnd("Req");
-									res.send(200, abfileRet);
+									var retMsg = "OK";
+									// var retMsg = {
+									// 	'abfile':abfileRet
+									// }
+									//console.timeEnd("Req");
+									res.send(200, retMsg);
 								}
 							});
 

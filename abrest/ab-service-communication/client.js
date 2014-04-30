@@ -9,7 +9,7 @@ var async = require('async');
 // Input: a list of attributes, e.g. name, credit_card_number; port number
 // Output: a list the results
 
-exports.getValue = function(attrs,port,callback){
+exports.getValue = function(attrs,port,callback) {
 
 	var connection = thrift.createConnection('localhost', port);
 	var client = thrift.createClient(abservice, connection);
@@ -20,54 +20,45 @@ exports.getValue = function(attrs,port,callback){
 		console.error(err);
 	});
 
-	// GetSLA
-	client.getSLA(function(err, response) {
-		if(err) {
-			console.error(err);
-		} else {
-			//console.log('Client: get SLA', response);
+		// AuthenticateChallenge
+		client.authenticateChallenge(function(err, response) {
+			if(err) {
+				console.error(err);
+			} else {
+				var encoded_msg = response;
+				// Decode
+				var decoded_msg = new Buffer(encoded_msg, 'base64');
+				//console.log('Client: decoded auth challenge: ', decoded_msg.toString());
 
-			// AuthenticateChallenge
-			client.authenticateChallenge(function(err, response) {
-				if(err) {
-					console.error(err);
-				} else {
-					var encoded_msg = response;
-					// Decode
-					var decoded_msg = new Buffer(encoded_msg, 'base64');
-					//console.log('Client: decoded auth challenge: ', decoded_msg.toString());
+				// Sign and encode
+				var signed_chall = signData(decoded_msg);
 
-					// Sign and encode
-					var signed_chall = signData(decoded_msg);
+				// Get Certificate
+				var cert = getCert();
 
-					// Get Certificate
-					var cert = getCert();
-
-					// Get session
-					client.authenticateResponse(encoded_msg, signed_chall, cert, function(err,response){
-						var session_key = response.sessionKey;
-						var session_id = response.sessionID;
-						//console.log("Session ID: " + session_id);
-						var i = 0;
-						async.whilst(
-							function () { return i < attrs.length; },
-							function (callback) {
-									client.getValue(session_id, attrs[i], function(err,data){
-										retMap[i] = data;
-										i++;
-										setTimeout(callback,1);
-									});
-							},
-							function (err) {
-								callback(retMap);
-							}
-							);
-					});
-				}
-			});
-		}
-	});
-}
+				// Get session
+				client.authenticateResponse(encoded_msg, signed_chall, cert, function(err,response){
+					var session_key = response.sessionKey;
+					var session_id = response.sessionID;
+					//console.log("Session ID: " + session_id);
+					var i = 0;
+					async.whilst(
+						function () { return i < attrs.length; },
+						function (callback) {
+								client.getValue(session_id, attrs[i], function(err,data){
+									retMap[i] = data;
+									i++;
+									callback();
+								});
+						},
+						function (err) {
+							callback(retMap);
+						}
+						);
+				});
+			}
+		});
+	};
 
 function signData(msg) {
 	var crypto = require('crypto');

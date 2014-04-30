@@ -2,7 +2,7 @@ var db = require('../db');
 var fs = require('fs');
 var restify = require('restify');
 
-console.time("Req");
+//console.time("Req");
 
 exports.purchase = function(req, res){
 	// session info
@@ -38,11 +38,11 @@ exports.purchase = function(req, res){
 					// Payment was successful, now use shipping service
 					//
 					var shipclient = restify.createStringClient({
-						url: 'http://128.10.130.88:1300'
+						url: 'http://localhost:1300'
 					});
 
 					var ship_option =
-					{ 'abfile': data,
+					{ 'abfile': abfileStr,
 						'content-encoding': 'gzip'
 					};
 
@@ -55,8 +55,8 @@ exports.purchase = function(req, res){
 						}
 						var abbuf = new Buffer(data,'base64');
 						// Write buffer to jar file
-						fs.writeFileSync(abpath,abbuf);
-						console.timeEnd("Req");
+						//fs.writeFileSync(abpath,abbuf);
+						//console.timeEnd("Req");
 						res.render('checkoutsucceed',{title: 'E-Commerce',login: login,user:user});
 					})
 					//}
