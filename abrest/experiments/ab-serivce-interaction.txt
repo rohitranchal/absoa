@@ -7,7 +7,6 @@
 
 
 
-
 Ubuntu Desktop
 Processor: Intel Core i7 CPU 860 @ 2.80 GHz x 8
 Memory: 8 GB
