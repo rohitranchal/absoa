@@ -28,6 +28,7 @@ for(index=4000;index<5000;index++){
 
 // User pays money to service
 server.put('/ship',function (req, res, next) {
+	//console.time("Req");
 
 	if (req.params.abfile === undefined) {
 		console.log('ERROR: AB Not Received');
@@ -58,7 +59,7 @@ server.put('/ship',function (req, res, next) {
 				}
 			callback();
 			})
-		},	
+		},
 		// Found a port that is available
 		function (err) {
 
@@ -102,7 +103,7 @@ server.put('/ship',function (req, res, next) {
 						// AB is running
 						// TODO: Query the Active Bundle to get the shipping address, email
 						var attr1 = "ab.user.name";
-						var attr2 = "ab.user.shipping.address";
+						var attr2 = "ab.user.shipping.preference";
 						var inputList = new Array();
 						inputList.push(attr1);
 						inputList.push(attr2);
@@ -117,11 +118,11 @@ server.put('/ship',function (req, res, next) {
 							// request can use
 							portQ.enqueue(port);
 
-							var buf = fs.readFileSync(abname);
-							var abfileRet = buf.toString('base64');
+							//var buf = fs.readFileSync(abname);
+							//var abfileRet = buf.toString('base64');
 							// Delete active bundle
 							fs.unlink(abname);
-
+							var ret_msg = "OK";
 							// Generate a fake package id.
 							var ship_id = Math.floor((Math.random()*10000000)+1);
 							ship_id = leftPad(ship_id);
@@ -129,7 +130,8 @@ server.put('/ship',function (req, res, next) {
 							console.log("LOG: Package #"+ship_id+" has been shipped for customer "+name+" at address: "+address);
 
 							// Send OK back, as well as the active bundle
-							res.send(200, abfileRet);
+							//console.timeEnd("Req");
+							res.send(200, ret_msg);
 							return next();
 						});
 					});
