@@ -61,8 +61,6 @@ server.get('/get',function (req, res, next) {
 			if(!exist){
 				fs.writeFileSync(abname, fs.readFileSync("../../abfiles/user1.jar"));
 			}
-			
-
 
 			// Run the Active Bundle
 			var child =	spawn("java",["-jar",abname,port]);
