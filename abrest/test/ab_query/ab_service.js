@@ -22,7 +22,8 @@ server.use(restify.CORS());
 var service_port = 1200;
 var ip_addr = 'localhost';
 var portQ = new Queue();
-var queryList = ["name","creditcard","shipping.preference","shipping.address","creditcard.type"];
+//var queryList = ["name","creditcard","shipping.preference","shipping.address","creditcard.type"];
+var queryList = ["creditcard","shipping.preference","creditcard.type"];
 
 
 var index;
