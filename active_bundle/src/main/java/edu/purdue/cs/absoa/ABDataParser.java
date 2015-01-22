@@ -14,7 +14,7 @@ public class ABDataParser
 
 	public ABDataParser(InputStream aFileName, String dType) 
 	{
-		fFilePath = aFileName;	   
+		fFilePath = aFileName;
 		dataType = dType;
 	}
 
@@ -45,18 +45,10 @@ public class ABDataParser
 		else {
 			log("Empty or invalid line. Unable to process.");
 		}
+		scanner.close();
 	}
-
-	// PRIVATE 
-//	private final Path fFilePath;
-
 
 	private static void log(Object aObject){
 		System.out.println(String.valueOf(aObject));
-	}
-
-	private String quote(String aText){
-		String QUOTE = "'";
-		return QUOTE + aText + QUOTE;
 	}
 } 

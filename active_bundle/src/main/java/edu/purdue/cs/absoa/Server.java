@@ -7,7 +7,7 @@ import org.apache.thrift.transport.TTransportException;
 
 public class Server {
 
-	private static int ABPort;
+	public static int ABPort;
 
 	private void start() {
 		try {
@@ -15,7 +15,7 @@ public class Server {
 			ABService.Processor processor = new ABService.Processor(new ABServiceHandler());
 			TServer server = new TThreadPoolServer(new TThreadPoolServer.Args(
 					serverTransport).processor(processor));
-			System.out.println("Starting server on port: " + ABPort);
+			System.out.println("Starting AB on port: " + ABPort);
 			server.serve();
 		} catch (TTransportException e) {
 			e.printStackTrace();

@@ -32,61 +32,65 @@ public class ABClient
 			ABService.Client client = new ABService.Client(protocol);
 			transport.open();
 
-			ABSLA abSLA = client.getSLA();			
-			System.out.println("AB SLA num requests: " + abSLA.numRequests);			
+			/* Get SLA from AB */
+//			ABSLA abSLA = client.getSLA();			
+//			System.out.println("AB SLA num requests: " + abSLA.numRequests);
 			
+			/* Get token from AB to start authentication */
 			String encodedMsg = client.authenticateChallenge();
-			//	System.out.println("Received token: " + encodedMsg);
 			byte[] tok = dataDecode(encodedMsg);
-			System.out.println("Decoded token: " + tok);
+//			System.out.println("Client: Decoded token: " + new String(tok));
 
 			byte[] signedChall = signData(tok);
-				System.out.println("Signed token: " + signedChall);			
+			// System.out.println("Signed token: " + signedChall);			
 			String encodedSignedChall = dataEncode(signedChall);
-			System.out.println("Encoded Signed token: " + encodedSignedChall);			
+//			System.out.println("Encoded Signed token: " + encodedSignedChall);		
 
 			String storePath = "service1/abstore.ks";			
 			byte[] serviceCert = loadCertificateStore(storePath);
-			//	System.out.println("Certificate: " + serviceCert);			
+//			System.out.println("Certificate: " + serviceCert);			
 			String encodeCert = dataEncode(serviceCert);
-			//	System.out.println("Encoded Certificate: " + encodeCert);
-
-			//String encodedSessionID = client.authenticateResponse(encodedMsg, encodedSignedChall, encodeCert);
-			ABObject abSessionObject = client.authenticateResponse(encodedMsg, encodedSignedChall, encodeCert);
+//			System.out.println("Client: Encoded Certificate: " + encodeCert);
 			
-			System.out.println("AB Object received on service: " + abSessionObject.sessionID + abSessionObject.sessionKey);
+			/* Send signed token and establish session with AB */
+			ABObject abSessionObject = client.authenticateResponse(encodedMsg, encodedSignedChall, encodeCert);
+//			System.out.println("Client: AB Object: " + abSessionObject.sessionID);
 
-			KeyStore kStore = KeyStore.getInstance(KeyStore.getDefaultType());
-			char[] password = "absoa1".toCharArray();			
-			InputStream fStream;			
-			try {
-				fStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("service1/abstore.ks");
-				kStore.load(fStream, password);
-				fStream.close();
-			} catch(Exception e) {
-				e.printStackTrace();
-			}			
-			Key myKey =  kStore.getKey("service1", password);
-			PrivateKey myPrivateKey = (PrivateKey)myKey;
+//			KeyStore kStore = KeyStore.getInstance(KeyStore.getDefaultType());
+//			char[] password = "absoa1".toCharArray();			
+//			InputStream fStream;			
+//			try {
+//				fStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("service1/abstore.ks");
+//				kStore.load(fStream, password);
+//				fStream.close();
+//			} catch(Exception e) {
+//				e.printStackTrace();
+//			}			
+//			Key myKey =  kStore.getKey("service1", password);
+//			PrivateKey myPrivateKey = (PrivateKey)myKey;
 
 			if(abSessionObject != null) {
-				byte[] sessionKey = dataDecode(abSessionObject.sessionKey);
-				byte[] decryptedText = null;
-				try {
-					final Cipher cipher = Cipher.getInstance("RSA");
-					cipher.init(Cipher.DECRYPT_MODE, myPrivateKey);
-					decryptedText = cipher.doFinal(sessionKey);
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}					
-				System.out.println("Session key received on Service: " + new String(decryptedText));
-				String abName = client.getValue(abSessionObject.sessionID, "ab.user.name");
+//				byte[] sessionKey = dataDecode(abSessionObject.sessionKey);
+//				byte[] decryptedText = null;
+//				try {
+//					final Cipher cipher = Cipher.getInstance("RSA");
+//					cipher.init(Cipher.DECRYPT_MODE, myPrivateKey);
+//					decryptedText = cipher.doFinal(sessionKey);
+//				} catch (Exception ex) {
+//					ex.printStackTrace();
+//				}					
+//				System.out.println("Client: Session key: " + new String(decryptedText));
+				
+				/* Get value from AB using session id and data key */
+				String abName = client.getValue(abSessionObject.sessionID, "ab.user.name");				
 				String abAddr = client.getValue(abSessionObject.sessionID, "ab.user.shipping.address");
 				String abShipPref = client.getValue(abSessionObject.sessionID, "ab.user.shipping.preference");
 				String abCCard = client.getValue(abSessionObject.sessionID, "ab.user.creditcard");
 				String abCCardType = client.getValue(abSessionObject.sessionID, "ab.user.creditcard.type");
-				System.out.println("AB Data Name: " + abName + " Addr: " + abAddr + " CCard: " + abCCard + " CardType: " + abCCardType + " ShipPref: " + abShipPref);
-				//System.out.println("AB Data Name: " + abName + " Addr: " + abAddr + " CCard: " + abCCard + " CardType: " + abCCardType);
+				System.out.println("Client: Data - Name: " + abName + " Addr: " + abAddr + " CCard: " + abCCard + " CardType: " + abCCardType + " ShipPref: " + abShipPref);
+//				System.out.println("Client: Data - Name: " + abName + " - ShipPref: " + abShipPref);
+				String abZip = client.getValue(abSessionObject.sessionID, "ab.user.zip");
+				System.out.println("Client: Data - Zip: " + abZip);
 			} else 	System.out.println("Null Session ID received on Service ");
 
 			transport.close();
@@ -107,14 +111,17 @@ public class ABClient
 		kStore.load(storeFile, storePass.toCharArray());
 		X509Certificate serviceCert = (X509Certificate)kStore.getCertificate("service1");
 
-		//ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		OutputStream bos = new ByteArrayOutputStream();
-		//ObjectOutputStream out = new ObjectOutputStream(bos); 
-		bos.write(serviceCert.getEncoded());
-		//out.writeObject(serviceCert);
-		//byte[] data = bos.toByteArray();
-		byte[] data = bos.toString().getBytes();
+//		OutputStream bos = new ByteArrayOutputStream();
+//		bos.write(serviceCert.getEncoded());
+//		byte[] data = bos.toString().getBytes();
+//		bos.close();
+		
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ObjectOutputStream out = new ObjectOutputStream(bos); 
+		out.writeObject(serviceCert);
+		byte[] data = bos.toByteArray();
 		bos.close();
+		
 		return data;
 	}
 

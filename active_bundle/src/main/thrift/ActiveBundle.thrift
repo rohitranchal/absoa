@@ -21,6 +21,5 @@ service ABService
 	string authenticateChallenge(),
 	ABObject authenticateResponse(1:string challenge, 2:string signedChallenge, 3:string certificate),
 	string getValue(1:string sessionKey, 2:string dataKey),
-	bool append(1:string key, 2:string data),
 	ABSLA getSLA()	
 }

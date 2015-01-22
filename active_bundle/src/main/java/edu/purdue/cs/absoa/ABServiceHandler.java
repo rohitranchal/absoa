@@ -10,17 +10,13 @@ import java.io.InputStream;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.URL;
 import java.security.PublicKey;
 import java.security.Signature;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
@@ -30,7 +26,6 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.thrift.TException;
 
 import sun.misc.BASE64Decoder;
@@ -38,44 +33,13 @@ import sun.misc.BASE64Encoder;
 
 public class ABServiceHandler implements ABService.Iface 
 {
+	/* Class variables - AB data structures */
 	private static Set<String> issuedTokenSet = new HashSet<String>();	
 	private static HashMap<String, String> abData = new HashMap<String, String>();
 	private static HashMap<String, String> abSLA = new HashMap<String, String>();
 	private static HashMap<String, ABSession> sessionList = new HashMap<String, ABSession>();
 
-	public ABServiceHandler()
-	{
-		/*
-		 * Read data and sla from respective files
-		 */
-		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("data.txt");
-		ABDataParser parser = new ABDataParser(is, "data");		
-		try {
-			parser.processLineByLine();
-
-			is = Thread.currentThread().getContextClassLoader().getResourceAsStream("sla.txt");
-			parser = new ABDataParser(is, "sla");
-			parser.processLineByLine();
-
-			/*
-			 * Check policy requirements
-			 */		
-			Date currDate = new Date();
-			String expiration = getABSLA("ab.expiretime");
-			Date expireDate = new SimpleDateFormat("yyyy.MM.dd.HH:mm:ss", Locale.ENGLISH).parse(expiration);
-			if (currDate.compareTo(expireDate) > 0)
-			{
-				System.out.println("currDate is after expireDate");
-				// Need to do exit here and AB should delete itself
-				System.exit(1);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}		
-
-
-	}
-
+	/* Getters and setters for data structures */
 	public static void setABData(String abkey, String abvalue)
 	{
 		abData.put(abkey, abvalue);
@@ -95,55 +59,81 @@ public class ABServiceHandler implements ABService.Iface
 	{
 		return abSLA.get(abkey);
 	}
+	
+	/* Constructor - Initialize AB */
+	public ABServiceHandler()
+	{
+		/* Read data from data file */
+		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("data.txt");
+		ABDataParser parser = new ABDataParser(is, "data");
+		try {
+			parser.processLineByLine();
+			
+			/* Read sla from sla file */
+			is = Thread.currentThread().getContextClassLoader().getResourceAsStream("sla.txt");
+			parser = new ABDataParser(is, "sla");
+			parser.processLineByLine();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/* AB API */
+	public ABSLA getSLA() throws TException 
+	{
+		ABSLA abSLA = new ABSLA();
+		String str = getABSLA("ab.activetime");
+		abSLA.activeTime = Integer.parseInt(str);
+		str = getABSLA("ab.numrequests");
+		abSLA.numRequests = Integer.parseInt(str);
+		abSLA.expirationTime = getABSLA("ab.expiretime");
+		return abSLA;
+	}
 
 	public String authenticateChallenge() throws TException
 	{	
+		// java.util.Date start = new java.util.Date();
+		// System.out.println(Server.ABPort + ": Authenticate Challenge Start: " + start.getTime());
 		String strTok = generateToken();
-		//String strTok = "active bundle";
-		System.out.println("Generated token: " + strTok);
+//		System.out.println("Server: authChallenge token: " + strTok);
 		issuedTokenSet.add(strTok);
-		String encodedTok;
 		try {
-			encodedTok = dataEncode(strTok.getBytes());
-			//	System.out.println("Encoded token: " + encodedTok);
-			//ABSession abs = new ABSession();
-			//String dt = abs.serialize(strTok);
+			String encodedTok = dataEncode(strTok.getBytes());
+			// java.util.Date end = new java.util.Date();
+			// System.out.println(Server.ABPort + ": Authenticate Challenge End: " + end.getTime());
 			return encodedTok;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
-		}		
+		}
 	}
 
 	public ABObject authenticateResponse(String challenge, String signedChallenge, String certificate) throws TException 
-	{		
+	{	
+		// java.util.Date start = new java.util.Date();
+		// System.out.println(Server.ABPort + ": Authenticate Response Start: " + start.getTime());
 		try {
-			System.out.println("Encoded Signed Chall: " + signedChallenge);
-			byte[] decodeChall = dataDecode(signedChallenge);
-			System.out.println("Decode Chall: " + decodeChall);			
+			byte[] decodeChall = dataDecode(signedChallenge);	
 			byte[] decodeCert = dataDecode(certificate);
-			System.out.println("Decode Cert: " + decodeCert);			
 			byte[] decodeToken = dataDecode(challenge);
 
-			//String storePath = "/Users/rohitranchal/Dropbox/Developer/workspace/absoa/keys/CA/ABCACert.cert";
 			String storePath = "CA/ABCACert.cert";
 			byte[] CACert = loadCertificateFile(storePath);
 
 			if (validateSignature(decodeToken, decodeChall, decodeCert, CACert)) {
-				System.out.println("Token sign and Service cert verified");
+				System.out.println("AB: authenticated");
 				byte[] sessionKey = generateSessionKey(decodeCert);
-				String sessionID = generateToken();				
-				//	System.out.println("Session ID Created: " + sessionID);
-				//sessionIDList.put(certificate, sessionID);				
+				String sessionID = generateToken();
 				ABSession abs = new ABSession();
 				abs.setSessionKey(sessionKey);
 				abs.setServiceCert(decodeCert);
-				// we need to look up this cert based on session ID
 				sessionList.put(sessionID, abs); 				
 				ABObject abo = new ABObject(sessionID, dataEncode(sessionKey));
-
+//				System.out.println("AB: authResponse - sessionID: " + sessionID + " - sessionKey: " + sessionKey);
+				// java.util.Date end = new java.util.Date();
+				// System.out.println(Server.ABPort + ": Authenticate Response End: " + end.getTime());
 				return abo;
-				//return dataEncode(sessionID);
 			} else {			
 				return null; 
 			}
@@ -156,22 +146,8 @@ public class ABServiceHandler implements ABService.Iface
 	private byte[] loadCertificateFile(String path) throws Exception
 	{
 		CertificateFactory certificatefactory = CertificateFactory.getInstance("X.509");
-		//final FileInputStream certFile = new FileInputStream(path);
-		final InputStream certFile;			
-		certFile = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
+		final InputStream certFile = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
 		X509Certificate caCert = (X509Certificate)certificatefactory.generateCertificate(certFile);
-		//		
-		//		System.out.println("---Certificate---");
-		//        System.out.println("type = " + caCert.getType());
-		//        System.out.println("version = " + caCert.getVersion());
-		//        System.out.println("subject = " + caCert.getSubjectDN().getName());
-		//        System.out.println("valid from = " + caCert.getNotBefore());
-		//        System.out.println("valid to = " + caCert.getNotAfter());
-		//        System.out.println("serial number = " + caCert.getSerialNumber().toString(16));
-		//        System.out.println("issuer = " + caCert.getIssuerDN().getName());
-		//        System.out.println("signing algorithm = " + caCert.getSigAlgName());
-		//        System.out.println("public key algorithm = " + caCert.getPublicKey().getAlgorithm());
-
 		certFile.close();
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -179,46 +155,51 @@ public class ABServiceHandler implements ABService.Iface
 		out.writeObject(caCert);
 		byte[] data = bos.toByteArray(); 
 		bos.close();		
-		return data;			
+		return data;
 	}
 
 	private static boolean validateSignature(byte[] token, byte[] signedMessage, byte[] certificate, byte[] CAcertificate) throws Exception
 	{
-		X509Certificate cert;
-		InputStream bis = new ByteArrayInputStream(certificate); 
-		//Certificate cert = CertificateFactory.getInstance("X.509").generateCertificate(bis);
-		CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
-		cert = (X509Certificate)certFactory.generateCertificate(bis);			
-		bis.close();		
+//		InputStream bis = new ByteArrayInputStream(certificate);
+//		CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
+//		X509Certificate cert = (X509Certificate)certFactory.generateCertificate(bis);
+//		bis.close();
+		
+		ByteArrayInputStream bis = new ByteArrayInputStream(certificate);
+		ObjectInput in = new ObjectInputStream(bis);
+		X509Certificate cert = (X509Certificate) in.readObject(); 
+		bis.close();
 
 		try {
-			cert.checkValidity(); // checks that the cert is valid against current datatime
+			cert.checkValidity();
 		} catch(Exception e) {
-			throw new CertificateException("Service Certificate has expired",e);
+			throw new CertificateException("Service Certificate has expired", e);
 		}
 
 		ByteArrayInputStream cabis = new ByteArrayInputStream(CAcertificate);
 		ObjectInput cain = new ObjectInputStream(cabis);
-		X509Certificate cacert = (X509Certificate) cain.readObject(); 
-		//System.out.println("CA subject dn: " + cacert.getSubjectDN());
+		X509Certificate cacert = (X509Certificate) cain.readObject();
 		cabis.close();  
 
 		if(cert.getIssuerDN().equals(cacert.getSubjectDN())) {
 			try {
 				cert.verify(cacert.getPublicKey());                             
 			} catch(Exception e) {
-				throw new CertificateException("Certificate not signed by AB CA",e);
+				throw new CertificateException("Certificate not signed by AB CA", e);
 			}
 
 			PublicKey pubKey = cert.getPublicKey();
 			Signature verifySign = Signature.getInstance("SHA256withRSA");
 			verifySign.initVerify(pubKey);
-			//verifySign.update(tokenList.get("service1").getBytes());
 			if (issuedTokenSet.contains(new String(token))) {
 				verifySign.update(token);
-				return verifySign.verify(signedMessage);                                        
-			} else System.out.println("Wrong token");                       
-		} else System.out.println("Service Issuer doesn't match CA Subject");
+				return verifySign.verify(signedMessage);                                  
+			} else {
+				System.out.println("Wrong token");                       
+			}
+		} else {
+			System.out.println("Service Issuer doesn't match CA Subject");
+		}
 
 		return false;
 	}
@@ -233,14 +214,16 @@ public class ABServiceHandler implements ABService.Iface
 			ObjectOutputStream out = new ObjectOutputStream(bos);   
 			out.writeObject(aesKey);
 			byte[] data = bos.toByteArray(); 
-			bos.close();	
+			bos.close();
 
-			System.out.println("Session Key created on server: " + new String(data));
-
-			X509Certificate cert;
-			InputStream bis = new ByteArrayInputStream(serviceCert); 
-			CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
-			cert = (X509Certificate)certFactory.generateCertificate(bis);			
+//			InputStream bis = new ByteArrayInputStream(serviceCert); 
+//			CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
+//			X509Certificate cert = (X509Certificate)certFactory.generateCertificate(bis);			
+//			bis.close();
+			
+			ByteArrayInputStream bis = new ByteArrayInputStream(serviceCert);
+			ObjectInput in = new ObjectInputStream(bis);
+			X509Certificate cert = (X509Certificate)in.readObject(); 
 			bis.close();
 
 			PublicKey serviceKey = cert.getPublicKey();
@@ -261,6 +244,8 @@ public class ABServiceHandler implements ABService.Iface
 
 	public String getValue(String sessionID, String dataKey) throws TException 
 	{	
+//		java.util.Date start = new java.util.Date();
+//		System.out.println(Server.ABPort + ": Get Value Start: " + start.getTime());
 		if(sessionList.containsKey(sessionID)) {
 			if (dataKey.equals("ab.user.creditcard")) {
 				String policy = "policies/policy_creditcard_limit.xml";
@@ -270,9 +255,12 @@ public class ABServiceHandler implements ABService.Iface
 				params.put("#ABCLIENT#", "bankfpr");
 				params.put("#ABENVIRONMENT#", "9999");
 				String resp = PDP(policy, req, params);
-				if (resp.equals("Permit") && !abData.isEmpty()) 
+				if (resp.equals("Permit") && !abData.isEmpty()) {
+//					java.util.Date end = new java.util.Date();
+//					System.out.println(Server.ABPort + ": Get Value End: " + end.getTime());
+					System.out.println("AB: Data - " + ABServiceHandler.getABData(new String(dataKey)));
 					return ABServiceHandler.getABData(new String(dataKey));
-				else return null;				
+				} else return null;				
 			} else if (dataKey.equals("ab.user.creditcard.type")) {
 				String policy = "policies/policy_creditcard_type.xml";
 				String req = "requests/req_creditcard_type.xml";
@@ -280,9 +268,12 @@ public class ABServiceHandler implements ABService.Iface
 				params.put("#ABRESOURCE#", "ab.user.creditcard.type");
 				params.put("#ABCLIENT#", "ecomfpr");
 				String resp = PDP(policy, req, params);
-				if (resp.equals("Permit") && !abData.isEmpty()) 
+				if (resp.equals("Permit") && !abData.isEmpty()) {
+//					java.util.Date end = new java.util.Date();
+//					System.out.println(Server.ABPort + ": Get Value End: " + end.getTime());
+					System.out.println("AB: Data - " + ABServiceHandler.getABData(new String(dataKey)));
 					return ABServiceHandler.getABData(new String(dataKey));
-				else return null;			
+				} else return null;			
 			} else if (dataKey.equals("ab.user.shipping.preference")) {
 				String policy = "policies/policy_shipping_preference.xml";
 				String req = "requests/req_shipping_preference.xml";
@@ -290,18 +281,31 @@ public class ABServiceHandler implements ABService.Iface
 				params.put("#ABRESOURCE#", "ab.user.shipping.preference");
 				params.put("#ABCLIENT#", "shipfpr");
 				String resp = PDP(policy, req, params);
-				if (resp.equals("Permit") && !abData.isEmpty()) 
+				if (resp.equals("Permit") && !abData.isEmpty()) {
+//					java.util.Date end = new java.util.Date();
+//					System.out.println(Server.ABPort + ": Get Value End: " + end.getTime());
+					System.out.println("AB: Data - " + ABServiceHandler.getABData(new String(dataKey)));
 					return ABServiceHandler.getABData(new String(dataKey));
-				else return null;			
+				} else return null;			
 			} else {			
-				if (!abData.isEmpty()) 
+				if (!abData.isEmpty()) {
+//					java.util.Date end = new java.util.Date();
+//					System.out.println(Server.ABPort + ": Get Value End: " + end.getTime());
+					System.out.println("AB: Data - " + ABServiceHandler.getABData(new String(dataKey)));
 					return ABServiceHandler.getABData(new String(dataKey));
-				else return null;
+				} else return null;
 			}
 		}
 		return null;			
 	}
 
+	/* Helper utilities */
+	public static String generateToken()
+	{	
+		String id = UUID.randomUUID().toString();
+		return id;    	
+	}
+	
 	public String PDP(String policy, String req, HashMap<String, String> params)
 	{
 		InputStream policyStream = getClass().getClassLoader().getResourceAsStream(policy);
@@ -322,7 +326,6 @@ public class ABServiceHandler implements ABService.Iface
 			request = request.replace(entry.getKey(), entry.getValue());
 		}
 		String res = controller.evaluate(polPath, request);
-		//System.out.println("Policy: " + policy + " AC Resp: " + res);
 		return res;		 
 	}
 
@@ -346,12 +349,6 @@ public class ABServiceHandler implements ABService.Iface
 		return tmpPath;
 	}
 
-	public static String generateToken()
-	{	
-		String id = UUID.randomUUID().toString();
-		return id;    	
-	}
-
 	private static String dataEncode(byte[] byteTok) throws Exception
 	{
 		return new BASE64Encoder().encode(byteTok);	
@@ -362,20 +359,8 @@ public class ABServiceHandler implements ABService.Iface
 		return new BASE64Decoder().decodeBuffer(strData);
 	}
 
-	public ABSLA getSLA() throws TException 
-	{
-		ABSLA abSLA = new ABSLA();
-		String str = getABSLA("ab.activetime");
-		abSLA.activeTime = Integer.parseInt(str);
-		str = getABSLA("ab.numrequests");
-		abSLA.numRequests = Integer.parseInt(str);
-		abSLA.expirationTime = getABSLA("ab.expiretime");			
-		return abSLA;
-	}
-
 	public boolean append(String key, String data) throws TException
 	{
 		return true;
 	}
-
 }
