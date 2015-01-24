@@ -1,0 +1,23 @@
+extends layout
+
+block append head
+	meta(http-equiv='X-UA-Compatible', content='IE=edge')
+
+	link(rel='stylesheet', href='http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css')
+	link(rel='stylesheet', href='/jqplot/jquery.jqplot.min.css')
+
+	script(src='/js/feedback_stats.js')
+	script(src='/jqplot/jquery.jqplot.min.js')
+	script(src='/jqplot/plugins/jqplot.dateAxisRenderer.min.js')
+
+block content
+	include nav
+
+	div(id='resource_id', style='visibility:hidden')=resource.res_id
+	div(id='resource_name', style='visibility:hidden')=resource.res_desc
+	div(class='container')
+		div(class='panel panel-default text-center')
+			h2 Resource Statistics
+		div(class='panel panel-default')
+			div(class='panel-body')
+				div(id='resource_data')

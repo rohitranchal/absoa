@@ -1,0 +1,27 @@
+body {
+	padding-top: 0;
+	margin-bottom: 80px;
+	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+	color: #00B7FF;
+}
+
+.page-header {
+	margin-top: 0;
+}
+
+.panel-body {
+	padding-top: 0;
+}
+
+.custom_margin {
+	margin: 10px;
+}
+
+.chart_margin {
+	margin-top: 10px;
+	margin-left: auto;
+	margin-right: auto;
+}

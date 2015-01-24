@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Using nodemon to auto restart program on a change
+if [[ $1 == "-n" ]]; then
+	echo "Starting Active Bundle Console...Nodemon mode...Debug mode..."
+	export DEBUG="console node ./bin/www"
+	nodemon ./bin/www
+
+# Run server in background and debug mode
+elif [[ $1 == "-bd" || $1 == "-db" ]]; then
+	echo "Starting Active Bundle Console...Background mode...Debug mode..."
+	export DEBUG="console node ./bin/www"
+	nohup npm start &
+
+# Run server in debug mode
+elif [[ $1 == "-d" ]]; then
+	echo "Starting Active Bundle Console...Debug mode..."
+	export DEBUG="console node ./bin/www"
+	npm start
+
+# Run server in background mode
+elif [[ $1 == "-b" ]]; then
+	echo "Starting Active Bundle Console...Background mode..."
+	nohup npm start &
+
+# Run server in foreground mode
+else
+	echo "Starting Active Bundle Console..."
+	npm start
+fi
+
+echo "Starting Active Bundle Console : DONE"
