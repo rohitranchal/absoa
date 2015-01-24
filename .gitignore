@@ -1,6 +1,6 @@
-/target
+target/
 
-/node_modules
+node_modules/
 
 # Can ignore specific files
 .DS_Store
@@ -9,6 +9,9 @@
 *~
 *.swp
 *.class
+*.project
+*.settings
+*.classpath
 
 #ignore object or archive files 
 *.[oa]

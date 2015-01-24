@@ -49,10 +49,10 @@ Test: Baseline
 (5 runs, each run with 50 reqs)
 
 No policy/ No Authent / No Authoriz
-Ubuntu Desktop - 89 + 89 + 90 + 88 + 89 = 89
-EC2 Medium     - 87 + 87 + 87 + 88 + 87 = 87
-EC2 Large      - 56 + 56 + 56 + 54 + 54 = 55
-EC2 XLarge     - 51 + 48 + 47 + 45 + 47 = 47
+Ubuntu Desktop - 89 + 89 + 90 + 88 + 89 = 89 = 0.09
+EC2 Medium     - 87 + 87 + 87 + 88 + 87 = 87 = 0.09
+EC2 Large      - 56 + 56 + 56 + 54 + 54 = 55 = 0.06
+EC2 XLarge     - 51 + 48 + 47 + 45 + 47 = 47 = 0.05
 
 
 Test: AB RTT
