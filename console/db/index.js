@@ -9,6 +9,24 @@ var connection = mysql.createConnection({
 });
 connection.connect();
 
+/* Get info for all services */
+exports.get_services = function(cb) {
+	var query = "SELECT * FROM Service";
+	connection.query(query, function(err, rows, fields) {
+		if (err) throw err;
+		cb(rows);
+	});
+}
+
+/* Update service params */
+exports.update_service = function(obj) {
+	var query = "UPDATE Service SET rating= " + obj.rating + ", trust_level=" + obj.trust + ", req_data='" + obj.data + "' WHERE id=" + obj.sid;
+	connection.query(query, function(err, rows, fields) {
+		if (err) throw err;
+	});
+}
+
+/* ================================================ */
 
 /*
  * Returns the set of services that called the given
@@ -47,12 +65,7 @@ exports.get_service = function(id, cb) {
 	});
 }
 
-exports.get_services = function(cb) {
-	connection.query('SELECT * FROM Service', function(err, rows, fields) {
-		if (err) throw err;
-		cb(rows);
-	});
-}
+
 
 exports.get_service_id = function(name, cb) {
 	var sql = "SELECT id FROM Service WHERE name='" + name + "'";

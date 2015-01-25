@@ -1,0 +1,36 @@
+extends layout
+
+block append head
+	script(src='/js/service_form.js')
+
+block content
+	include nav
+
+	div(class="container")
+		div(class="panel panel-default text-center")
+			h2=service.name
+		div(class="panel panel-default")
+			div(class="panel-body")
+				//- form(class='form-horizontal' style='margin-top:20px')
+				form(class='form-horizontal form-head')
+					div(class='form-group')
+						label(class='col-sm-2 control-label') ID
+						div(class='col-xs-3')
+							p(class='form-control-static')=service.id
+					div(class='form-group')
+						label(for='rating' class='col-sm-2 control-label') Rating
+						div(class='col-xs-3')
+							input(type='text' class='form-control' id='rating' placeholder=service.rating)
+					div(class='form-group')
+						label(for='trust' class='col-sm-2 control-label') Trust
+						div(class='col-xs-3')
+							input(type='text' class='form-control' id='trust' placeholder=service.trust)
+					div(class='form-group')
+						label(for='req-data' class='col-sm-2 control-label') Data
+						div(class='col-xs-3')
+							select(id='req-data' class='form-control')
+								for entry in service.data
+									option=entry
+					div(class='form-group')
+						div(class='col-sm-offset-2 col-xs-3')
+							button(type='submit' class='btn btn-primary update-service') Submit
