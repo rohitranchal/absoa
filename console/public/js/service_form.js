@@ -12,7 +12,7 @@ $(document ).ready(function() {
 			trust	: trust,
 			data	: data,
 		}, function(data) {
-			window.location.href = '/services';
+			window.location.href = '/service_list';
 		});
 	});
 });

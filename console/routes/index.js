@@ -14,10 +14,15 @@ router.get('/', function(req, res) {
 	res.render('index', { title: 'Active Bundle Console' });
 });
 
+/* GET client page */
+router.get('/client', function(req, res) {
+	res.render('client', { title: 'Active Bundle Console' });	
+});
+
 /* GET service list page */
-router.get('/services', function(req, res) {
+router.get('/service_list', function(req, res) {
 	db.get_services(function(rows) {
-		res.render('services', { title: 'Active Bundle Console', entries: rows });
+		res.render('service_list', { title: 'Active Bundle Console', entries: rows });
 	});	
 });
 
@@ -29,12 +34,9 @@ router.get('/service', function(req, res) {
 	res.render('service', { title: 'Active Bundle Console', service: obj });	
 });
 
-/* GET client page */
-router.get('/client', function(req, res) {
-	// var obj = JSON.parse(JSON.stringify(req.query));
-	// obj.data = [];
-	// obj.data = req_data;
-	res.render('client', { title: 'Active Bundle Console' });	
+/* GET scenario list page */
+router.get('/scenario_list', function(req, res) {
+	res.send('scenario_list');
 });
 
 /* POST create ab */
@@ -67,6 +69,45 @@ router.post('/update_service', function(req, res) {
 		debug('POST update service: sid undefined');
 		res.send(400, 'Bad Request');
 	}	
+});
+
+/* POST update service */
+router.post('/toggle_service', function(req, res) {
+	var obj = req.body;
+	if (typeof obj.sid !== 'undefined' && obj.sid !== '') {
+		res.send('OK');
+	} else {
+		debug('POST toggle service: sid undefined');
+		res.send(400, 'Bad Request');
+	}
+
+	// var svc_id = req.body.service_id;
+
+	// db.get_service(svc_id, function(val){
+	// 	var svc_status = val['status'];
+	// 	var svc_exec = 'node ../' + val['source_path'] + '/app.js';
+
+	// 	if (svc_status == -1) {
+	// 		var exec = require('child_process').exec;
+	// 		chld_proc = exec(svc_exec);
+	// 		chld_proc.stdout.on('data', function (data) {
+	// 		  console.log(data);
+	// 		});
+	// 		chld_proc.stderr.on('data', function (data) {
+	// 		  console.log(data);
+	// 		});
+	// 		db.set_service_status(svc_id, chld_proc.pid);
+	// 		res.redirect('/service_list');
+	// 	} else {
+	// 		try {
+	// 			process.kill(svc_status);
+	// 		} catch(e) {
+	// 			console.error(e + ' Exception: Killing process with pid: ' + svc_status);
+	// 		}
+	// 		db.set_service_status(svc_id, -1);
+	// 		res.redirect('/service_list');
+	// 	}
+	// });
 });
 
 var generate_ab = function() {
