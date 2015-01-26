@@ -5,7 +5,9 @@ var fs = require('fs');
 var db = require('../db')
 
 var ab_gen = 'resources/AB-Gen.jar';
-var ab_template = 'resources/AB.jar'
+var ab_template = 'resources/AB-Template.jar'
+var ab_data = 'resources/AB-Data';
+var ab_path = 'resources/AB.jar';
 
 var req_data = [ 'name', 'address', 'credit card', 'email']
 
@@ -112,7 +114,7 @@ router.post('/toggle_service', function(req, res) {
 
 var generate_ab = function() {
 	var exec = require('child_process').exec;
-	ab_exec = 'java -jar ' + ab_gen + ' ' + ab_template;
+	ab_exec = 'java -jar ' + ab_gen + ' ' + ab_template + ab_data;
 	ab_proc = exec(ab_exec);
 	ab_proc.stdout.on('data', function (data) {
 		console.log(data);
