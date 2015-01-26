@@ -14,12 +14,6 @@ router.get('/', function(req, res) {
 	res.render('index', { title: 'Active Bundle Console' });
 });
 
-/* GET create ab page */
-router.get('/create', function(req, res) {
-	generate_ab();
-	res.send('OK');
-});
-
 /* GET service list page */
 router.get('/services', function(req, res) {
 	db.get_services(function(rows) {
@@ -35,9 +29,36 @@ router.get('/service', function(req, res) {
 	res.render('service', { title: 'Active Bundle Console', service: obj });	
 });
 
+/* GET client page */
+router.get('/client', function(req, res) {
+	// var obj = JSON.parse(JSON.stringify(req.query));
+	// obj.data = [];
+	// obj.data = req_data;
+	res.render('client', { title: 'Active Bundle Console' });	
+});
+
+/* POST create ab */
+router.post('/create', function(req, res) {
+	var key1 = req.body.datakey1;
+	var value1 = req.body.datavalue1;
+	var key2 = req.body.datakey2;
+	var value2 = req.body.datavalue2;
+	var key3 = req.body.datakey3;
+	var value3 = req.body.datavalue3;
+
+	if(key1 !== '' && value1 !== '') {
+		// generate_ab();
+		var msg = 'SUCCESS: AB Generated';
+		res.render('client', {title: 'E-Commerce', message: msg});
+	} else {
+		var msg = 'ERROR: missing data';
+		res.render('client', {title: 'E-Commerce', message: msg});
+	}
+	// always maintain path to the recently created AB so update global path to AB here when AB is created
+});
+
 /* POST update service */
 router.post('/update_service', function(req, res) {
-	console.log('here.............');
 	var obj = req.body;
 	if (typeof obj.sid !== 'undefined' && obj.sid !== '') {
 		db.update_service(obj);
@@ -47,7 +68,6 @@ router.post('/update_service', function(req, res) {
 		res.send(400, 'Bad Request');
 	}	
 });
-
 
 var generate_ab = function() {
 	var exec = require('child_process').exec;
