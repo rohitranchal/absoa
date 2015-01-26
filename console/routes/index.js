@@ -7,7 +7,7 @@ var db = require('../db')
 var ab_gen = 'resources/AB-Gen.jar';
 var ab_template = 'resources/AB-Template.jar'
 var ab_data = 'resources/AB-Data';
-var ab_path = 'resources/AB.jar';
+var ab_path = 'resources/AB-New.jar';
 
 var req_data = [ 'name', 'address', 'credit card', 'email']
 
