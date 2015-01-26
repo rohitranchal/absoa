@@ -114,7 +114,7 @@ router.post('/toggle_service', function(req, res) {
 
 var generate_ab = function() {
 	var exec = require('child_process').exec;
-	ab_exec = 'java -jar ' + ab_gen + ' ' + ab_template + ab_data;
+	ab_exec = 'java -jar ' + ab_gen + ' ' + ab_template + ' ' + ab_data  + ' ' + ab_path;
 	ab_proc = exec(ab_exec);
 	ab_proc.stdout.on('data', function (data) {
 		console.log(data);
