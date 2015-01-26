@@ -38,7 +38,7 @@ router.get('/service', function(req, res) {
 
 /* GET scenario list page */
 router.get('/scenario_list', function(req, res) {
-	res.render('scenario_list' { title: 'Active Bundle Console' });
+	res.render('scenario_list', { title: 'Active Bundle Console' });
 });
 
 /* POST create ab */
