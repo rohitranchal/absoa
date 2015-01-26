@@ -1,5 +1,8 @@
 extends layout
 
+block append head
+	script(src='/js/service_list.js')
+
 block content
 	include nav
 
@@ -16,6 +19,7 @@ block content
 						th Trust Level
 						th Data Requirement
 						th Status
+						th Toggle
 						th Edit
 					for entry in entries
 						tr
@@ -24,8 +28,10 @@ block content
 							td=entry.rating
 							td=entry.trust_level
 							td=entry.req_data
-							td=entry.status
 							td
-								div
-									a(href=('./service?id=' + entry.id + '&name=' + entry.display_name + '&rating=' + entry.rating + '&trust=' + entry.trust_level)) Edit
+								div(id=entry.id, class="svc_data")=entry.status
+							td
+								button(id="svc_" + entry.id, class="btn btn-success btn-sm") Start
+							td
+								a(href=('./service?id=' + entry.id + '&name=' + entry.display_name + '&rating=' + entry.rating + '&trust=' + entry.trust_level)) Edit
 
