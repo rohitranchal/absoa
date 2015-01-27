@@ -53,16 +53,23 @@ router.post('/create', function(req, res) {
 	var value3 = req.body.datavalue3;
 
 	if(key1 !== '' && value1 !== '') {
-		//uld: write key and value to ab_data file
-		//ab.user.<key1> = <value1>
-		var ab_record = ab_record_begins + key1 + ' = ' + value1 + '; \n';
+		//write key and value to ab_data file:  ab.user.<key1> = <value1>
+		var ab_record = ab_record_begins + key1 + ' = ' + value1 ;
 		res.render('client', {title: 'E-Commerce', message: ab_record});
-		fs.appendFile(ab_data, ab_record, function (err) {
+		fs.writeFile(ab_data, ab_record + "\n", function (err) {
   			if (err) return console.log(err);
   			console.log('ab_data file has been created');
 		});
-
-
+		var ab_record2 = ab_record_begins + key2 + ' = ' + value2 ;
+		fs.appendFile(ab_data, ab_record2 + "\n", function (err) {
+  			if (err) return console.log(err);
+  			console.log('ab_data file has been created');
+		});
+		var ab_record3 = ab_record_begins + key3 + ' = ' + value3 ;
+		fs.appendFile(ab_data, ab_record3 + "\n", function (err) {
+  			if (err) return console.log(err);
+  			console.log('ab_data file has been created');
+		});
 		// generate_ab();
 		var msg = 'SUCCESS: AB Generated';
 		res.render('client', {title: 'E-Commerce', message: msg});
