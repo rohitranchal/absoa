@@ -5,13 +5,26 @@ var fs = require('fs');
 var db = require('../db')
 
 var ab_gen = 'resources/AB-Gen.jar';
-var ab_template = 'resources/AB-Template.jar'
+var ab_template = 'resources/AB-Template.jar';
 var ab_data = 'resources/AB-Data';
 var ab_path = 'resources/AB-New.jar';
-
 var ab_record_begins = 'ab.user.';
+var req_data = [ 'name', 'address', 'credit card', 'email'];
 
-var req_data = [ 'name', 'address', 'credit card', 'email']
+/* Load all availbale scenarios */
+console.log('Loading scenarios ... ');
+var files = fs.readdirSync('./scenarios/');
+var scenarios = [];
+for(var i = 0; i < files.length; i++) {
+	console.log('Reading : ' + files[i]);
+	fs.readFile('./scenarios/' + files[i], 'utf8', function(err, data) {
+		if(err) {
+			console.log(err);
+		} else {
+			scenarios[scenarios.length] = JSON.parse(data);
+		}		
+	});
+}
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -40,7 +53,14 @@ router.get('/service', function(req, res) {
 
 /* GET scenario list page */
 router.get('/scenario_list', function(req, res) {
-	res.render('scenario_list', { title: 'Active Bundle Console' });
+	res.render('scenario_list', { title: 'Active Bundle Console', scenario_list: scenarios });
+});
+
+/* GET scenario page */
+router.get('/scenario', function(req, res) {
+	var sc_id = req.query.scenario_id;
+	var sc_name = req.query.scenario_name;
+	res.render('scenario', { title: 'Active Bundle Console', scenario_name: sc_name });
 });
 
 /* POST create ab */

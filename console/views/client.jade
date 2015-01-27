@@ -8,7 +8,7 @@ block content
 			h2 Active Bundle Generator
 		div(class="panel panel-default")
 			div(class="panel-body")
-				form(class='form-inline form-head' method = "POST" action = "/create")
+				form(class='form-inline top-buffer' method = "POST" action = "/create")
 					if(message)
 						p=message
 					else
@@ -31,5 +31,5 @@ block content
 										input(name='datakey3' type='text' class='form-control' placeholder='key')
 									label(for='datavalue3') Content
 										input(name='datavalue3' type='text' class='form-control' placeholder='value')
-							div(class='col-xs-3 form-head')
+							div(class='col-xs-3 top-buffer')
 									button(type='submit' class='btn btn-primary update-service') Generate Active Bundle
