@@ -1,66 +1,63 @@
-html(lang="en")
+html(lang='en')
 	head
-		meta(charset="utf-8")
-		meta(http-equiv="X-UA-Compatible", content="IE=edge")
-		meta(name="viewport", content="width=device-width, initial-scale=1.0")
-		meta(name="description", content="")
-		meta(name="author", content="")
-		title Service Monitor
-		link(rel="stylesheet", href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css")
-		link(rel="stylesheet", href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css")
-		script(src="//code.jquery.com/jquery-1.10.2.min.js")
-		script(src="//code.jquery.com/ui/1.10.3/jquery-ui.js")
-		script(src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js")
+		meta(http-equiv='X-UA-Compatible', content='IE=edge')
+		meta(charset='utf-8', name='viewport', content='width=device-width, initial-scale=1.0')
+		title Active Bundle Console
+		link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css')
+		link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css')
+		script(src='//code.jquery.com/jquery-1.10.2.min.js')
+		script(src='//code.jquery.com/ui/1.10.3/jquery-ui.js')
+		script(src='//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js')
 		link(rel='stylesheet' href='http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css')
-		script(src="./js/jsplumb/jquery.jsPlumb-1.5.5-min.js")
+		script(src='./js/jsplumb/jquery.jsPlumb-1.5.5-min.js')
 		script(src='http://code.jquery.com/jquery-1.9.1.js')
-		script(src="http://code.jquery.com/ui/1.10.4/jquery-ui.js")
-		script(src="./js/scenario.js")
-		link(rel="stylesheet", href="./css/scenario.css")
+		script(src='http://code.jquery.com/ui/1.10.4/jquery-ui.js')
+		script(src='./js/scenario.js')
+		link(rel='stylesheet', href='./css/scenario.css')
 	body
 		include nav
-		div(id="scenario_id", style="visibility:hidden;")=id			
-		div(class="container")
-			div(class="col-md-12")
-				div(class="panel panel-default text-center")
+		div(id='scenario_id', style='visibility:hidden;')=id			
+		div(class='container')
+			div(class='col-md-12')
+				div(class='panel panel-default text-center')
 					h3=name
-			div(class="col-md-8")
-				div(class="panel panel-default")
-					div(class="panel-heading text-center")
+			div(class='col-md-8')
+				div(class='panel panel-default')
+					div(class='panel-heading text-center')
 						h4 Scenario Topology
-					div(class="panel-body")
-						div(id="main")
-							div(id="scenario-container", class="scenario-container")
+					div(class='panel-body')
+						div(id='main')
+							div(id='scenario-container', class='scenario-container')
 								for service in services
-									div(class="w", id="service" + service.id)=service.display_name
-										div(style="color:red")
+									div(class='w', id='service' + service.id)=service.display_name
+										div(style='color:red')
 											strong=service.trust_level
-										div(class="ep")
-			div(class="col-md-4")
-				div(class="panel panel-default")
-					div(class="panel-heading text-center")
+										div(class='ep')
+			div(class='col-md-4')
+				div(class='panel panel-default')
+					div(class='panel-heading text-center')
 						h4 Access Endpoints
-					div(class="panel-body")
-						div(class="row")
-							div(class="col-md-8")=access_url
-							div(class="col-md-4")
-								button(class="btn btn-primary try-it", data-link=access_url) Try It
-			div(class="col-md-4")
-				div(class="panel panel-default")
-					div(class="panel-heading text-center")
+					div(class='panel-body')
+						div(class='row')
+							div(class='col-md-8')=access_url
+							div(class='col-md-4')
+								button(class='btn btn-primary try-it', data-link=access_url) Try It
+			div(class='col-md-4')
+				div(class='panel panel-default')
+					div(class='panel-heading text-center')
 						h4 Scenario Configuration
-					div(class="panel-body")
-						div(class="input-group")
+					div(class='panel-body')
+						div(class='input-group')
 							for service in services
-								div(class="row top-buffer")
-									div(id=service.status, class="col-md-2 svc_status")=service.status
-									div(id=service.status + "_" + service.id, class="col-md-5 svc_name")=service.display_name
-									div(class="col-md-5")
-										div(class="slider", id=service.id value=service.trust_level)
-							div(class="row top-buffer")
+								div(class='row top-buffer')
+									div(id=service.status, class='col-md-2 svc_status')=service.status
+									div(id=service.status + '_' + service.id, class='col-md-5 svc_name')=service.display_name
+									div(class='col-md-5')
+										div(class='slider', id=service.id value=service.trust_level)
+							div(class='row top-buffer')
 								center
-									div(class="col-md-6")
+									div(class='col-md-6')
 										div
-											button(id="btn_toggle_svc", class="btn btn-danger svc_toggle") Stop
-									div(class="col-md-6")
-										button(id="btn_update_tl", class="btn btn-default") Update
+											button(id='btn_toggle_svc', class='btn btn-danger svc_toggle') Stop
+									div(class='col-md-6')
+										button(id='btn_update_tl', class='btn btn-default') Update
