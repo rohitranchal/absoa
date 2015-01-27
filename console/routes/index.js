@@ -9,6 +9,8 @@ var ab_template = 'resources/AB-Template.jar'
 var ab_data = 'resources/AB-Data';
 var ab_path = 'resources/AB-New.jar';
 
+var ab_record_begins = 'ab.user.';
+
 var req_data = [ 'name', 'address', 'credit card', 'email']
 
 /* GET home page. */
@@ -51,6 +53,16 @@ router.post('/create', function(req, res) {
 	var value3 = req.body.datavalue3;
 
 	if(key1 !== '' && value1 !== '') {
+		//uld: write key and value to ab_data file
+		//ab.user.<key1> = <value1>
+		var ab_record = ab_record_begins + key1 + ' = ' + value1 + '; \n';
+		res.render('client', {title: 'E-Commerce', message: ab_record});
+		fs.appendFile(ab_data, ab_record, function (err) {
+  			if (err) return console.log(err);
+  			console.log('ab_data file has been created');
+		});
+
+
 		// generate_ab();
 		var msg = 'SUCCESS: AB Generated';
 		res.render('client', {title: 'E-Commerce', message: msg});
