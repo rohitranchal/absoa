@@ -21,6 +21,6 @@ CREATE TABLE Service (
 INSERT INTO Service(id, name, display_name, rating, trust_level, req_data, host, port, url, params, status, source_path) VALUES
 (1, 'localhost:4101','Online Shopping', 5.0, 4.0, 'name', 'localhost', 4101, 'http://localhost:4101', '{}', -1, 'scenarios/shopping'),
 (2, 'localhost:4102','Seller', 5.0, 4.0, 'email', 'localhost', 4102, 'http://localhost:4102', '{}', -1, 'scenarios/seller'),
-(3, 'localhost:4103','Payment', 5.0, 4.0, 'credit card', 'localhost', 4103, 'http://localhost:4103', '{}', -1, 'scenarios/payment'),
-(4, 'localhost:4104','Shipping', 5.0, 4.0, 'address', 'localhost', 4104, 'http://localhost:4104', '{}', -1, 'scenarios/shipping');
+(3, 'localhost:4103','Shipping', 5.0, 4.0, 'address', 'localhost', 4103, 'http://localhost:4103', '{}', -1, 'scenarios/shipping'),
+(4, 'localhost:4104','Payment', 5.0, 4.0, 'credit card', 'localhost', 4104, 'http://localhost:4104', '{}', -1, 'scenarios/payment');
 

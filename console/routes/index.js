@@ -60,7 +60,33 @@ router.get('/scenario_list', function(req, res) {
 router.get('/scenario', function(req, res) {
 	var sc_id = req.query.scenario_id;
 	var sc_name = req.query.scenario_name;
-	res.render('scenario', { title: 'Active Bundle Console', scenario_name: sc_name });
+
+	var scenario = null;
+	for(var i = 0; i < scenarios.length; i++) {
+		if(scenarios[i].id == sc_id) {
+			scenario = scenarios[i];
+		}
+	}
+	var tmp_s = scenario.services;
+
+	var se_list = scenario.services.join(',');
+	db.get_scenario_services(se_list, function(rows) {
+		scenario.services = rows;
+		res.render('scenario', scenario);
+		scenario.services = tmp_s;
+	});
+});
+
+//Return scenario topology to the scenario viewer.
+router.get('/scenario_topology', function(req, res) {
+	var s_id = req.query.s_id;
+
+	for(var i = 0; i < scenarios.length; i++) {
+		if(scenarios[i].id == s_id) {
+			var top = JSON.stringify(scenarios[i])
+			res.send(top);
+		}
+	}
 });
 
 /* POST create ab */

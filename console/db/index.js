@@ -1,4 +1,5 @@
-var mysql      = require('mysql');
+var debug = require('debug')('console');
+var mysql = require('mysql');
 
 var connection = mysql.createConnection({
 	host     : 'localhost',
@@ -12,6 +13,7 @@ connection.connect();
 /* Get info for all services */
 exports.get_services = function(cb) {
 	var query = "SELECT * FROM Service";
+	debug('Get services: ' + query);
 	connection.query(query, function(err, rows, fields) {
 		if (err) throw err;
 		cb(rows);
@@ -21,8 +23,19 @@ exports.get_services = function(cb) {
 /* Update service params */
 exports.update_service = function(obj) {
 	var query = "UPDATE Service SET rating= " + obj.rating + ", trust_level=" + obj.trust + ", req_data='" + obj.data + "' WHERE id=" + obj.sid;
+	debug('Update service: ' + query);
 	connection.query(query, function(err, rows, fields) {
 		if (err) throw err;
+	});
+}
+
+/* Get services of a scenario */
+exports.get_scenario_services = function(services, cb) {
+	var query = 'SELECT * FROM Service WHERE id IN (' + services + ')';
+	debug('Get scenario services: ' + query);
+	connection.query(query, function(err, rows, fields) {
+		if (err) throw err;
+		cb(rows);
 	});
 }
 
