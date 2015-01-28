@@ -20,6 +20,20 @@ exports.get_services = function(cb) {
 	});
 }
 
+/* Get details of a service */
+exports.get_service = function(id, cb) {
+	var query = "SELECT * FROM Service WHERE id =" + id;
+	debug('Get service: ' + query);
+	connection.query(query, function(err, rows, fields) {
+		if (err) throw err;
+		if(rows.length > 0) {
+			cb(rows[0]);
+		} else {
+			cb(null);
+		}
+	});
+}
+
 /* Update service params */
 exports.update_service = function(obj) {
 	var query = "UPDATE Service SET rating= " + obj.rating + ", trust_level=" + obj.trust + ", req_data='" + obj.data + "' WHERE id=" + obj.sid;
@@ -29,9 +43,18 @@ exports.update_service = function(obj) {
 	});
 }
 
+/* Set service status to pid */
+exports.set_service_status = function(id, status_val) {
+	var query = "UPDATE Service SET status= " + status_val + " WHERE id=" + id;
+	debug('Set service status: ' + query);
+	connection.query(query, function(err, rows, fields) {
+		if (err) throw err;
+	});
+}
+
 /* Get services of a scenario */
 exports.get_scenario_services = function(services, cb) {
-	var query = 'SELECT * FROM Service WHERE id IN (' + services + ')';
+	var query = "SELECT * FROM Service WHERE id IN (" + services + ")";
 	debug('Get scenario services: ' + query);
 	connection.query(query, function(err, rows, fields) {
 		if (err) throw err;
@@ -66,17 +89,7 @@ exports.add_service = function(name, trust_level) {
 	});
 }
 
-exports.get_service = function(id, cb) {
-	connection.query("SELECT * FROM Service WHERE id =" + id, function(err, rows, fields) {
-		if (err) throw err;
-		if(rows.length > 0) {
-			cb(rows[0]);
-		} else {
-			cb(null);
-		}
 
-	});
-}
 
 
 
@@ -159,11 +172,7 @@ exports.set_service_trust_level = function(id, trust_level) {
 	// });
 }
 
-exports.set_service_status = function(id, status_val) {
-	connection.query("UPDATE Service SET status= " + status_val + " WHERE id=" + id, function(err, rows, fields) {
-		if (err) throw err;
-	});
-}
+
 
 
 exports.set_interaction_trust_level_for_module = function(interaction_id, trust_module, from_pre, from_post, to_pre, to_post) {
