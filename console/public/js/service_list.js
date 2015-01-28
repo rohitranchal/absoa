@@ -15,7 +15,7 @@ $( document ).ready(function() {
 		svc_id = svc_id.split('_');
 		svc_id = svc_id[1];
 
-		$.post('/toggle_service', {sid : svc_id}, function (data) {
+		$.post('/toggle_service', {service_id : svc_id}, function (data) {
 			location.reload();
 		});
 	});

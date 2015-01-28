@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var debug = require('debug')('console');
 var fs = require('fs');
+var request = require('request');
 var db = require('../db')
 
 var ab_gen = 'resources/AB-Gen.jar';
@@ -77,16 +78,23 @@ router.get('/scenario', function(req, res) {
 	});
 });
 
-//Return scenario topology to the scenario viewer.
+/* Return scenario topology to the scenario viewer */
 router.get('/scenario_topology', function(req, res) {
 	var s_id = req.query.s_id;
 
 	for(var i = 0; i < scenarios.length; i++) {
 		if(scenarios[i].id == s_id) {
-			var top = JSON.stringify(scenarios[i])
+			var top = JSON.stringify(scenarios[i]);
 			res.send(top);
 		}
 	}
+});
+
+/* POST start a scenario */
+router.post('/try_it', function(req, res) {
+	request(req.body.link, function (error, response, body) {
+		res.send(body)
+	});
 });
 
 /* POST create ab */
@@ -138,9 +146,18 @@ router.post('/update_service', function(req, res) {
 	}	
 });
 
-/* POST update service */
+/* POST update service trust */
+router.post('/update_service_trust', function(req, res) {
+	var values = req.body.values;
+	for(var i = 0; i < values.length; i++) {
+		db.set_service_trust(values[i].name, values[i].value);
+	}
+	res.send('OK');
+});
+
+/* POST toggle service */
 router.post('/toggle_service', function(req, res) {
-	var svc_id = req.body.sid;
+	var svc_id = req.body.service_id;
 
 	db.get_service(svc_id, function(val) {
 		var svc_status = val['status'];
@@ -179,6 +196,6 @@ var generate_ab = function() {
 	ab_proc.stderr.on('data', function (data) {
 		console.log(data);
 	});	
-}
+};
 
 module.exports = router;

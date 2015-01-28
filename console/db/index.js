@@ -62,6 +62,15 @@ exports.get_scenario_services = function(services, cb) {
 	});
 }
 
+/* Update trust level for a service */
+exports.set_service_trust = function(id, trust_level) {
+	var query = "UPDATE Service SET trust_level= " + trust_level + " WHERE id=" + id;
+	debug('Set service trust: ' + query);
+	connection.query(query, function(err, rows, fields) {
+		if (err) throw err;
+	});
+}
+
 /* ================================================ */
 
 /*

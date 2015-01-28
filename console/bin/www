@@ -3,7 +3,6 @@ var debug = require('debug')('console');
 var app = require('../app');
 
 var http = require('http');
-var https = require('https');
 var fs = require('fs');
 
 // Name of the process in the system
