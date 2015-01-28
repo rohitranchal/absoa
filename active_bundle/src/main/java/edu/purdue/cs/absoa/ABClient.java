@@ -89,8 +89,8 @@ public class ABClient
 				String abCCardType = client.getValue(abSessionObject.sessionID, "ab.user.creditcard.type");
 				System.out.println("Client: Data - Name: " + abName + " Addr: " + abAddr + " CCard: " + abCCard + " CardType: " + abCCardType + " ShipPref: " + abShipPref);
 //				System.out.println("Client: Data - Name: " + abName + " - ShipPref: " + abShipPref);
-				String abZip = client.getValue(abSessionObject.sessionID, "ab.user.zip");
-				System.out.println("Client: Data - Zip: " + abZip);
+//				String abZip = client.getValue(abSessionObject.sessionID, "ab.user.zip");
+//				System.out.println("Client: Data - Zip: " + abZip);
 			} else 	System.out.println("Null Session ID received on Service ");
 
 			transport.close();
@@ -116,12 +116,14 @@ public class ABClient
 //		byte[] data = bos.toString().getBytes();
 //		bos.close();
 		
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		ObjectOutputStream out = new ObjectOutputStream(bos); 
-		out.writeObject(serviceCert);
-		byte[] data = bos.toByteArray();
-		bos.close();
+//		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//		ObjectOutputStream out = new ObjectOutputStream(bos); 
+//		out.writeObject(serviceCert);
+//		byte[] data = bos.toByteArray();
+//		bos.close();
 		
+		// works both in eclipse and nodejs/filesystem
+		byte[] data = serviceCert.getEncoded(); 
 		return data;
 	}
 

@@ -15,6 +15,7 @@ import java.security.Signature;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -160,15 +161,15 @@ public class ABServiceHandler implements ABService.Iface
 
 	private static boolean validateSignature(byte[] token, byte[] signedMessage, byte[] certificate, byte[] CAcertificate) throws Exception
 	{
-//		InputStream bis = new ByteArrayInputStream(certificate);
-//		CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
-//		X509Certificate cert = (X509Certificate)certFactory.generateCertificate(bis);
-//		bis.close();
-		
-		ByteArrayInputStream bis = new ByteArrayInputStream(certificate);
-		ObjectInput in = new ObjectInputStream(bis);
-		X509Certificate cert = (X509Certificate) in.readObject(); 
+		InputStream bis = new ByteArrayInputStream(certificate);
+		CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
+		X509Certificate cert = (X509Certificate)certFactory.generateCertificate(bis);
 		bis.close();
+				
+//		ByteArrayInputStream bis = new ByteArrayInputStream(certificate);
+//		ObjectInput in = new ObjectInputStream(bis);
+//		X509Certificate cert = (X509Certificate) in.readObject(); 
+//		bis.close();
 
 		try {
 			cert.checkValidity();
@@ -216,15 +217,15 @@ public class ABServiceHandler implements ABService.Iface
 			byte[] data = bos.toByteArray(); 
 			bos.close();
 
-//			InputStream bis = new ByteArrayInputStream(serviceCert); 
-//			CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
-//			X509Certificate cert = (X509Certificate)certFactory.generateCertificate(bis);			
-//			bis.close();
-			
-			ByteArrayInputStream bis = new ByteArrayInputStream(serviceCert);
-			ObjectInput in = new ObjectInputStream(bis);
-			X509Certificate cert = (X509Certificate)in.readObject(); 
+			InputStream bis = new ByteArrayInputStream(serviceCert); 
+			CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
+			X509Certificate cert = (X509Certificate)certFactory.generateCertificate(bis);			
 			bis.close();
+			
+//			ByteArrayInputStream bis = new ByteArrayInputStream(serviceCert);
+//			ObjectInput in = new ObjectInputStream(bis);
+//			X509Certificate cert = (X509Certificate)in.readObject(); 
+//			bis.close();
 
 			PublicKey serviceKey = cert.getPublicKey();
 			byte[] cipherText = null;
