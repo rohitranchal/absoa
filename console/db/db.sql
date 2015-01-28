@@ -23,4 +23,3 @@ INSERT INTO Service(id, name, display_name, rating, trust_level, req_data, host,
 (2, 'localhost:4102','Seller', 5.0, 4.0, 'email', 'localhost', 4102, 'http://localhost:4102', '{}', -1, 'scenarios/seller'),
 (3, 'localhost:4103','Shipping', 5.0, 4.0, 'address', 'localhost', 4103, 'http://localhost:4103', '{}', -1, 'scenarios/shipping'),
 (4, 'localhost:4104','Payment', 5.0, 4.0, 'credit card', 'localhost', 4104, 'http://localhost:4104', '{}', -1, 'scenarios/payment');
-
