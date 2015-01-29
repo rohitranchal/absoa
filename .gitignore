@@ -12,6 +12,7 @@ node_modules/
 *.project
 *.settings
 *.classpath
+*.log
 
 #ignore object or archive files 
 *.[oa]
