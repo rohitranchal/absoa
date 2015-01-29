@@ -32,6 +32,14 @@ router.get('/', function(req, res) {
 	res.render('index', { title: 'Active Bundle Console' });
 });
 
+/* GET home page. */
+router.get('/test', function(req, res) {
+	var id = 3;
+	db.get_service_log(id, function(rows) {
+		res.send(rows[0]);
+	});
+});
+
 /* GET client page */
 router.get('/client', function(req, res) {
 	res.render('client', { title: 'Active Bundle Console' });	

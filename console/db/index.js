@@ -71,6 +71,16 @@ exports.set_service_trust = function(id, trust_level) {
 	});
 }
 
+/* Get latest log for a service */
+exports.get_service_log = function(id, cb) {
+	var query = "SELECT * FROM Service_Log WHERE service_id= " + id + " ORDER BY ID DESC LIMIT 1";
+	debug('Get service log: ' + query);
+	connection.query(query, function(err, rows, fields) {
+		if (err) throw err;
+		cb(rows);
+	});
+}
+
 /* ================================================ */
 
 /*
