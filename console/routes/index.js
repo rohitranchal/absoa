@@ -106,6 +106,7 @@ router.post('/create', function(req, res) {
 	var key3 = req.body.datakey3;
 	var value3 = req.body.datavalue3;
 
+	//uld 28 Jan - change this if to at least one checkbox must be marked
 	if(key1 !== '' && value1 !== '') {
 		//write key and value to ab_data file:  ab.user.<key1> = <value1>
 		var ab_record = ab_record_begins + key1 + ' = ' + value1 ;
