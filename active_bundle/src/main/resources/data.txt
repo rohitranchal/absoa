@@ -1,6 +1,7 @@
-ab.user.name = Alice
-ab.user.shipping.address = Univ St, Lafayette, IN, US
+ab.user.name = John
+ab.user.shipping.address = 305 Univ St, West Lafayette, IN, US
 ab.user.creditcard = 1234 5678 4321 8765
-ab.user.creditcard.type = Visa
+ab.user.payment.type = Visa
 ab.user.shipping.preference = 2
 ab.user.cell = 7654567890
+ab.user.email = john@purdue.com
