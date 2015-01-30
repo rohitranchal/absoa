@@ -1,5 +1,8 @@
 extends layout
 
+block append head
+	script(src='/js/client.js')
+
 block content
 	include nav
 
@@ -13,6 +16,7 @@ block content
 						p=message
 					else
 						center
+							// for entry in entries 
 							div(class='col-lg-8')
 								div(class='form-group')
 									label(for='datakey1') Type
@@ -21,8 +25,9 @@ block content
 										//OK input(name='datavalue1' type='text' class='form-control' placeholder='value')
 										input(name='datavalue1' type='text' class='form-control' placeholder='11111-22222')
 										//OK button(type="button", class="btn btn-primary pull-right", id=('a')) Enable
-										input(type="checkbox", name="checkboxname1", text="Include record to AB").form-control
-								//Enable m.b. right to policies, not here. Here we need checkbox 
+										input(type="checkbox", name='checkbox11', class='checkbox1' , text="Include record to AB").form-control
+										// OK button(id="test1", class="btn btn-success btn-sm") Start
+										//Enable m.b. right to policies, not here. Here we need checkbox 
 								// also add default values for 'Value' fields
 							div(class='col-lg-8')
 								div(class='form-group')
@@ -30,13 +35,13 @@ block content
 										input(name='datakey2' type='text' class='form-control' placeholder='GPA')
 									label(for='datavalue2') Content
 										input(name='datavalue2' type='text' class='form-control' placeholder='3.5')
-										input(type="checkbox", name="checkboxname2", text="Include record to AB").form-control
+										input(type="checkbox", name="checkbox22", class='checkbox2', text="Include record to AB").form-control
 							div(class='col-lg-8')
 								div(class='form-group')
 									label(for='datakey3') Type
 										input(name='datakey3' type='text' class='form-control' placeholder='Assistantship')
 									label(for='datavalue3') Content
 										input(name='datavalue3' type='text' class='form-control' placeholder='TA')
-										input(type="checkbox", name="checkboxname3", text="Include record to AB").form-control
+										input(type="checkbox", name="checkbox33", class='checkbox3', text="Include record to AB").form-control
 							div(class='col-xs-3 top-buffer')
 									button(type='submit' class='btn btn-primary update-service') Generate Active Bundle
