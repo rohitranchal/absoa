@@ -39,6 +39,12 @@
 		// Invoke service for user
 		$('.try-it').click(function() {
 			$.post('/try_it', { link : $(this).data('link')}, function (data) {
+				var slink = '/service_logs?service_list=' + services; 
+				$.get(slink, function(logs, status) {
+					if (status == 'success') {
+						alert(logs[0]);
+					}
+				});
 				alert(data);
 				location.reload();
 			});

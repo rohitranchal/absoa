@@ -1,5 +1,6 @@
 $( document ).ready(function() {
 
+	var data_arr = [];
 	//handle clicks on 3 checkboxes at localhost:3000/client 
 	$('.checkbox1').click(function() {
 		//var svc_id = this.id.toString();
@@ -26,6 +27,14 @@ $( document ).ready(function() {
 	$('.checkbox2').click(function() {
 		var status_val = $(this).value;  //-undefined
 		console.log('Clicked on checkbox2 ... ' + status_val);
+		if (this.checked) {			
+			var textbox_val = document.getElementById('dataval2').value;
+			var textbox_key = document.getElementById('dataval2').value;
+			console.log('checked checkbox2...' + textbox_val);
+			data_arr[textbox_key] = textbox_val;
+		} else {
+			// remove from array
+		}
 	});
 
 	$('.checkbox3').click(function() {
@@ -33,4 +42,16 @@ $( document ).ready(function() {
 		console.log('Clicked on checkbox3 ... ' + status_val);
 	});
 
+
+	onsubmitbuttonclick() {
+
+
+		$.post('/update_service',
+		{
+			data		: data_arr,
+		}, function(data) {
+			window.location.href = '/create';
+		});
+
+	}
 });

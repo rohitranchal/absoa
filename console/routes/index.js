@@ -32,9 +32,9 @@ router.get('/', function(req, res) {
 	res.render('index', { title: 'Active Bundle Console' });
 });
 
-/* GET home page. */
+/* GET test page. */
 router.get('/test', function(req, res) {
-	var id = 3;
+	var id = 4;
 	db.get_service_log(id, function(rows) {
 		res.send(rows[0]);
 	});
@@ -96,6 +96,19 @@ router.get('/scenario_topology', function(req, res) {
 			res.send(top);
 		}
 	}
+});
+
+/* GET logs for a list of services */
+router.get('/service_logs', function(req, res) {
+	var slist = req.query.service_list;
+	for(var s in slist) {
+		console.log('sid: ' + s.id);
+	}
+	var arr = ['ok'];
+	res.send(arr);
+	// db.get_service_log(id, function(rows) {
+	// 	res.send(rows[0]);
+	// });
 });
 
 /* POST start a scenario */
