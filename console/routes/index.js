@@ -119,7 +119,8 @@ router.post('/try_it', function(req, res) {
 });
 
 /* POST create ab */
-router.post('/create', function(req, res) {
+//OK 01 Feb. router.post('/create', function(req, res) {
+router.post('/client', function(req, res) {
 	var key1 = req.body.datakey1;
 	var value1 = req.body.datavalue1;
 	var key2 = req.body.datakey2;
@@ -127,27 +128,53 @@ router.post('/create', function(req, res) {
 	var key3 = req.body.datakey3;
 	var value3 = req.body.datavalue3;
 
-	//uld 28 Jan - change this if to at least one checkbox must be marked
-	if(key1 !== '' && value1 !== '') {
+	var marked1 = req.body.checkbox_1;
+	var marked2 = req.body.checkbox_2;
+	var marked3 = req.body.checkbox_3;
+	console.log('checkbox1 =  ' + marked1);
+	console.log('checkbox2 =  ' + marked2);
+	console.log('checkbox3 =  ' + marked3);
+
+	console.log('Following fields were typed: ');
+	console.log('key1 =  ' + key1 + ' ; value1 = ' + value1);
+	console.log('key2 =  ' + key2 + ' ; value2 = ' + value2);
+	console.log('key3 =  ' + key3 + ' ; value3 = ' + value3);
+
+	//01 Feb.: clean ab_data file content to avoid writing previous data from previous file to AB  
+	fs.writeFile(ab_data, '' , function (err) {
+		if (err) return console.log(err);
+	  	console.log('File {' + ab_data + '} content has been cleaned as a pre-requisite for AB ');
+	});
+
+	//01 Feb. if(key1 !== '' && value1 !== '') {
+	//At least one checkbox must be marked to add data to AB
+	if(marked1 == 'on' || marked2 == 'on' || marked3 == 'on') {	
 		//write key and value to ab_data file:  ab.user.<key1> = <value1>
-		var ab_record = ab_record_begins + key1 + ' = ' + value1 ;
-		//for debug res.render('client', {title: 'E-Commerce', message: ab_record});
-		fs.writeFile(ab_data, ab_record + "\n", function (err) {
-  			if (err) return console.log(err);
-  			console.log('ab_data file has been created');
-		});
-		var ab_record2 = ab_record_begins + key2 + ' = ' + value2 ;
-		fs.appendFile(ab_data, ab_record2 + "\n", function (err) {
-  			if (err) return console.log(err);
-  			console.log('ab_data file has been created');
-		});
-		var ab_record3 = ab_record_begins + key3 + ' = ' + value3 ;
-		fs.appendFile(ab_data, ab_record3 + "\n", function (err) {
-  			if (err) return console.log(err);
-  			console.log('ab_data file has been created');
-		});
+		if(marked1 == 'on') {	
+			var ab_record = ab_record_begins + key1 + ' = ' + value1 ;
+			fs.writeFile(ab_data, ab_record + "\n", function (err) {
+	  			if (err) return console.log(err);
+	  			console.log('pair 1 ' + ab_record + ' - has been written to file: ' + ab_data);
+			});
+		}	
+
+		if(marked2 == 'on') {	
+			var ab_record2 = ab_record_begins + key2 + ' = ' + value2 ;
+			fs.appendFile(ab_data, ab_record2 + "\n", function (err) {
+	  			if (err) return console.log(err);
+	  			console.log('pair 2 ' + ab_record2 + ' - has been appended to file: ' + ab_data);
+			});
+		}
+		
+		if(marked3 == 'on') {		
+			var ab_record3 = ab_record_begins + key3 + ' = ' + value3 ;
+			fs.appendFile(ab_data, ab_record3 + "\n", function (err) {
+	  			if (err) return console.log(err);
+	  			console.log('pair 3 ' + ab_record3 + ' - has been appended to file: ' + ab_data);
+			});
+		}	
 		generate_ab();
-		var msg = 'SUCCESS: AB Generated';
+		var msg = 'SUCCESS: AB has been generated';
 		res.render('client', {title: 'E-Commerce', message: msg});
 	} else {
 		var msg = 'ERROR: missing data';
