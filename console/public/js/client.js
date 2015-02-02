@@ -3,55 +3,78 @@ $( document ).ready(function() {
 	var data_arr = [];
 	//handle clicks on 3 checkboxes at localhost:3000/client 
 	$('.checkbox1').click(function() {
-		//var svc_id = this.id.toString();
-		var temp = 1;
-		// var status_val = $(this).checked; -Why undefined? It should contain the state 
-												//of checkbox: checked/not checked
-		
-		//var status_val = $(this).value; - undefined
-		//var status_val = $(this).checked.value;  //-type error
-		var status_val = $(this).checked;  //- undefined message, no error  OK
-		
-		//var status_val = $(this).not(':checked');  //[object Object]
-
-		//svc_id = svc_id.split('_');
-		//svc_id = svc_id[1];
-		//console.log('Clicked on checkbox: ' + req.body.checkbox1.Clicked );
-
+		var status_val = (this).checked;  
 		console.log('Clicked on checkbox1 ... ' + status_val);
-		//console.log('Clicked on checkbox: ' + checkbox1.Clicked ); - ERROR, not defined
-		//console.log('Clicked on checkbox: ' + checkbox11.Clicked ); -ERROR, not defined
-
+		
+		if (this.checked) {			
+			var textbox_val = document.getElementById('dataval1').value;
+			var textbox_key = document.getElementById('datkey1').value; 
+			console.log('checked checkbox1...' + textbox_key + '  , ' + textbox_val);
+			data_arr[textbox_key] = textbox_val;
+		} else {
+			// remove from array - not necessary because we do it in routes/index.js
+		}
 	});
 
 	$('.checkbox2').click(function() {
-		var status_val = $(this).value;  //-undefined
+		var status_val = (this).checked;  //will work now 
 		console.log('Clicked on checkbox2 ... ' + status_val);
 		if (this.checked) {			
 			var textbox_val = document.getElementById('dataval2').value;
-			var textbox_key = document.getElementById('dataval2').value;
-			console.log('checked checkbox2...' + textbox_val);
+			var textbox_key = document.getElementById('datkey2').value; 
+			console.log('checked checkbox2...'  + textbox_key + '  , ' + textbox_val);
 			data_arr[textbox_key] = textbox_val;
 		} else {
-			// remove from array
+			// remove from array  - not necessary because we do it in routes/index.js
 		}
 	});
 
 	$('.checkbox3').click(function() {
-		var status_val = $(this).value;  //-undefined
-		console.log('Clicked on checkbox3 ... ' + status_val);
+		var status_val = (this).checked;  
+		//01 Feb. console.log('Clicked on checkbox3 ... ' + status_val);
+		console.log('Clicked on checkbox3 ... ' + this.checked);
+		if (this.checked) {			
+			var textbox_val = document.getElementById('dataval3').value;
+			var textbox_key = document.getElementById('datkey3').value; 
+			console.log('checked checkbox3...' + textbox_key + '  , ' + textbox_val );
+			data_arr[textbox_key] = textbox_val;
+		} else {
+			// remove from array  - not necessary because we do it in routes/index.js
+		}
 	});
 
 
+	$('.btn').click(function() {
+		console.log('Generate AB button was pressed');
+		console.log(' data_arr = ' + data_arr);
+
+		// $.post('/create', 
+		// {
+		// 	ab_data		: 'ab',
+		// }, function(data) {
+		// 	//location.reload();
+		// 	// window.location.href = '/create';
+		// });
+		//31 Jan $.post('/create', {service_id : 'some'}, function (data) {
+		$.post('/client', {service_id : 'some'}, function (data) {
+			console.log('create call');
+			location.reload();
+		});
+
+	});
+
+	/* 
 	onsubmitbuttonclick() {
 
 
-		$.post('/update_service',
+		$.post('/create',
 		{
 			data		: data_arr,
 		}, function(data) {
 			window.location.href = '/create';
 		});
 
-	}
+	}  
+	*/
+
 });
