@@ -39,14 +39,25 @@
 		// Invoke service for user
 		$('.try-it').click(function() {
 			$.post('/try_it', { link : $(this).data('link')}, function (data) {
-				var slink = '/service_logs?service_list=' + services; 
+				var svc_arr = [];
+				$('.svc_name').each(function() {
+					var svc_id = this.id.split('_');
+					svc_arr.push(svc_id[1]);
+					console.log('svc id: ' + svc_id[1]);
+				});
+				var slist = JSON.stringify(svc_arr);
+				var slink = '/scenario_logs?service_list=' + slist; 
 				$.get(slink, function(logs, status) {
 					if (status == 'success') {
-						alert(logs[0]);
+						alert(data);
+						// location.reload();
+						
+						/* Set log for each service */
+						for (var s in logs) {
+							$('#logid_' + logs[s].id).text(logs[s].log);
+						}
 					}
 				});
-				alert(data);
-				location.reload();
 			});
 		});
 

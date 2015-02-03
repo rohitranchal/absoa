@@ -6,6 +6,7 @@ var spawn = require('child_process').spawn;
 var async = require('async');
 var portscanner = require('portscanner');
 var ab_client = require('../ab_client');
+var db = require('../db');
 
 var ab_host = '127.0.0.1';
 var ab_path = 'resources/AB-New.jar';
@@ -20,11 +21,16 @@ router.get('/ship', function(req, res) {
 	var tracking = randomIntInc(10000, 99999);
 	// Get address from AB
 	var address = '305 N Univ St, West Lafayette IN, 47907';
+	var msg;
 	if (tracking > 50000) {
-		res.send('Order shipped - Address: ' + address + ' - Tracking num: ' + tracking);
+		msg = 'Order shipped - Address: ' + address + ' - Tracking num: ' + tracking;
+		res.send(msg);
 	} else {
-		res.send('Shipping failed - Invalid address');
+		msg = 'Shipping failed - Invalid address';
+		res.send(msg);
 	}
+	var obj = {id:3, log:msg};
+	db.set_service_log(obj, function() {});
 });
 
 router.get('/ab_ship', function(req, res) {
@@ -42,10 +48,13 @@ router.get('/ab_ship', function(req, res) {
 		ab_data = connect_ab(ab_port, ab_host, ab_pid, function(data) {
 			ab_data = data;
 			if (ab_data == null) {
-				res.send('Shipping Failed: AB data unavailable');
+				msg = 'Shipping Failed: AB data unavailable';
+				res.send(msg);
 			} else {
 				res.send(msg);
 			}
+			var obj = {id:3, log:msg};
+			db.set_service_log(obj, function() {});
 		});
 	});
 });

@@ -6,6 +6,7 @@ var spawn = require('child_process').spawn;
 var async = require('async');
 var portscanner = require('portscanner');
 var ab_client = require('../ab_client');
+var db = require('../db');
 
 var ab_host = '127.0.0.1';
 var ab_path = 'resources/AB-New.jar';
@@ -19,11 +20,16 @@ router.get('/', function(req, res) {
 router.get('/pay', function(req, res) {
 	//get payment details from AB
 	var payment = randomIntInc(0, 1);
+	var msg;
 	if(payment) {
-		res.send('Payment done');
+		msg = 'Payment done';
+		res.send(msg);
 	} else {
-		res.send('Payment failed');
+		msg = 'Payment failed';
+		res.send(msg);
 	}
+	var obj = {id:4, log:msg};
+	db.set_service_log(obj, function() {});
 });
 
 router.get('/ab_pay', function(req, res) {
@@ -39,10 +45,13 @@ router.get('/ab_pay', function(req, res) {
 		ab_data = connect_ab(ab_port, ab_host, ab_pid, function(data) {
 			ab_data = data;
 			if (ab_data == null) {
-				res.send('Payment Failed: AB data unavailable');
+				msg = 'Payment Failed: AB data unavailable';
+				res.send(msg);
 			} else {
 				res.send(msg);
 			}
+			var obj = {id:4, log:msg};
+			db.set_service_log(obj, function() {});
 		});
 	});		
 });

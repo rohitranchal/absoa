@@ -69,6 +69,7 @@ router.get('/scenario_list', function(req, res) {
 router.get('/scenario', function(req, res) {
 	var sc_id = req.query.scenario_id;
 	var sc_name = req.query.scenario_name;
+	var log_status = req.query.log;	
 
 	var scenario = null;
 	for(var i = 0; i < scenarios.length; i++) {
@@ -81,7 +82,7 @@ router.get('/scenario', function(req, res) {
 	var se_list = scenario.services.join(',');
 	db.get_scenario_services(se_list, function(rows) {
 		scenario.services = rows;
-		res.render('scenario', scenario);
+		res.render('scenario', scenario);		
 		scenario.services = tmp_s;
 	});
 });
@@ -98,17 +99,29 @@ router.get('/scenario_topology', function(req, res) {
 	}
 });
 
-/* GET logs for a list of services */
+/* GET logs for a service */
 router.get('/service_logs', function(req, res) {
-	var slist = req.query.service_list;
-	for(var s in slist) {
-		console.log('sid: ' + s.id);
-	}
-	var arr = ['ok'];
-	res.send(arr);
-	// db.get_service_log(id, function(rows) {
-	// 	res.send(rows[0]);
-	// });
+	var sid = req.query.service_id;
+	db.get_service_log(id, function(rows) {
+		res.send(rows[0]);
+	});
+});
+
+/* GET logs for services of a scenario */
+router.get('/scenario_logs', function(req, res) {
+	var slist = JSON.parse(req.query.service_list);
+	console.log('len: ' + slist.length);
+	db.get_service_list_log(slist, function(rows) {
+		var logs = [];
+		if (rows.length > 0) {
+			for (var i=0; i<rows.length; i++) {
+				logs[i] = {};
+				logs[i].id = rows[i].service_id;
+				logs[i].log = rows[i].log;
+			}
+		}		
+		res.send(logs);
+	});
 });
 
 /* POST start a scenario */
