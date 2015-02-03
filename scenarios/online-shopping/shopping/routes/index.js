@@ -6,6 +6,7 @@ var spawn = require('child_process').spawn;
 var async = require('async');
 var portscanner = require('portscanner');
 var ab_client = require('../ab_client');
+var db = require('../db');
 
 var ab_host = '127.0.0.1';
 var ab_path = 'resources/AB-New.jar';
@@ -18,15 +19,23 @@ router.get('/', function(req, res) {
 
 router.get('/order', function(req, res) {
 	request('http://localhost:4102/submit_order', function (error, response, body1) {
+		var msg;
 		if (body1.search('failed') != -1) {
-			res.send('Order failed - ' + body1);
+			msg = 'Order failed - ' + body1;
+			res.send(msg);
+			var obj = {id:1, log:msg};
+			db.set_service_log(obj, function() {});
 		} else {
 			request('http://localhost:4104/pay', function (error, response, body2) {
 				if (body2.search('failed') != -1) {
-					res.send('Order failed - ' + body2);
+					msg = 'Order failed - ' + body2;
+					res.send(msg);
 				} else {
-					res.send('Order complete details - ' + body1);
+					msg = 'Order complete details - ' + body1;
+					res.send(msg);
 				}
+				var obj = {id:1, log:msg};
+				db.set_service_log(obj, function() {});
 			});
 		}
 	});
@@ -70,10 +79,13 @@ router.get('/ab_order', function(req, res) {
 	],
 	function(err, results) {
 		if (ab_data == null) {
-			res.send('Shopping Failed: AB data unavailable');
+			msg = 'Shopping Failed: AB data unavailable';
+			res.send(msg);
 		} else {
 			res.send(msg);
 		}
+		var obj = {id:1, log:msg};
+		db.set_service_log(obj, function() {});
 	});
 });
 

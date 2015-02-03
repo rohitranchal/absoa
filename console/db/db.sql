@@ -28,17 +28,16 @@ INSERT INTO Service(id, name, display_name, rating, trust_level, req_data, host,
 (4, 'localhost:4104','Payment', 5.0, 4.0, 'credit card', 'localhost', 4104, 'http://localhost:4104', '{}', -1, 'scenarios/online-shopping/payment');
 
 CREATE TABLE Service_Log (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        service_id INT,
+        service_id INT PRIMARY KEY,
         log VARCHAR(2048),
         FOREIGN KEY (service_id) REFERENCES Service(id)
 ) ENGINE=InnoDB;
 
-INSERT INTO Service_Log(id, service_id, log) VALUES
-(1, 1, 'AB Data: visa'),
-(2, 2, 'AB Data: expedited shipping'),
-(3, 3, 'AB Data: 305 N Univ St West Lafayette IN'),
-(4, 4, 'AB Data: 1234 5678 9012 3456');
+INSERT INTO Service_Log(service_id, log) VALUES
+(1, 'AB Data: visa'),
+(2, 'AB Data: expedited shipping'),
+(3, 'AB Data: 305 N Univ St West Lafayette IN'),
+(4, 'AB Data: 1234 5678 9012 3456');
 
 CREATE TABLE Service_Data (
         id INT PRIMARY KEY,

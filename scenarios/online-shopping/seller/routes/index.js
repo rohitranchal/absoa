@@ -6,6 +6,7 @@ var spawn = require('child_process').spawn;
 var async = require('async');
 var portscanner = require('portscanner');
 var ab_client = require('../ab_client');
+var db = require('../db');
 
 var ab_host = '127.0.0.1';
 var ab_path = 'resources/AB-New.jar';
@@ -18,17 +19,25 @@ router.get('/', function(req, res) {
 
 router.get('/submit_order', function(req, res) {
 	var order = randomIntInc(1000, 9999);
+	var msg;
 	if (order < 5000) {
-		res.send('Submit order failed - items unavailable');
+		msg = 'Submit order failed - items unavailable';
+		res.send(msg);
+		var obj = {id:2, log:msg};
+		db.set_service_log(obj, function() {});
 	} else {
 		request('http://localhost:4103/ship', function (error, response, body) {
 			if (body.search('failed') != -1) {
-				res.send('Submit order failed - ' + body);
+				msg = 'Submit order failed - ' + body;
+				res.send(msg);
 			} else {
-				res.send('Order Num: ' + order + ' - ' + body);
+				msg = 'Order Num: ' + order + ' - ' + body;
+				res.send(msg);
 			}
+			var obj = {id:2, log:msg};
+			db.set_service_log(obj, function() {});
 		});
-	}
+	}	
 });
 
 router.get('/ab_submit_order', function(req, res) {
@@ -63,10 +72,13 @@ router.get('/ab_submit_order', function(req, res) {
 	],
 	function(err, results) {
 		if (ab_data == null) {
-			res.send('Seller Failed: AB data unavailable');
+			msg = 'Seller Failed: AB data unavailable';
+			res.send(msg);
 		} else {
 			res.send(msg);
 		}
+		var obj = {id:2, log:msg};
+		db.set_service_log(obj, function() {});
 	});
 });
 
