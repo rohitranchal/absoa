@@ -23,11 +23,11 @@ block content
 							for entry in entries	
 								div(class='col-lg-8')
 									div(class='form-group')
-										label(for='datakey' + entry.id) Type
-											input(name='datakey' + entry.id type='text' id='datkey' + entry.id class='inputkey' + entry.id placeholder=entry.data_key)
-										label(for='datavalue' + entry.id) Content
-											input(name='datavalue' + entry.id type='text' id='dataval' + entry.id class='inputval' + entry.id placeholder=entry.data_value)
-											input(type="checkbox", name='checkbox_' + entry.id, class='checkbox' + entry.id , text="Include record to AB")
+										label(for='datakey' + entry.id ) Type
+											input(name='datakey' + entry.id type='text' id='datkey' + entry.id class='inputkey' + entry.id placeholder=entry.data_key  style='margin-left:10px')
+										label(for='datavalue' + entry.id style='margin-left:50px') Content
+											input(name='datavalue' + entry.id type='text' id='dataval' + entry.id class='inputval' + entry.id placeholder=entry.data_value style='margin-left:10px')
+											input(type="checkbox", name='checkbox_' + entry.id, class='checkbox' + entry.id , text="Include record to AB" style='margin-left:30px')
 											//Enable m.b. right to policies, not here. Here we need checkbox 
 								
 								// div(class='col-lg-8')
