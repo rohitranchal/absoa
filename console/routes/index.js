@@ -118,7 +118,6 @@ router.get('/service_logs', function(req, res) {
 /* GET logs for services of a scenario */
 router.get('/scenario_logs', function(req, res) {
 	var slist = JSON.parse(req.query.service_list);
-	console.log('len: ' + slist.length);
 	db.get_service_list_log(slist, function(rows) {
 		var logs = [];
 		if (rows.length > 0) {

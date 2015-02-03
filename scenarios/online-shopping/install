@@ -1,0 +1,17 @@
+#!/bin/bash
+
+cd payment
+npm install
+cd -
+
+cd seller
+npm install
+cd -
+
+cd shopping
+npm install
+cd -
+
+cd shipping
+npm install
+cd -

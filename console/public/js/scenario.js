@@ -43,7 +43,6 @@
 				$('.svc_name').each(function() {
 					var svc_id = this.id.split('_');
 					svc_arr.push(svc_id[1]);
-					console.log('svc id: ' + svc_id[1]);
 				});
 				var slist = JSON.stringify(svc_arr);
 				var slink = '/scenario_logs?service_list=' + slist;
