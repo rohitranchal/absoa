@@ -19,34 +19,31 @@ block content
 						p=message
 					else
 						center
-							// for entry in entries 
-							div(class='col-lg-8')
-								div(class='form-group')
-									label(for='datakey1') Type
-										input(name='datakey1' type='text' id='datkey1' class='form-control' placeholder='UID')
-									label(for='datavalue1') Content
-										//OK input(name='datavalue1' type='text' class='form-control' placeholder='value')
-										//uld Jan.30 - id added to datavalue1. Do the same for datakey1!  
-										input(name='datavalue1' type='text' id='dataval1' class='form-control' placeholder='11111-22222')
-										//OK button(type="button", class="btn btn-primary pull-right", id=('a')) Enable
-										//uld 30 Jan  .form-control was removed for checkbox - no need for it 
-										input(type="checkbox", name='checkbox_1', class='checkbox1' , text="Include record to AB")
-										// OK button(id="test1", class="btn btn-success btn-sm") Start
-										//Enable m.b. right to policies, not here. Here we need checkbox 
-								// also add default values for 'Value' fields
-							div(class='col-lg-8')
-								div(class='form-group')
-									label(for='datakey2') Type
-										input(name='datakey2' type='text' id='datkey2' class='form-control' placeholder='GPA')
-									label(for='datavalue2') Content
-										input(name='datavalue2' type='text' id='dataval2' class='form-control' placeholder='3.5')
-										input(type="checkbox", name="checkbox_2", class='checkbox2', text="Include record to AB")
-							div(class='col-lg-8')
-								div(class='form-group')
-									label(for='datakey3') Type
-										input(name='datakey3' type='text' id='datkey3' class='form-control' placeholder='Assistantship')
-									label(for='datavalue3') Content
-										input(name='datavalue3' type='text' id='dataval3' class='form-control' placeholder='TA')
-										input(type="checkbox", name="checkbox_3", class='checkbox3', text="Include record to AB")
-							div(class='col-xs-3 top-buffer')
-									button(type='submit' class='btn btn-primary update-service') Generate Active Bundle
+							//scan through all tuples of the DB 'Service_Data'					
+							for entry in entries	
+								div(class='col-lg-8')
+									div(class='form-group')
+										label(for='datakey' + entry.id) Type
+											input(name='datakey' + entry.id type='text' id='datkey' + entry.id class='inputkey' + entry.id placeholder=entry.data_key)
+										label(for='datavalue' + entry.id) Content
+											input(name='datavalue' + entry.id type='text' id='dataval' + entry.id class='inputval' + entry.id placeholder=entry.data_value)
+											input(type="checkbox", name='checkbox_' + entry.id, class='checkbox' + entry.id , text="Include record to AB")
+											//Enable m.b. right to policies, not here. Here we need checkbox 
+								
+								// div(class='col-lg-8')
+								// 	div(class='form-group')
+								// 		label(for='datakey2') Type
+								// 			input(name='datakey2' type='text' id='datkey2' class='form-control' placeholder='GPA')
+								// 		label(for='datavalue2') Content
+								// 			input(name='datavalue2' type='text' id='dataval2' class='form-control' placeholder='3.5')
+								// 			input(type="checkbox", name="checkbox_2", class='checkbox2', text="Include record to AB")
+								// div(class='col-lg-8')
+								// 	div(class='form-group')
+								// 		label(for='datakey3') Type
+								// 			input(name='datakey3' type='text' id='datkey3' class='form-control' placeholder='Assistantship')
+								// 		label(for='datavalue3') Content
+								// 			input(name='datavalue3' type='text' id='dataval3' class='form-control' placeholder='TA')
+								// 			input(type="checkbox", name="checkbox_3", class='checkbox3', text="Include record to AB")
+
+						div(class='col-xs-3 top-buffer')
+								button(type='submit' class='btn btn-primary update-service') Generate Active Bundle
