@@ -2,7 +2,7 @@
 ;(function() {
 	jsPlumb.ready(function() {
 
-		// Slider initialization
+		/* Slider initialization */
 		$('.slider').each(function() {
 			var val = $(this).attr('value');
 			$(this).slider({
@@ -13,7 +13,7 @@
 				value			: val,
 				step			: 1,
 				slide			: function(event, ui) {
-					if (ui.value > 8){
+					if (ui.value > 8) {
 						$(this).css('background','#00ff00');
 					} else if (ui.value > 6) {
 						$(this).css('background', '#ffff00');
@@ -46,13 +46,13 @@
 					console.log('svc id: ' + svc_id[1]);
 				});
 				var slist = JSON.stringify(svc_arr);
-				var slink = '/scenario_logs?service_list=' + slist; 
+				var slink = '/scenario_logs?service_list=' + slist;
+				
+				/* Set log for each service */
 				$.get(slink, function(logs, status) {
 					if (status == 'success') {
 						alert(data);
-						// location.reload();
-						
-						/* Set log for each service */
+						// location.reload();						
 						for (var s in logs) {
 							$('#logid_' + logs[s].id).text(logs[s].log);
 						}
@@ -61,7 +61,7 @@
 			});
 		});
 
-		// Decide service toggle button display
+		/* Set service toggle button display */
 		$('.svc_status').each(function() {
 			if (this.id == -1) {
 				$('#btn_toggle_svc').text('Start');
@@ -69,7 +69,7 @@
 			}
 		});
 
-		// Toggle services
+		/* Handle toggle services */
 		$('.svc_toggle').click(function() {
 			var svcs_toggle = [];
 			var count = 0;
@@ -158,8 +158,7 @@
 			$.getJSON( '/scenario_topology?s_id=' + s_id, function( data ) {
 				for(var i = 0; i < data.connections.length; i++) {
 					var conn = data.connections[i];
-					instance.connect({ source:'service' + conn[0],
-					target:'service' + conn[1]});
+					instance.connect({ source:'service' + conn[0], target:'service' + conn[1]});
 				}
 			});
 
@@ -174,14 +173,14 @@
 				});
 
 				if(count%2 > 0) {
-					left += 150;
-					top += 150;
+					// left += 200;
+					top += 300;
 				} else {
 					left += 300;
 				}
 				count++;
 
-				if(left > 500) {
+				if(left > 300) {
 					left = 0;
 				}
 			});

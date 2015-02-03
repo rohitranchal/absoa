@@ -1,3 +1,4 @@
+doctype html
 html(lang='en')
 	head
 		meta(http-equiv='X-UA-Compatible', content='IE=edge')
@@ -5,15 +6,14 @@ html(lang='en')
 		title Active Bundle Console
 		link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css')
 		link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css')
+		link(rel='stylesheet' href='//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css')
 		script(src='//code.jquery.com/jquery-1.10.2.min.js')
-		script(src='//code.jquery.com/ui/1.10.3/jquery-ui.js')
+		script(src='//code.jquery.com/ui/1.10.4/jquery-ui.js')
 		script(src='//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js')
-		link(rel='stylesheet' href='http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css')
 		script(src='./js/jsplumb/jquery.jsPlumb-1.5.5-min.js')
-		script(src='http://code.jquery.com/jquery-1.9.1.js')
-		script(src='http://code.jquery.com/ui/1.10.4/jquery-ui.js')
 		script(src='./js/scenario.js')
 		link(rel='stylesheet', href='./css/scenario.css')
+
 	body
 		include nav
 		div(id='scenario_id', style='visibility:hidden;')=id			
@@ -32,7 +32,7 @@ html(lang='en')
 									div(class='w', id='service' + service.id)=service.display_name
 										div(style='color:red')
 											strong=service.trust_level
-										div(id='logid_' + service.id class='log_data')
+										div(id='logid_' + service.id class='log_data')='Logs'
 										div(class='ep')
 			div(class='col-md-4')
 				div(class='panel panel-default')
