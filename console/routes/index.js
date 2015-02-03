@@ -273,11 +273,11 @@ router.post('/toggle_service', function(req, res) {
 
 	db.get_service(svc_id, function(val) {
 		var svc_status = val['status'];
-		var svc_exec = 'node ../' + val.source_path + '/bin/www';
-
+		var svc_exec = 'node bin/www';
+		var svc_dir = process.cwd() + '/../' + val.source_path;
 		if (svc_status == -1) {
 			var exec = require('child_process').exec;
-			chld_proc = exec(svc_exec);
+			chld_proc = exec(svc_exec, { cwd: svc_dir });
 			chld_proc.stdout.on('data', function (data) {
 			  console.log(data);
 			});
