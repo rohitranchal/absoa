@@ -42,7 +42,11 @@ router.get('/test', function(req, res) {
 
 /* GET client page */
 router.get('/client', function(req, res) {
-	res.render('client', { title: 'Active Bundle Console' });	
+	db.get_service_data(function(rows) {
+		console.log('rows: ' + rows[0].data_key + ' = ' + rows[0].data_value);
+		res.render('client', { title: 'Active Bundle Console', entries: rows });
+	});
+	//before 02 Feb.was:=> res.render('client', { title: 'Active Bundle Console' });	
 });
 
 /* GET service list page */
@@ -69,7 +73,6 @@ router.get('/scenario_list', function(req, res) {
 router.get('/scenario', function(req, res) {
 	var sc_id = req.query.scenario_id;
 	var sc_name = req.query.scenario_name;
-	var log_status = req.query.log;	
 
 	var scenario = null;
 	for(var i = 0; i < scenarios.length; i++) {
@@ -82,7 +85,7 @@ router.get('/scenario', function(req, res) {
 	var se_list = scenario.services.join(',');
 	db.get_scenario_services(se_list, function(rows) {
 		scenario.services = rows;
-		res.render('scenario', scenario);		
+		res.render('scenario', scenario);
 		scenario.services = tmp_s;
 	});
 });
@@ -99,29 +102,17 @@ router.get('/scenario_topology', function(req, res) {
 	}
 });
 
-/* GET logs for a service */
+/* GET logs for a list of services */
 router.get('/service_logs', function(req, res) {
-	var sid = req.query.service_id;
-	db.get_service_log(id, function(rows) {
-		res.send(rows[0]);
-	});
-});
-
-/* GET logs for services of a scenario */
-router.get('/scenario_logs', function(req, res) {
-	var slist = JSON.parse(req.query.service_list);
-	console.log('len: ' + slist.length);
-	db.get_service_list_log(slist, function(rows) {
-		var logs = [];
-		if (rows.length > 0) {
-			for (var i=0; i<rows.length; i++) {
-				logs[i] = {};
-				logs[i].id = rows[i].service_id;
-				logs[i].log = rows[i].log;
-			}
-		}		
-		res.send(logs);
-	});
+	var slist = req.query.service_list;
+	for(var s in slist) {
+		console.log('sid: ' + s.id);
+	}
+	var arr = ['ok'];
+	res.send(arr);
+	// db.get_service_log(id, function(rows) {
+	// 	res.send(rows[0]);
+	// });
 });
 
 /* POST start a scenario */
@@ -140,18 +131,35 @@ router.post('/client', function(req, res) {
 	var value2 = req.body.datavalue2;
 	var key3 = req.body.datakey3;
 	var value3 = req.body.datavalue3;
+	var key4 = req.body.datakey4;
+	var value4 = req.body.datavalue4;
+	var key5 = req.body.datakey5;
+	var value5 = req.body.datavalue5;
+	var key6 = req.body.datakey6;
+	var value6 = req.body.datavalue6;
 
 	var marked1 = req.body.checkbox_1;
 	var marked2 = req.body.checkbox_2;
 	var marked3 = req.body.checkbox_3;
+	var marked4 = req.body.checkbox_4;
+	var marked5 = req.body.checkbox_5;
+	var marked6 = req.body.checkbox_6;
+
 	console.log('checkbox1 =  ' + marked1);
 	console.log('checkbox2 =  ' + marked2);
 	console.log('checkbox3 =  ' + marked3);
+	console.log('checkbox4 =  ' + marked4);
+	console.log('checkbox5 =  ' + marked5);
+	console.log('checkbox6 =  ' + marked6);
 
 	console.log('Following fields were typed: ');
 	console.log('key1 =  ' + key1 + ' ; value1 = ' + value1);
 	console.log('key2 =  ' + key2 + ' ; value2 = ' + value2);
 	console.log('key3 =  ' + key3 + ' ; value3 = ' + value3);
+	console.log('key4 =  ' + key4 + ' ; value4 = ' + value4);
+	console.log('key5 =  ' + key5 + ' ; value5 = ' + value5);
+	console.log('key6 =  ' + key6 + ' ; value6 = ' + value6);
+
 
 	//01 Feb.: clean ab_data file content to avoid writing previous data from previous file to AB  
 	fs.writeFile(ab_data, '' , function (err) {
@@ -161,7 +169,7 @@ router.post('/client', function(req, res) {
 
 	//01 Feb. if(key1 !== '' && value1 !== '') {
 	//At least one checkbox must be marked to add data to AB
-	if(marked1 == 'on' || marked2 == 'on' || marked3 == 'on') {	
+	if(marked1 == 'on' || marked2 == 'on' || marked3 == 'on' || marked4 == 'on' || marked5 == 'on' || marked6 == 'on') {	
 		//write key and value to ab_data file:  ab.user.<key1> = <value1>
 		if(marked1 == 'on') {	
 			var ab_record = ab_record_begins + key1 + ' = ' + value1 ;
@@ -185,13 +193,39 @@ router.post('/client', function(req, res) {
 	  			if (err) return console.log(err);
 	  			console.log('pair 3 ' + ab_record3 + ' - has been appended to file: ' + ab_data);
 			});
-		}	
+		}
+
+		if(marked4 == 'on') {		
+			var ab_record4 = ab_record_begins + key4 + ' = ' + value4 ;
+			fs.appendFile(ab_data, ab_record4 + "\n", function (err) {
+	  			if (err) return console.log(err);
+	  			console.log('pair 4 ' + ab_record4 + ' - has been appended to file: ' + ab_data);
+			});
+		}
+
+		if(marked5 == 'on') {	
+			var ab_record5 = ab_record_begins + key5 + ' = ' + value5 ;
+			fs.appendFile(ab_data, ab_record5 + "\n", function (err) {
+	  			if (err) return console.log(err);
+	  			console.log('pair 5 ' + ab_record5 + ' - has been appended to file: ' + ab_data);
+			});
+		}
+		
+		if(marked6 == 'on') {		
+			var ab_record6 = ab_record_begins + key6 + ' = ' + value6 ;
+			fs.appendFile(ab_data, ab_record6 + "\n", function (err) {
+	  			if (err) return console.log(err);
+	  			console.log('pair 6 ' + ab_record6 + ' - has been appended to file: ' + ab_data);
+			});
+		}
+
 		generate_ab();
 		var msg = 'SUCCESS: AB has been generated';
 		res.render('client', {title: 'E-Commerce', message: msg});
 	} else {
 		var msg = 'ERROR: missing data';
 		res.render('client', {title: 'E-Commerce', message: msg});
+		//02 Feb. res.render('error', {title: 'E-Commerce', message: msg});
 	}
 	// always maintain path to the recently created AB so update global path to AB here when AB is created
 });
