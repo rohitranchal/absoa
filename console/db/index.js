@@ -34,6 +34,17 @@ exports.get_service = function(id, cb) {
 	});
 }
 
+//02 Feb. 
+/* Get info from Service_Data table  */
+exports.get_service_data = function(cb) {
+	var query = "SELECT * FROM Service_Data";
+	debug('Get service data: ' + query);
+	connection.query(query, function(err, rows, fields) {
+		if (err) throw err;
+		cb(rows);
+	});
+}
+
 /* Update service params */
 exports.update_service = function(obj) {
 	var query = "UPDATE Service SET rating= " + obj.rating + ", trust_level=" + obj.trust + ", req_data='" + obj.data + "' WHERE id=" + obj.sid;
