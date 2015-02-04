@@ -144,6 +144,13 @@ $( document ).ready(function() {
 
 	});
 
+	$('.enable_btn1').click(function() {
+		console.log('Enable policy1 button was pressed');
+	});
+
+	$('.enable_btn2').click(function() {
+		console.log('Enable policy2 button was pressed');
+	});	
 	/* 
 	onsubmitbuttonclick() {
 
