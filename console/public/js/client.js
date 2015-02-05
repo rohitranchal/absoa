@@ -145,12 +145,35 @@ $( document ).ready(function() {
 	});
 
 	$('.enable_btn1').click(function() {
+		//var status_text = document.getElementById('#b1').text;
+		var status_text = $('#b1').text;
 		console.log('Enable policy1 button was pressed');
+
+		//4 Feb. 
+		//4 Feb. this.text('Disable');
+		//4 Feb - not working console.log( 'button text => '  + status_text );
+		console.log( '==>> ' + $('.container_policy1'.text));
+		//console.log(' =+ attr: ' + $('.enable_btn2').attr.('text'));
+		$('#b1').text('Disable');
+		$('#b1').removeClass('btn-primary').addClass('btn-danger');
+		///4 Feb. this.removeClass('btn-primary').addClass('btn-danger');
 	});
 
 	$('.enable_btn2').click(function() {
 		console.log('Enable policy2 button was pressed');
 	});	
+
+	$('.container_policy1').each(function() {
+		var status_val = $(this).text();
+		console.log('.container_policy1 entered ...' + status_val);
+		//4 Feb. if(status_val != -1) {
+			// $('#svc_' + this.id).text('Stop');
+			// $('#svc_' + this.id).removeClass('btn-primary').addClass('btn-danger');
+		$('enable_btn1').text('Disable');
+		$('enable_btn1').removeClass('btn-primary').addClass('btn-danger');
+		//4 Feb. }
+	});
+
 	/* 
 	onsubmitbuttonclick() {
 
