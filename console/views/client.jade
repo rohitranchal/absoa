@@ -9,7 +9,10 @@ block content
 	div(class="container")
 		div(class="panel panel-default text-center")
 			h2 Active Bundle Generator
-		div(class="panel panel-default")
+		//div(class="panel panel-default")
+		div(class="panel panel-primary")
+			div(class="panel-heading")
+				h3(class="panel-title") Data for Active Bundle
 			div(class="panel-body")
 				//30 Jan form(class='form-inline top-buffer' method = "POST" action = "/create")
 				//- handle button event in client.js
@@ -29,22 +32,6 @@ block content
 											input(name='datavalue' + entry.id type='text' id='dataval' + entry.id class='inputval' + entry.id placeholder=entry.data_value style='margin-left:10px')
 											input(type="checkbox", name='checkbox_' + entry.id, class='checkbox' + entry.id , text="Include record to AB" style='margin-left:30px')
 											//Enable m.b. right to policies, not here. Here we need checkbox 
-								
-								// div(class='col-lg-8')
-								// 	div(class='form-group')
-								// 		label(for='datakey2') Type
-								// 			input(name='datakey2' type='text' id='datkey2' class='form-control' placeholder='GPA')
-								// 		label(for='datavalue2') Content
-								// 			input(name='datavalue2' type='text' id='dataval2' class='form-control' placeholder='3.5')
-								// 			input(type="checkbox", name="checkbox_2", class='checkbox2', text="Include record to AB")
-								// div(class='col-lg-8')
-								// 	div(class='form-group')
-								// 		label(for='datakey3') Type
-								// 			input(name='datakey3' type='text' id='datkey3' class='form-control' placeholder='Assistantship')
-								// 		label(for='datavalue3') Content
-								// 			input(name='datavalue3' type='text' id='dataval3' class='form-control' placeholder='TA')
-								// 			input(type="checkbox", name="checkbox_3", class='checkbox3', text="Include record to AB")
-
 						div(class='col-xs-3 top-buffer')
 								button(type='submit' class='btn btn-primary update-service') Generate Active Bundle
 		//Policy section								
@@ -52,18 +39,21 @@ block content
 			div(class="panel-heading")
 				h3(class="panel-title") Policies for Active Bundle
 			div(class="panel-body")
-				div(class="panel-group" id="accordion_a")
-					///for alg in a_algos
-					///3 Feb. div(class="panel panel-default", id='collapse_a_panel' + alg.id)
-					div(class="panel panel-default", id='collapse_a_panel')
-						div(class="panel-heading")
-							h4
-								label(for='policy1' ) Policy 1
-								button(type="button", class="enable_btn1 pull-right", id=1) Enable
-							h4		
-								label(for='policy2' ) Policy 2
-								button(type="button", class="enable_btn2 pull-right", id=2) Enable
-		// 						a(data-toggle="collapse", data-parent="#accordion_a", href='#collapse_a_' + alg.id)=alg.name
-		// 						button(type="button", class="btn btn-primary pull-right", id=('a' + alg.id)) Enable
-		// 						div(id='collapse_a_' + alg.id, class="panel-collapse collapse")
+				//4 Feb. div(class="form-group" id="policies_1")
+				div( id='c1' class="container_policy1" )
+					///4 Feb. div(class="panel panel-default", id='collapse_a_panel')
+						//4 Feb. div(class="panel-heading")
+							//4 Feb. h4
+					label(for='policy1' style='margin-left:10px; font-size:15px ' ) Policy 1 ............................................................................
+					//OK button(type="button", class="enable_btn1 pull-right", id='b1' style='margin-left:10px; font-size:15px ') Enable
+					button(type="button", class="enable_btn1 ", id='b1' style='margin-left:10px; margin-top:5px; font-size:15px ') Enable
+					//color:blue; font-family:verdana; font-size:300%
+					//4 Feb. h4		
+				div(id='c2' class="container_policy2")
+					label(for='policy2' style='margin-left:10px; margin-top:20px; font-size:15px' ) Policy 2 ............................................................................
+					button(type="button", class="enable_btn2 ", id='b2' , style='margin-left:10px; margin-top:20px; font-size:15px ' ) Enable
+					//OK 4 Feb. button(type="button", class="enable_btn2 pull-right", id='b2' , style='margin-top:20px; font-size:15px ' ) Enable
+		// 				a(data-toggle="collapse", data-parent="#accordion_a", href='#collapse_a_' + alg.id)=alg.name
+		// 				button(type="button", class="btn btn-primary pull-right", id=('a' + alg.id)) Enable
+		// 				div(id='collapse_a_' + alg.id, class="panel-collapse collapse")
 		// 
