@@ -128,15 +128,6 @@ $( document ).ready(function() {
 	$('.btn').click(function() {
 		console.log('Generate AB button was pressed');
 		console.log(' data_arr = ' + data_arr);
-
-		// $.post('/create', 
-		// {
-		// 	ab_data		: 'ab',
-		// }, function(data) {
-		// 	//location.reload();
-		// 	// window.location.href = '/create';
-		// });
-		//31 Jan $.post('/create', {service_id : 'some'}, function (data) {
 		$.post('/client', {service_id : 'some'}, function (data) {
 			console.log('create call');
 			location.reload();
@@ -174,18 +165,14 @@ $( document ).ready(function() {
 		//4 Feb. }
 	});
 
-	/* 
-	onsubmitbuttonclick() {
+	// $('.selectapplic_pol_btn').click(function() {
+	// 	console.log('Select applicable policies button was pressed');
+	// 	console.log(' data_arr = ' + data_arr);
+	// 	$.get('/client', {service_id : 'some'}, function (data) {
+	// 		console.log('create call');
+	// 		location.reload();
+	// 	});
 
-
-		$.post('/create',
-		{
-			data		: data_arr,
-		}, function(data) {
-			window.location.href = '/create';
-		});
-
-	}  
-	*/
+	// });
 
 });
