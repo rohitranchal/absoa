@@ -126,6 +126,7 @@ $( document ).ready(function() {
 		}
 	});
 
+	//Generate AB button
 	$('.btn').click(function() {
 		console.log('Generate AB button was pressed');
 		console.log(' data_arr = ' + data_arr);
@@ -136,6 +137,28 @@ $( document ).ready(function() {
 
 	});
 
+	//select all checkbox
+	$('.checkboxall').click(function() {
+		var status_val = (this).checked;  //will work now 
+		console.log('Clicked on Select All checkbox ... ' + status_val);
+		if (this.checked) {			
+			$('.checkbox1').prop('checked', true);
+			$('.checkbox2').prop('checked', true);
+			$('.checkbox3').prop('checked', true);
+			$('.checkbox4').prop('checked', true);
+			$('.checkbox5').prop('checked', true);
+			$('.checkbox6').prop('checked', true);
+		} else {
+			$('.checkbox1').prop('checked', false);
+			$('.checkbox2').prop('checked', false);
+			$('.checkbox3').prop('checked', false);
+			$('.checkbox4').prop('checked', false);
+			$('.checkbox5').prop('checked', false);
+			$('.checkbox6').prop('checked', false);
+		}
+	});
+
+	//Buttons are not used anymore. Checkboxes are used - see below (9 Feb.)
 	$('.enable_btn1').click(function() {
 		//var status_text = document.getElementById('#b1').text;
 		var status_text = $('#b1').text;
