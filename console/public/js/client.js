@@ -1,6 +1,7 @@
 $( document ).ready(function() {
 
 	var data_arr = [];
+	var policy_arr = [];
 
 	/// READ DEFAULT VALUES FROM Service_Data table (which is in db.sql)	
 	// for (var i = 0, limit = 5; i < limit; i++) {
@@ -163,6 +164,32 @@ $( document ).ready(function() {
 		$('enable_btn1').text('Disable');
 		$('enable_btn1').removeClass('btn-primary').addClass('btn-danger');
 		//4 Feb. }
+	});
+
+	$('.checkboxpol1').click(function() {
+		var status_val = (this).checked;  //will work now 
+		console.log('Clicked on checkbox for policy 1 ... ' + status_val);
+		if (this.checked) {			
+			//9 Feb. var label_val = document.getElementById('policy1').value;
+			var label_val = document.getElementById('policy1').value;
+			console.log('checked checkboxpol1 for policy 1...'  + label_val);
+			policy_arr[1] = label_val;
+		} else {
+			// remove from array  - not necessary because we do it in routes/index.js
+		}
+	});
+
+	$('.checkboxpol2').click(function() {
+		var status_val = (this).checked;  //will work now 
+		console.log('Clicked on checkbox for policy 2 ... ' + status_val);
+		if (this.checked) {			
+			//9 Feb. var label_val = document.getElementById('policy1').value;
+			var label_val = document.getElementById('policy2').value;
+			console.log('checked checkboxpol2 for policy 2...'  + label_val);
+			policy_arr[2] = label_val;
+		} else {
+			// remove from array  - not necessary because we do it in routes/index.js
+		}
 	});
 
 	// $('.selectapplic_pol_btn').click(function() {
