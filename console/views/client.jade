@@ -14,8 +14,6 @@ block content
 			div(class="panel-heading")
 				h3(class="panel-title") Data for Active Bundle
 			div(class="panel-body")
-				//9 Feb. div(class='col-xs-3 top-buffer')
-				button(type='submit' class='btn_select btn-primary update-service' style='margin-left:610px; margin-top:10px') Select All
 				//30 Jan form(class='form-inline top-buffer' method = "POST" action = "/create")
 				//- handle button event in client.js
 				form(class='form-inline top-buffer' method='post' action='#')
@@ -23,6 +21,8 @@ block content
 					if(message)
 						p=message
 					else
+						label(for='checkbox_all' style='margin-left:570px' ) Select All
+						input(type="checkbox", name='checkbox_all', class='checkboxall' , text="Select all data" style='margin-top:10px; margin-left:2px')						
 						center
 							//scan through all tuples of the DB 'Service_Data'					
 							for entry in entries	
