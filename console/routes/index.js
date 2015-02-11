@@ -44,9 +44,11 @@ router.get('/test', function(req, res) {
 router.get('/client', function(req, res) {
 	db.get_service_data(function(rows) {
 		console.log('rows: ' + rows[0].data_key + ' = ' + rows[0].data_value);
-		res.render('client', { title: 'Active Bundle Console', entries: rows });
+		db.get_policy(function(policies) {
+			console.log('policies: ' + policies[0].id + ' ; ' + policies[0].policy);
+			res.render('client', { title: 'Active Bundle Console', entries: rows, entries_pol: policies });
+		});	
 	});
-	//before 02 Feb.was:=> res.render('client', { title: 'Active Bundle Console' });	
 });
 
 /* GET service list page */
@@ -305,9 +307,9 @@ var generate_ab = function() {
 	ab_proc.stdout.on('data', function (data) {
 		console.log(data);
 	});
-	ab_proc.stderr.on('data', function (data) {
-		console.log(data);
-	});	
+	// //ab_proc.stderr.on('data', function (data) {
+	// 	console.log(data);
+	// });	
 };
 
 module.exports = router;
