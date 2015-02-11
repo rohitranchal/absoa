@@ -44,19 +44,13 @@ block content
 				//OK button(type="button", class='btn btn-primary pull-up', style='margin-top:10px; margin-bottom:10px' ) Include applicable policies
 				button(type="button", class='btn btn-primary', style='margin-bottom:10px' ) Include applicable policies
 				div(class="panel-group" id="accordion_p")
-					div(class="panel panel-default", id='collapse_p_panel')
-						div(class="panel-heading")
-							h4
-								label(name='polic1' for='policy1' id='policy1' class='pol1' placeholder='pol1' style='margin-left:10px; font-size:15px ' ) Policy 1 ............................................................................
-								input(type='checkbox', name='checkbox_pol1', class='checkboxpol1', text='Enable policy 1 for AB', style='margin-left:20px')
-						div(class='panel-body')
-				div(class="panel-group" id="accordion_p2")
-					div(class="panel panel-default", id='collapse_p_panel2')
-						div(class="panel-heading")
-							h4
-								label(name='polic2' for='policy2' id='policy2' class='pol2' placeholder='pol2' style='margin-left:10px; font-size:15px ' ) Policy 2 ............................................................................
-								input(type='checkbox', name='checkbox_pol2', class='checkboxpol2', text='Enable policy 2 for AB', style='margin-left:20px')
-						div(class='panel-body')
+					div(class="panel panel-default", id='pol_panel')
+						for tuple in entries_pol
+							div(class="panel-heading")
+								h4
+									label(name='policy' + tuple.id id='pol' + tuple.id class='policy_'  + tuple.id placeholder=tuple.policy style='margin-left:10px; font-size:15px ' ) tuple.policy
+									input(type='checkbox', name='chk_pol' + tuple.id, class='checkboxpol' + tuple.id, text='Enable policy for AB', style='margin-left:20px')
+							div(class='panel-body')
 		// div(class="panel panel-primary")
 		// 	div(class="panel-heading")
 		// 		h3(class="panel-title") Policies for Active Bundle
