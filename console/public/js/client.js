@@ -30,6 +30,21 @@ $( document ).ready(function() {
 		document.getElementById('datkey6').value = $('.inputkey6').attr('placeholder');
 		document.getElementById('dataval6').value = $('.inputval6').attr('placeholder');
 	}	
+
+	if (document.getElementById('pol1') != null) {
+		$('#pol1').text($('.policy_1').attr('placeholder'));
+		$('#pol2').text($('.policy_2').attr('placeholder'));
+		$('#pol3').text($('.policy_3').attr('placeholder'));
+		$('#pol4').text($('.policy_2').attr('placeholder'));
+
+		document.getElementById('pol1').text = $('.policy_1').attr('placeholder');
+		//document.getElementById('pol1').text($('.policy_1').attr('placeholder'));
+
+	}
+	console.log($('.policy_1').attr('placeholder'));
+	console.log($('.policy_1').attr('text'));
+	$('#pol1').text($('.policy_1').attr('placeholder'));
+
 	// $('.inputkey1').each(function() {
  //    	document.getElementById('datkey1').value = $(this).attr('placeholder');
  //    	console.log($(this).attr('placeholder'));
