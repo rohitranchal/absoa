@@ -41,16 +41,24 @@ block content
 			div(class="panel-heading")
 				h3(class="panel-title") Policies for Active Bundle
 			div(class="panel-body" style='margin-top:20px')
-				//OK button(type="button", class='btn btn-primary pull-up', style='margin-top:10px; margin-bottom:10px' ) Include applicable policies
-				button(type="button", class='btn btn-primary', style='margin-bottom:10px' ) Include applicable policies
-				div(class="panel-group" id="accordion_p")
-					div(class="panel panel-default", id='pol_panel')
-						for tuple in entries_pol
-							div(class="panel-heading")
-								h4
-									label(name='policy' + tuple.id id='pol' + tuple.id class='policy_'  + tuple.id placeholder=tuple.policy style='margin-left:10px; font-size:15px ' ) tuple.policy
-									input(type='checkbox', name='chk_pol' + tuple.id, class='checkboxpol' + tuple.id, text='Enable policy for AB', style='margin-left:20px')
-							div(class='panel-body')
+				//11 Feb. Error: Cannot read property 'length' of undefined
+				//form(class='form-inline top-buffer' method='get' action='#')
+				if(message)
+					p=message
+				else
+					//OK button(type="button", class='btn btn-primary pull-up', style='margin-top:10px; margin-bottom:10px' ) Include applicable policies
+					button(type="button", class='btn btn-primary', style='margin-bottom:10px' ) Include applicable policies
+					div(class="panel-group" id="accordion_p")
+						div(class="panel panel-default", id='pol_panel')
+							for tuple in entries_pol
+								div(class="panel-heading")
+									h4
+										input(type='checkbox', name='chk_pol' + tuple.id, class='checkboxpol' + tuple.id, text='Enable policy for AB', style='margin-left:20px')
+										label(name='policy' + tuple.id id='pol' + tuple.id class='policy_'  + tuple.id placeholder=tuple.policy style='margin-left:10px; font-size:15px ' ) tuple.policy
+										//11 Feb. - add labels for rating for every policy
+										//11 Feb. For policy 1 - add label for credit limit 
+										//label(name='policy' + tuple.id id='pol' + tuple.id class='policy_'  + tuple.id placeholder=tuple.policy style='margin-left:10px; font-size:15px ' ) tuple.policy
+								div(class='panel-body')
 		// div(class="panel panel-primary")
 		// 	div(class="panel-heading")
 		// 		h3(class="panel-title") Policies for Active Bundle
