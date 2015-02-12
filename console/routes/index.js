@@ -45,7 +45,7 @@ router.get('/client', function(req, res) {
 	db.get_service_data(function(rows) {
 		console.log('rows: ' + rows[0].data_key + ' = ' + rows[0].data_value);
 		db.get_policy(function(policies) {
-			console.log('policies: ' + policies[0].id + ' ; ' + policies[0].policy);
+			console.log('policies: ' + policies[0].id + ' ; ' + policies[0].policy + ' ; ' + policies[0].environment);
 			res.render('client', { title: 'Active Bundle Console', entries: rows, entries_pol: policies });
 		});	
 	});
