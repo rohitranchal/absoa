@@ -65,7 +65,7 @@ CREATE TABLE Policy (
 )ENGINE=INNODB ;
 
 INSERT INTO Policy (id , data_id, policy, environment) VALUES
-(1, 4, 'Payment type policy', '{rating:4, credit_limit:5000}'),
-(2, 3, 'Credit card policy', '{rating:4}'),
-(3, 5, 'Mailing address policy', '{rating:4}'),
-(4, 6, 'Shipping preference policy', '{rating:4}');
+(1, 4, 'Payment type policy', '{"rating":4, "credit_limit":5000}'),
+(2, 3, 'Credit card policy', '{"rating":4}'),
+(3, 5, 'Mailing address policy', '{"rating":4}'),
+(4, 6, 'Shipping preference policy', '{"rating":4}');
