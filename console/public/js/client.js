@@ -202,7 +202,7 @@ $( document ).ready(function() {
 		console.log('Clicked on checkbox for policy 1 ... ' + status_val);
 		if (this.checked) {			
 			//9 Feb. var label_val = document.getElementById('policy1').value;
-			var label_val = document.getElementById('policy1').value;
+			var label_val = document.getElementById('pol1').text;
 			console.log('checked checkboxpol1 for policy 1...'  + label_val);
 			policy_arr[1] = label_val;
 		} else {
@@ -215,7 +215,7 @@ $( document ).ready(function() {
 		console.log('Clicked on checkbox for policy 2 ... ' + status_val);
 		if (this.checked) {			
 			//9 Feb. var label_val = document.getElementById('policy1').value;
-			var label_val = document.getElementById('policy2').value;
+			var label_val = document.getElementById('pol2').text;
 			console.log('checked checkboxpol2 for policy 2...'  + label_val);
 			policy_arr[2] = label_val;
 		} else {
