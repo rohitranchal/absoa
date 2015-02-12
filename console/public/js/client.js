@@ -32,12 +32,27 @@ $( document ).ready(function() {
 	}	
 
 	if (document.getElementById('pol1') != null) {
-		$('#pol1').text($('.policy_1').attr('placeholder'));
-		$('#pol2').text($('.policy_2').attr('placeholder'));
-		$('#pol3').text($('.policy_3').attr('placeholder'));
-		$('#pol4').text($('.policy_2').attr('placeholder'));
+		var razd = '  ;  rating: ';
+		var obj = JSON.parse($('.policy_1').attr('name'));
+		$('#pol1').text($('.policy_1').attr('placeholder') + razd + obj.rating);
+		document.getElementById('credlim1').value = obj.credit_limit;
+
+		obj = JSON.parse($('.policy_2').attr('name'));
+		$('#pol2').text($('.policy_2').attr('placeholder') + razd + obj.rating);
+
+		obj = JSON.parse($('.policy_3').attr('name'));
+		$('#pol3').text($('.policy_3').attr('placeholder') + razd + obj.rating);
+
+		obj = JSON.parse($('.policy_4').attr('name'));
+		$('#pol4').text($('.policy_4').attr('placeholder') + razd + obj.rating);
 	}
-	
+
+	//12 Feb. : JSON testing
+	// console.log('obj data: ' + $('.policy_1').attr('name'));
+	// var obj = JSON.parse($('.policy_1').attr('name'));
+	// console.log('obj data: ' + obj.rating + ' ; credit limit=' + obj.credit_limit);
+
+
 	// $('.inputkey1').each(function() {
  //    	document.getElementById('datkey1').value = $(this).attr('placeholder');
  //    	console.log($(this).attr('placeholder'));
