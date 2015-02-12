@@ -54,8 +54,15 @@ block content
 								div(class="panel-heading")
 									h4
 										input(type='checkbox', name='chk_pol' + tuple.id, class='checkboxpol' + tuple.id, text='Enable policy for AB', style='margin-left:20px')
-										label(name='policy' + tuple.id id='pol' + tuple.id class='policy_'  + tuple.id placeholder=tuple.policy style='margin-left:10px; font-size:15px ' ) tuple.policy
-										//11 Feb. - add labels for rating for every policy
+										//OK 12 Feb. label(name='policy' + tuple.id id='pol' + tuple.id class='policy_'  + tuple.id placeholder=tuple.policy + ' ; ' + tuple.environment style='margin-left:10px; font-size:15px ' ) tuple.policy
+										label(name=tuple.environment id='pol' + tuple.id class='policy_'  + tuple.id placeholder=tuple.policy  style='margin-left:10px; font-size:15px ' ) Policy text
+										if (tuple.id == 1)
+											console.log('id = ' + tuple.id)
+											label(for='credlimit' + tuple.id style='margin-left:50px; font-size:15px') Credit Limit
+											input(name='credlimit' + tuple.id type='text' id='credlim' + tuple.id class='credlimit' + tuple.id placeholder=tuple.environment  style='margin-left:10px; font-size:15px')
+										// else
+										// 	console.log('id <> ' + tuple.id)
+										// //11 Feb. - add labels for rating for every policy
 										//11 Feb. For policy 1 - add label for credit limit 
 										//label(name='policy' + tuple.id id='pol' + tuple.id class='policy_'  + tuple.id placeholder=tuple.policy style='margin-left:10px; font-size:15px ' ) tuple.policy
 								div(class='panel-body')
