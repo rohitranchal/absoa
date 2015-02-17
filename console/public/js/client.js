@@ -3,6 +3,9 @@ $( document ).ready(function() {
 	var data_arr = [];
 	var policy_arr = [];
 
+	//managing dropdowsn boxes in "Policies for AB" section 
+	var ratings = [3, 4, 6, 8, 9];
+	
 	/// READ DEFAULT VALUES FROM Service_Data table (which is in db.sql)	
 	// for (var i = 0, limit = 5; i < limit; i++) {
 	// 	var _keyID = 'datkey' + i;
@@ -31,33 +34,112 @@ $( document ).ready(function() {
 		document.getElementById('dataval6').value = $('.inputval6').attr('placeholder');
 	}	
 
-	if (document.getElementById('pol1') != null) {
-		var razd = '  ;  rating: ';
-		var obj = JSON.parse($('.policy_1').attr('name'));
-		$('#pol1').text($('.policy_1').attr('placeholder') + razd + obj.rating);
-		document.getElementById('credlim1').value = obj.credit_limit;
+	//Managing "Policies for AB" section
+	var populate_dropdownbox = function(combobox) {
+		for(var i = 0; i < ratings.length; i++) {
+			var opt = document.createElement('option');
+			opt.innerHTML = ratings[i];
+			opt.value = ratings[i];
+			combobox.appendChild(opt);
+			console.log('value  ' + opt.value + ' added to combobox');
+		}
+	};
 
+	if (document.getElementById('pol1') != null) {
+		var razd = '  ;  ' + '  ' + 'rating: ';
+		var rat = 'abc';
+		//16 Feb.
+		/*
+		for (var j = 0; j < 4; j++) { 
+			var objname = $('policy_' + j);
+			//obj = JSON.parse(objname.attr('name'));
+			//var obj = JSON.parse($(objname).attr('name'));	
+			console.log('objname = ' + objname.attr('name'));
+		*/	
+		var obj = JSON.parse($('.policy_1').attr('name'));
+		$('#pol1').text($('.policy_1').attr('placeholder') + ' ' + razd);
+		var elem1 = document.getElementById('req-data1');
+		populate_dropdownbox(elem1);
+		rat = obj.rating;
+		console.log('obj1.rating = ' + rat);
+		//16 Feb $('select option[text=obj.rating]').attr("selected",true);
+		//16 Feb. $('#test option').filter(function () { return $(this).html() == "B"; }).val();
+		//deprecatred console.log('val = ' + $('#req-data1 option').filter(function () { return $(this).html() == "4"; }).val()  );
+		// $('#req-data1 option[value=val]').attr("selected",true);
+		$('#req-data1 option').each(function () {										
+			if ($(this).html() == rat) {
+				$(this).attr("selected", "selected");
+				return;
+			}
+		});
+		//OK  $('select option:contains("4")').prop('selected',true);
+		//NOT OK $('dropdown option[value="4"]').attr("selected",true);
+
+		//OK $('#pol1').text($('.policy_1').attr('placeholder') + razd + obj.rating);
+		//OK $('#pol1').text($('.policy_1').attr('placeholder') + ' ' + razd);
+		document.getElementById('credlim1').value = obj.credit_limit;
+		//event on change of dropdown selection 
+		$('.dropdown1').change(function() {
+			var data = elem1.options[elem1.selectedIndex].value;
+			console.log('dropdown1 box selected data: ' + data);
+		});
+			
 		obj = JSON.parse($('.policy_2').attr('name'));
-		$('#pol2').text($('.policy_2').attr('placeholder') + razd + obj.rating);
+		//OK $('#pol2').text($('.policy_2').attr('placeholder') + razd + obj.rating);
+		$('#pol2').text($('.policy_2').attr('placeholder') + razd);
+		var elem2 = document.getElementById('req-data2');
+		populate_dropdownbox(elem2);
+		rat = obj.rating;
+		console.log('obj2.rating = ' + rat);
+		$('#req-data2 option').each(function () {										
+			if ($(this).html() == rat) {
+				$(this).attr("selected", "selected");
+				return;
+			}
+		});
+		$('.dropdown2').change(function() {
+			var data = elem2.options[elem2.selectedIndex].value;
+			console.log('dropdown2 box selected data: ' + data);
+		});
 
 		obj = JSON.parse($('.policy_3').attr('name'));
-		$('#pol3').text($('.policy_3').attr('placeholder') + razd + obj.rating);
+		//OK 17 Feb. $('#pol3').text($('.policy_3').attr('placeholder') + razd + obj.rating);
+		$('#pol3').text($('.policy_3').attr('placeholder') + razd);
+		var elem3 = document.getElementById('req-data3');
+		populate_dropdownbox(elem3);
+		rat = obj.rating;
+		console.log('obj3.rating = ' + rat);
+		$('#req-data3 option').each(function () {										
+			if ($(this).html() == rat) {
+				$(this).attr("selected", "selected");
+				return;
+			}
+		});
+		$('.dropdown3').change(function() {
+			var data = elem3.options[elem3.selectedIndex].value;
+			console.log('dropdown3 box selected data: ' + data);
+		});
 
 		obj = JSON.parse($('.policy_4').attr('name'));
-		$('#pol4').text($('.policy_4').attr('placeholder') + razd + obj.rating);
+		//OK 17 Feb. $('#pol4').text($('.policy_4').attr('placeholder') + razd + obj.rating);
+		$('#pol4').text($('.policy_4').attr('placeholder') + razd );
+		var elem4 = document.getElementById('req-data4');
+		populate_dropdownbox(elem4);
+		rat = obj.rating;
+		console.log('obj4.rating = ' + rat);
+		$('#req-data4 option').each(function () {										
+			if ($(this).html() == rat) {
+				$(this).attr("selected", "selected");
+				return;
+			}
+		});
+		$('.dropdown4').change(function() {
+			var data = elem4.options[elem4.selectedIndex].value;
+			console.log('dropdown4 box selected data: ' + data);
+		});
+
+		//for j cycle 16 Feb. }	
 	}
-
-	//12 Feb. : JSON testing
-	// console.log('obj data: ' + $('.policy_1').attr('name'));
-	// var obj = JSON.parse($('.policy_1').attr('name'));
-	// console.log('obj data: ' + obj.rating + ' ; credit limit=' + obj.credit_limit);
-
-
-	// $('.inputkey1').each(function() {
- //    	document.getElementById('datkey1').value = $(this).attr('placeholder');
- //    	console.log($(this).attr('placeholder'));
-	// });
-
 
 /* OK
 	$('.ab_data').each(function() {
