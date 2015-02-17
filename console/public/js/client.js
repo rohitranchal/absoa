@@ -3,17 +3,10 @@ $( document ).ready(function() {
 	var data_arr = [];
 	var policy_arr = [];
 
-	//managing dropdowsn boxes in "Policies for AB" section 
-	var ratings = [3, 4, 6, 8, 9];
+	//for managing dropdown boxes in "Policies for AB" section 
+	var ratings = [1, 2, 3, 4, 5];
 	
-	/// READ DEFAULT VALUES FROM Service_Data table (which is in db.sql)	
-	// for (var i = 0, limit = 5; i < limit; i++) {
-	// 	var _keyID = 'datkey' + i;
-	// 	var classkey = '.inputkey' + i;
-	// 	// document.getElementById('datkey' + i).value = $('.inputkey' + i).attr('placeholder');
-	// 	// document.getElementById('dataval' + i).value = $('.inputval' + i).attr('placeholder');
-	// 	/// document.getElementById(_keyID).value = $(classkey).attr('placeholder');
-	// }
+	//Filling in default values for <key ; value> pairs in 'Data for AB' section	
 	if (document.getElementById('datkey1') != null) {
 		document.getElementById('datkey1').value = $('.inputkey1').attr('placeholder');
 		document.getElementById('dataval1').value = $('.inputval1').attr('placeholder');
@@ -41,15 +34,13 @@ $( document ).ready(function() {
 			opt.innerHTML = ratings[i];
 			opt.value = ratings[i];
 			combobox.appendChild(opt);
-			console.log('value  ' + opt.value + ' added to combobox');
 		}
 	};
 
 	if (document.getElementById('pol1') != null) {
 		var razd = '  ;  ' + '  ' + 'rating: ';
 		var rat = 'abc';
-		//16 Feb.
-		/*
+		/*  16 Feb.
 		for (var j = 0; j < 4; j++) { 
 			var objname = $('policy_' + j);
 			//obj = JSON.parse(objname.attr('name'));
@@ -61,22 +52,12 @@ $( document ).ready(function() {
 		var elem1 = document.getElementById('req-data1');
 		populate_dropdownbox(elem1);
 		rat = obj.rating;
-		console.log('obj1.rating = ' + rat);
-		//16 Feb $('select option[text=obj.rating]').attr("selected",true);
-		//16 Feb. $('#test option').filter(function () { return $(this).html() == "B"; }).val();
-		//deprecatred console.log('val = ' + $('#req-data1 option').filter(function () { return $(this).html() == "4"; }).val()  );
-		// $('#req-data1 option[value=val]').attr("selected",true);
 		$('#req-data1 option').each(function () {										
 			if ($(this).html() == rat) {
 				$(this).attr("selected", "selected");
 				return;
 			}
 		});
-		//OK  $('select option:contains("4")').prop('selected',true);
-		//NOT OK $('dropdown option[value="4"]').attr("selected",true);
-
-		//OK $('#pol1').text($('.policy_1').attr('placeholder') + razd + obj.rating);
-		//OK $('#pol1').text($('.policy_1').attr('placeholder') + ' ' + razd);
 		document.getElementById('credlim1').value = obj.credit_limit;
 		//event on change of dropdown selection 
 		$('.dropdown1').change(function() {
@@ -90,7 +71,6 @@ $( document ).ready(function() {
 		var elem2 = document.getElementById('req-data2');
 		populate_dropdownbox(elem2);
 		rat = obj.rating;
-		console.log('obj2.rating = ' + rat);
 		$('#req-data2 option').each(function () {										
 			if ($(this).html() == rat) {
 				$(this).attr("selected", "selected");
@@ -108,7 +88,6 @@ $( document ).ready(function() {
 		var elem3 = document.getElementById('req-data3');
 		populate_dropdownbox(elem3);
 		rat = obj.rating;
-		console.log('obj3.rating = ' + rat);
 		$('#req-data3 option').each(function () {										
 			if ($(this).html() == rat) {
 				$(this).attr("selected", "selected");
@@ -126,7 +105,6 @@ $( document ).ready(function() {
 		var elem4 = document.getElementById('req-data4');
 		populate_dropdownbox(elem4);
 		rat = obj.rating;
-		console.log('obj4.rating = ' + rat);
 		$('#req-data4 option').each(function () {										
 			if ($(this).html() == rat) {
 				$(this).attr("selected", "selected");
