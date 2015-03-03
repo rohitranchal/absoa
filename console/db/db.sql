@@ -60,11 +60,11 @@ CREATE TABLE Policy (
         id INT PRIMARY KEY,
         data_id INT ,
         policy VARCHAR(2048) ,
-        environment VARCHAR(2048), 
+        rules VARCHAR(2048), 
         FOREIGN KEY (data_id) REFERENCES Service_Data(id) 
 )ENGINE=INNODB ;
 
-INSERT INTO Policy (id , data_id, policy, environment) VALUES
+INSERT INTO Policy (id , data_id, policy, rules) VALUES
 (1, 4, 'Payment type policy', '{"rating":4, "credit_limit":5000}'),
 (2, 3, 'Credit card policy', '{"rating":4}'),
 (3, 5, 'Mailing address policy', '{"rating":4}'),
