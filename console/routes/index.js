@@ -45,8 +45,8 @@ router.get('/client', function(req, res) {
 	db.get_service_data(function(rows) {
 		console.log('rows: ' + rows[0].data_key + ' = ' + rows[0].data_value);
 		db.get_policy(function(policies) {
-			console.log('policies: ' + policies[0].id + ' ; ' + policies[0].policy + ' ; ' + policies[0].environment);
-			var obj = JSON.parse(policies[0].environment);
+			console.log('policies: ' + policies[0].id + ' ; ' + policies[0].policy + ' ; ' + policies[0].rules);
+			var obj = JSON.parse(policies[0].rules);
 			console.log('obj: ' + obj);
 			console.log('obj data: ' + obj.rating + ' ; credit limit=' + obj.credit_limit);
 			res.render('client', { title: 'Active Bundle Console', entries: rows, entries_pol: policies });
