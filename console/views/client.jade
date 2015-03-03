@@ -47,7 +47,7 @@ block content
 					p=message
 				else
 					//OK button(type="button", class='btn btn-primary pull-up', style='margin-top:10px; margin-bottom:10px' ) Include applicable policies
-					button(type="button", class='btn btn-primary', style='margin-bottom:10px' ) Include applicable policies
+					//28 Feb. button(type="button", class='btn btn-primary', style='margin-bottom:10px' ) Include applicable policies
 					div(class="panel-group" id="accordion_p")
 						div(class="panel panel-default", id='pol_panel')
 							for tuple in entries_pol
@@ -55,9 +55,9 @@ block content
 									h4
 										input(type='checkbox', name='chk_pol' + tuple.id, class='checkboxpol' + tuple.id, text='Enable policy for AB', style='margin-left:20px')
 										//OK 12 Feb. label(name='policy' + tuple.id id='pol' + tuple.id class='policy_'  + tuple.id placeholder=tuple.policy + ' ; ' + tuple.environment style='margin-left:10px; font-size:15px ' ) tuple.policy
-										label(name=tuple.environment id='pol' + tuple.id class='policy_'  + tuple.id placeholder=tuple.policy  style='margin-left:10px; font-size:15px ' ) Policy text
+										label(name=tuple.rules id='pol' + tuple.id class='policy_'  + tuple.id placeholder=tuple.policy  style='margin-left:10px; font-size:15px ' ) Policy text
 										select(id='req-data' + tuple.id class='dropdown' + tuple.id, style='margin-left:10px; font-size:15px')
-											//16 Feb. option=tuple.environment
+											//16 Feb. option=tuple.rules
 										if (tuple.id == 1)
 											label(for='credlimit' + tuple.id style='margin-left:50px; font-size:15px') Credit Limit
 											input(name='credlimit' + tuple.id type='text' id='credlim' + tuple.id class='credlimit' + tuple.id placeholder=tuple.environment  style='margin-left:10px; font-size:15px')
