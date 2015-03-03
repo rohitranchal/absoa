@@ -55,7 +55,8 @@ block content
 									h4
 										input(type='checkbox', name='chk_pol' + tuple.id, class='checkboxpol' + tuple.id, text='Enable policy for AB', style='margin-left:20px')
 										//OK 12 Feb. label(name='policy' + tuple.id id='pol' + tuple.id class='policy_'  + tuple.id placeholder=tuple.policy + ' ; ' + tuple.rules style='margin-left:10px; font-size:15px ' ) tuple.policy
-										label(name=tuple.rules id='pol' + tuple.id class='policy_'  + tuple.id placeholder=tuple.policy  style='margin-left:10px; font-size:15px ' ) Policy text
+										label(name=tuple.policy  id='polres' + tuple.id class='policy_res_' + tuple.id  placeholder=tuple.resource  style='margin-left:10px; font-size:15px ' ) Policy text
+										label(name=tuple.rules id='pol' + tuple.id class='policy_'  + tuple.id placeholder=tuple.policy  style='margin-left:40px; font-size:15px ' ) Policy rules
 										select(id='req-data' + tuple.id class='dropdown' + tuple.id, style='margin-left:10px; font-size:15px')
 											//16 Feb. option=tuple.rules
 										if (tuple.id == 1)
