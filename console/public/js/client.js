@@ -38,7 +38,10 @@ $( document ).ready(function() {
 	};
 
 	if (document.getElementById('pol1') != null) {
-		var razd = '  ;  ' + '  ' + 'rating: ';
+		//01 Mar. OK var razd = '  .  ' + '  ' + 'Minimum rating: ';
+		var razdpol = ' .  Resource:  '
+		var razdel = 'Minimum rating: ';
+		//02 Mar. var razd = '  .  ' + '  ' + 'Resource: ' + '  ';
 		var rat = 'abc';
 		/*  16 Feb.
 		for (var j = 0; j < 4; j++) { 
@@ -48,7 +51,9 @@ $( document ).ready(function() {
 			console.log('objname = ' + objname.attr('name'));
 		*/	
 		var obj = JSON.parse($('.policy_1').attr('name'));
-		$('#pol1').text($('.policy_1').attr('placeholder') + ' ' + razd);
+		//OK 01 Mar. $('#pol1').text($('.policy_1').attr('placeholder') + ' ' + razd);
+		$('#polres1').text($('.policy_res_1').attr('name') + ' ' + razdpol + $('.policy_res_1').attr('placeholder'));
+		$('#pol1').text( razdel  + ' ');
 		var elem1 = document.getElementById('req-data1');
 		populate_dropdownbox(elem1);
 		rat = obj.rating;
@@ -67,7 +72,9 @@ $( document ).ready(function() {
 			
 		obj = JSON.parse($('.policy_2').attr('name'));
 		//OK $('#pol2').text($('.policy_2').attr('placeholder') + razd + obj.rating);
-		$('#pol2').text($('.policy_2').attr('placeholder') + razd);
+		$('#polres2').text($('.policy_res_2').attr('name') + ' ' + razdpol + $('.policy_res_2').attr('placeholder'));
+		$('#pol2').text( razdel  + ' ');
+		//OK 01 Mar. $('#pol2').text($('.policy_2').attr('placeholder') + razd);
 		var elem2 = document.getElementById('req-data2');
 		populate_dropdownbox(elem2);
 		rat = obj.rating;
@@ -84,7 +91,9 @@ $( document ).ready(function() {
 
 		obj = JSON.parse($('.policy_3').attr('name'));
 		//OK 17 Feb. $('#pol3').text($('.policy_3').attr('placeholder') + razd + obj.rating);
-		$('#pol3').text($('.policy_3').attr('placeholder') + razd);
+		//OK 01 Mar. $('#pol3').text($('.policy_3').attr('placeholder') + razd);
+		$('#polres3').text($('.policy_res_3').attr('name') + ' ' + razdpol + $('.policy_res_3').attr('placeholder'));
+		$('#pol3').text( razdel  + ' ');
 		var elem3 = document.getElementById('req-data3');
 		populate_dropdownbox(elem3);
 		rat = obj.rating;
@@ -101,7 +110,9 @@ $( document ).ready(function() {
 
 		obj = JSON.parse($('.policy_4').attr('name'));
 		//OK 17 Feb. $('#pol4').text($('.policy_4').attr('placeholder') + razd + obj.rating);
-		$('#pol4').text($('.policy_4').attr('placeholder') + razd );
+		$('#polres4').text($('.policy_res_4').attr('name') + ' ' + razdpol + $('.policy_res_4').attr('placeholder'));
+		$('#pol4').text( razdel  + ' ');
+		//OK 01 Mar. $('#pol4').text($('.policy_4').attr('placeholder') + razd );
 		var elem4 = document.getElementById('req-data4');
 		populate_dropdownbox(elem4);
 		rat = obj.rating;
