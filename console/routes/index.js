@@ -49,7 +49,10 @@ router.get('/client', function(req, res) {
 			var obj = JSON.parse(policies[0].rules);
 			console.log('obj: ' + obj);
 			console.log('obj data: ' + obj.rating + ' ; credit limit=' + obj.credit_limit);
-			res.render('client', { title: 'Active Bundle Console', entries: rows, entries_pol: policies });
+				db.get_services(function(services) {
+					console.log('service.display_name and req_data:  ' + services[0].display_name + ' ; ' + services[0].req_data);
+					res.render('client', { title: 'Active Bundle Console', entries: rows, entries_pol: policies, entries_srv: services });
+				});	
 		});	
 	});
 });
