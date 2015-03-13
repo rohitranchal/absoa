@@ -58,10 +58,15 @@ block content
 										label(name=tuple.policy  id='polres' + tuple.id class='policy_res_' + tuple.id  placeholder=tuple.resource  style='margin-left:10px; font-size:15px ' ) Policy text
 										label(name=tuple.rules id='pol' + tuple.id class='policy_'  + tuple.id placeholder=tuple.policy  style='margin-left:40px; font-size:15px ' ) Policy rules
 										select(id='req-data' + tuple.id class='dropdown' + tuple.id, style='margin-left:10px; font-size:15px')
-											//16 Feb. option=tuple.rules
+										div(class='form-group')
+											label(for='srv-name' class='col-sm-2 control-label') Subject
+											div(class='col-xs-3')
+												select(id='srv-name' class='form-control')
+													for srv_name in entries_srv
+														option=srv_name.display_name	
 										if (tuple.id == 1)
 											label(for='credlimit' + tuple.id style='margin-left:50px; font-size:15px') Credit Limit
-											input(name='credlimit' + tuple.id type='text' id='credlim' + tuple.id class='credlimit' + tuple.id placeholder=tuple.rules  style='margin-left:10px; font-size:15px')
+											input(name='credlimit' + tuple.id type='text' id='credlim' + tuple.id class='credlimit' + tuple.id placeholder=tuple.rules  style='margin-left:5px; font-size:15px')
 										// else
 										// 	console.log('id <> ' + tuple.id)
 										// //11 Feb. - add labels for rating for every policy
