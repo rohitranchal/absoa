@@ -92,6 +92,7 @@ router.get('/scenario', function(req, res) {
 
 	var se_list = scenario.services.join(',');
 	db.get_scenario_services(se_list, function(rows) {
+		console.log('sc_list: ' + rows);
 		scenario.services = rows;
 		res.render('scenario', scenario);
 		scenario.services = tmp_s;

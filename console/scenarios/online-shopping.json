@@ -1,7 +1,7 @@
 {
 	"id" : 1,
 	"access_url" : "http://localhost:4101/ab_order",
-	"description" : "Online shopping service with a composition of seller, payment and shipping services.",
+	"description" : "Online shopping service with a composition of seller, payment and shipping service.",
 	"name": "Online Shopping Scenario",
 	"services" : [1, 2, 3, 4],
 	"connections" :[ [1, 2], [1, 4], [2, 3] ]

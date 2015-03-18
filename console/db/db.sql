@@ -26,7 +26,11 @@ INSERT INTO Service(id, name, display_name, rating, trust_level, req_data, host,
 (1, 'localhost:4101','Shopping', 5.0, 4.0, 'name', 'localhost', 4101, 'http://localhost:4101', '{}', -1, 'scenarios/online-shopping/shopping'),
 (2, 'localhost:4102','Seller', 5.0, 4.0, 'email', 'localhost', 4102, 'http://localhost:4102', '{}', -1, 'scenarios/online-shopping/seller'),
 (3, 'localhost:4103','Shipping', 5.0, 4.0, 'address', 'localhost', 4103, 'http://localhost:4103', '{}', -1, 'scenarios/online-shopping/shipping'),
-(4, 'localhost:4104','Payment', 5.0, 4.0, 'credit card', 'localhost', 4104, 'http://localhost:4104', '{}', -1, 'scenarios/online-shopping/payment');
+(4, 'localhost:4104','Payment', 5.0, 4.0, 'credit card', 'localhost', 4104, 'http://localhost:4104', '{}', -1, 'scenarios/online-shopping/payment'),
+(5, 'localhost:4201','Medical', 5.0, 4.0, 'ehr', 'localhost', 4201, 'http://localhost:4201', '{}', -1, 'scenarios/healthcare/medical'),
+(6, 'localhost:4202','Hospital', 5.0, 4.0, 'name', 'localhost', 4202, 'http://localhost:4202', '{}', -1, 'scenarios/healthcare/hospital'),
+(7, 'localhost:4203','Insurance', 5.0, 4.0, 'insurance_id', 'localhost', 4203, 'http://localhost:4203', '{}', -1, 'scenarios/healthcare/insurance'),
+(8, 'localhost:4204','Ambulance', 5.0, 4.0, 'address', 'localhost', 4204, 'http://localhost:4204', '{}', -1, 'scenarios/healthcare/ambulance');
 
 CREATE TABLE Service_Log (
         service_id INT PRIMARY KEY,
