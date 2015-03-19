@@ -38,7 +38,13 @@
 
 		// Invoke service for user
 		$('.try-it').click(function() {
-			$.post('/try_it', { link : $(this).data('link')}, function (data) {
+			var obj;
+			if ($(this).data('link').indexOf('ehr') >= 0) {
+				obj = { link : $(this).data('link'), pat_id : 5, emergency : 1 };
+			} else {
+				obj = { link : $(this).data('link')};
+			}
+			$.post('/try_it', obj, function (data) {
 				var svc_arr = [];
 				$('.svc_name').each(function() {
 					var svc_id = this.id.split('_');

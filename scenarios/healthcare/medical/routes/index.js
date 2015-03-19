@@ -22,7 +22,7 @@ router.post('/ehr', function(req, res) {
 	var ehr = req.body.ehr;
 	var emergency = req.body.emergency;
 
-	if (typeof emergency !== 'undefined' && emergency !== '' && typeof pid !== 'undefined' && pid !== '') {
+	if (typeof emergency !== 'undefined' && emergency !== '' && emergency !== '0' && typeof pid !== 'undefined' && pid !== '') {
 		console.log('emergency case');
 		// call ambulance
 		request('http://localhost:4204/get_ambulance?ecode=25&address=305', function (error, response, body1) {

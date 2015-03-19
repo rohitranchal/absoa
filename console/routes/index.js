@@ -92,7 +92,6 @@ router.get('/scenario', function(req, res) {
 
 	var se_list = scenario.services.join(',');
 	db.get_scenario_services(se_list, function(rows) {
-		console.log('sc_list: ' + rows);
 		scenario.services = rows;
 		res.render('scenario', scenario);
 		scenario.services = tmp_s;
@@ -142,9 +141,25 @@ router.get('/scenario_logs', function(req, res) {
 
 /* POST start a scenario */
 router.post('/try_it', function(req, res) {
-	request(req.body.link, function (error, response, body) {
-		res.send(body)
-	});
+	console.log('try it info: ' + req.body.pat_id + ' link: ' + req.body.link);
+
+	var pid = req.body.pat_id;
+	var emy = req.body.emergency;
+	
+	if (typeof pid !== 'undefined' && pid !== '') {
+		request.post({
+			url:req.body.link, 
+			form: { pat_id:pid, emergency:emy }
+		}, function(error, response, body) {
+			console.log('callback from ehr case response');
+			res.send(body);
+		});
+	} else {
+		console.log('online shopping case');
+		request(req.body.link, function (error, response, body) {
+			res.send(body)
+		});
+	}
 });
 
 /* POST create ab */
