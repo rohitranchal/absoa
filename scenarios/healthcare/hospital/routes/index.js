@@ -9,8 +9,11 @@ var ab_client = require('../ab_client');
 var db = require('../db');
 
 var ab_host = '127.0.0.1';
-var ab_path = 'resources/AB-New.jar';
-var req_data = ['ab.user.name', 'ab.user.payment.type'];
+var ab_path = 'resources/AB1.jar';
+var ab_lib = 'resources/lib';
+var ab_arg = ab_path + ':./' + ab_lib + '/*:.';
+var ab_class = 'edu.purdue.absoa.Server';
+var req_data = 'ab.user.name';
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -34,6 +37,35 @@ router.get('/emergency', function(req, res) {
 	}
 });
 
+router.post('/emergency_ab', function(req, res) {
+	// var ab_ehr = req.body.ab;
+	var ab_ehr = 'ab';
+	var pid = req.body.pat_id;
+
+	var tmtcode = 33;
+
+	if (typeof pid !== 'undefined' && pid !== '' && typeof ab_ehr !== 'undefined' && ab_ehr !== '') {
+		start_ab(ab_path, function(ab_port, ab_pid) {
+			connect_ab(ab_port, ab_host, ab_pid, function(data) {
+				var ab_data = data;
+				console.log('ab data: ' + ab_data);
+				request.post({
+					url:'http://localhost:4203/check_insurance_ab',
+					form: { ab: ab_ehr, tcode: tmtcode}
+				}, function (error, response, body) {
+					console.log(' Ins res: ' + body);
+					var doc = 'David';
+					var nse = 'Maria';
+					var obj = { doctor:doc, nurse:nse };
+					res.send(obj);
+				});
+			});				
+		});
+	} else {
+		res.send(400, 'Error: Patient ID undefined');
+	}
+});
+
 router.post('/report', function(req, res) {
 	var pid = req.body.pat_id;
 	if (typeof pid !== 'undefined' && pid !== '') {
@@ -43,47 +75,22 @@ router.post('/report', function(req, res) {
 	}
 });
 
-router.get('/ab_order', function(req, res) {
-	var ab_data = null;
-	var msg;
+router.post('/report_ab', function(req, res) {
+	// var ab_ehr = req.body.ab;
+	var ab_ehr = 'ab';
+	var pid = req.body.pat_id;
 
-	async.parallel([
-		function(callback) {
-			start_ab(ab_path, function(ab_port, ab_pid) {
-				connect_ab(ab_port, ab_host, ab_pid, function(data) {
-					ab_data = data;
-					callback(null);
-				});
-			});			
-		},
-		function(callback) {
-			request('http://localhost:4102/ab_submit_order', function (error, response, body1) {
-				if (body1.search('failed') != -1) {
-					msg = 'Order failed - ' + body1;
-					callback(null);
-				} else {
-					request('http://localhost:4104/ab_pay', function (error, response, body2) {
-						if (body2.search('failed') != -1) {
-							msg = 'Order failed - ' + body2;
-						} else {
-							msg = 'Order complete details - ' + body1;
-						}
-						callback(null);
-					});
-				}
-			});		
-		}
-	],
-	function(err, results) {
-		if (ab_data == null) {
-			msg = 'Shopping Failed: AB data unavailable';
-			res.send(msg);
-		} else {
-			res.send(msg);
-		}
-		var obj = {id:1, log:msg};
-		db.set_service_log(obj, function() {});
-	});
+	if (typeof pid !== 'undefined' && pid !== '' && typeof ab_ehr !== 'undefined' && ab_ehr !== '') {
+		start_ab(ab_path, function(ab_port, ab_pid) {
+			connect_ab(ab_port, ab_host, ab_pid, function(data) {
+				var addr = data;
+				console.log('ab data: ' + addr);
+				res.send('EHR received');
+			});
+		});
+	} else {
+		res.send(400, 'Error: Parameters undefined');
+	}
 });
 
 router.get('/test', function(req, res) {
@@ -99,20 +106,20 @@ router.get('/test', function(req, res) {
 });
 
 var start_ab = function(ab_path, cb) {
-	var ab_port = randomIntInc(10000, 65000)
-	var child =	spawn('java',['-jar', ab_path, ab_port]);
-	console.log('LOG: Starting AB on Port: ' + ab_port);
+	var ab_port = randomIntInc(10000, 65000);
+	var child =	spawn('java', ['-cp', ab_arg, ab_class, ab_port]);
+	console.log('LOG: Started AB on Port: ' + ab_port);
 	var ab_pid = child.pid;
 
 	child.stdout.setEncoding('ASCII');
+	child.stderr.setEncoding('ASCII');
 	child.stdout.on('data', function (data) {
 		console.log('LOG(AB): ');
 		console.log(data);
 	});
 	child.stderr.on('data', function (data) {
-		console.log('ERROR(AB): ');
-		// console.log(data);
-		console.log(new Buffer(data, 'base64'));
+		console.log('ERR(AB): ');
+		console.log(data);
 	});
 	child.on('close', function (code, signal) {
 		console.log('LOG: Terminated AB');
@@ -134,9 +141,8 @@ var connect_ab = function(port, host, pid, cb) {
 			});
 		},
 		function (err) {
-			// AB is running, query the AB for data
+			// AB is running, query the AB for data			
 			ab_client.get_data(req_data, port, function(ab_data) {
-				console.log('abdata: ' + ab_data);
 				process.kill(pid);
 				cb(ab_data);
 			});
