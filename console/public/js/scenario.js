@@ -39,8 +39,22 @@
 		// Invoke service for user
 		$('.try-it').click(function() {
 			var obj;
+			var emrg_check;		//state of the emergency checkbox: 1 (checked) or 0 (unchecked)
+			var p_id;			// Patient ID entered in 'inputpid' editbox
+
 			if ($(this).data('link').indexOf('ehr') >= 0) {
-				obj = { link : $(this).data('link'), pat_id : 5, emergency : 1 };
+				//we are in the 'pervasive healthcare scenario'
+				if ( $('.emrgcheckbox').prop('checked') ) 
+					emrg_check = 1
+				else
+					emrg_check = 0;
+				console.log('emergency status = ' + emrg_check);
+				
+				p_id = document.getElementById('inputpid').value;
+				console.log('Patient ID = ' + p_id);
+
+				obj = { link : $(this).data('link'), pat_id : p_id, emergency : emrg_check };
+				//OK 19 Mar. obj = { link : $(this).data('link'), pat_id : 5, emergency : 1 };
 			} else {
 				obj = { link : $(this).data('link')};
 			}
