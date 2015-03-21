@@ -40,7 +40,7 @@ $( document ).ready(function() {
 	if (document.getElementById('pol1') != null) {
 		//01 Mar. OK var razd = '  .  ' + '  ' + 'Minimum rating: ';
 		var razdpol = ' .  Resource:  '
-		var razdel = 'Rules:  Minimum rating ';
+		var razdel = 'Minimum rating: ';
 		//02 Mar. var razd = '  .  ' + '  ' + 'Resource: ' + '  ';
 		var rat = 'abc';
 		/*  16 Feb.
