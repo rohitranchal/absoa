@@ -22,10 +22,10 @@ block content
 						p=message
 					else
 						label(for='checkbox_all' style='margin-left:570px' ) Select All
-						input(type="checkbox", name='checkbox_all', class='checkboxall' , text="Select all data" style='margin-top:10px; margin-left:2px')						
+						input(type="checkbox", name='checkbox_all', class='checkboxall', text="Select all data" style='margin-top:10px; margin-left:2px')
 						center
-							//scan through all tuples of the DB 'Service_Data'					
-							for entry in entries	
+							//scan through all tuples of the DB 'Service_Data'
+							for entry in entries
 								div(class='col-lg-8')
 									div(class='form-group')
 										label(for='datakey' + entry.id ) Type
@@ -78,7 +78,7 @@ block content
 											td
 												if (tuple.id == 1)
 													label(for='credlimit' + tuple.id style='margin-left:5px') Credit Limit
-													input(name='credlimit' + tuple.id type='text' id='credlim' + tuple.id class='credlimit' + tuple.id placeholder=tuple.rules  style='margin-left:5px; font-size:15px')		
+													input(name='credlimit' + tuple.id type='text' id='credlim' + tuple.id class='credlimit' + tuple.id placeholder=tuple.rules  style='margin-left:5px; font-size:15px')
 							// worked until 20 Mar. Now the same functionality
 							// //is implemented in the table above							
 							// for tuple in entries_pol

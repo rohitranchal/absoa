@@ -42,7 +42,11 @@ INSERT INTO Service_Log(service_id, log) VALUES
 (1, 'AB Data: visa'),
 (2, 'AB Data: expedited shipping'),
 (3, 'AB Data: 305 N Univ St West Lafayette IN'),
-(4, 'AB Data: 1234 5678 9012 3456');
+(4, 'AB Data: 1234 5678 9012 3456'),
+(5, 'Patient Id: 5'),
+(6, 'AB Data: Tcode'),
+(7, 'AB Data: Insurance Id'),
+(8, 'AB Data: Ecode');
 
 CREATE TABLE Service_Data (
         id INT PRIMARY KEY,

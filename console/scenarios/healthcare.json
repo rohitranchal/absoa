@@ -1,6 +1,6 @@
 {
 	"id" : 2,
-	"access_url" : "http://localhost:4201/ehr",
+	"access_url" : "http://localhost:4201/ehr_ab",
 	"description" : "Pervasive Healthcare service with a composition of emergency response service, hospital service, insurance service.",
 	"name": "Pervasive Healthcare Scenario",
 	"services" : [5, 6, 7, 8],

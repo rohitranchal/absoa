@@ -41,32 +41,30 @@
 			var obj;
 			var emrg_check;		//state of the emergency checkbox: 1 (checked) or 0 (unchecked)
 			var p_id;			// Patient ID entered in 'inputpid' editbox
+			var svc_arr = [];
+			$('.svc_name').each(function() {
+				var svc_id = this.id.split('_');
+				svc_arr.push(svc_id[1]);
+			});
+			var slist = JSON.stringify(svc_arr);
+			var slink = '/scenario_logs?service_list=' + slist;
+
+			/* clear log for each service */
+			$.post(slink);
 
 			if ($(this).data('link').indexOf('ehr') >= 0) {
-				//we are in the 'pervasive healthcare scenario'
-				if ( $('.emrgcheckbox').prop('checked') ) 
+				/* healthcare scenario */
+				if ( $('.emrgcheckbox').prop('checked') ) {
 					emrg_check = 1
-				else
+				} else {
 					emrg_check = 0;
-				console.log('emergency status = ' + emrg_check);
-				
+				}
 				p_id = document.getElementById('inputpid').value;
-				console.log('Patient ID = ' + p_id);
-
 				obj = { link : $(this).data('link'), pat_id : p_id, emergency : emrg_check };
-				//OK 19 Mar. obj = { link : $(this).data('link'), pat_id : 5, emergency : 1 };
 			} else {
 				obj = { link : $(this).data('link')};
 			}
 			$.post('/try_it', obj, function (data) {
-				var svc_arr = [];
-				$('.svc_name').each(function() {
-					var svc_id = this.id.split('_');
-					svc_arr.push(svc_id[1]);
-				});
-				var slist = JSON.stringify(svc_arr);
-				var slink = '/scenario_logs?service_list=' + slist;
-				
 				/* Set log for each service */
 				$.get(slink, function(logs, status) {
 					if (status == 'success') {

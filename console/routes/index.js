@@ -139,13 +139,16 @@ router.get('/scenario_logs', function(req, res) {
 	});
 });
 
+/* DELETE logs for services of a scenario */
+router.post('/scenario_logs', function(req, res) {
+	var slist = JSON.parse(req.query.service_list);
+	db.clear_service_list_log(slist);
+});
+
 /* POST start a scenario */
 router.post('/try_it', function(req, res) {
-	console.log('try it info: ' + req.body.pat_id + ' link: ' + req.body.link);
-
 	var pid = req.body.pat_id;
 	var emy = req.body.emergency;
-	
 	if (typeof pid !== 'undefined' && pid !== '') {
 		request.post({
 			url:req.body.link, 
@@ -155,7 +158,6 @@ router.post('/try_it', function(req, res) {
 			res.send(body);
 		});
 	} else {
-		console.log('online shopping case');
 		request(req.body.link, function (error, response, body) {
 			res.send(body)
 		});
