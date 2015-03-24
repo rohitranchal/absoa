@@ -13,7 +13,7 @@ var ab_path = 'resources/AB1.jar';
 var ab_lib = 'resources/lib';
 var ab_arg = ab_path + ':./' + ab_lib + '/*:.';
 var ab_class = 'edu.purdue.absoa.Server';
-var req_data = 'ab.user.name';
+var req_data = 'ab.user.email';
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -41,10 +41,12 @@ router.post('/check_insurance_ab', function(req, res) {
 	if (typeof tcode !== 'undefined' && tcode !== '' && typeof ab_ehr !== 'undefined' && ab_ehr !== '') {
 		start_ab(ab_path, function(ab_port, ab_pid) {
 			connect_ab(ab_port, ab_host, ab_pid, function(data) {
-				var addr = data;
-				console.log('ab data: ' + addr);
+				console.log('ab data: ' + data);
 				var cvg = 100000;
 				var obj = { coverage:cvg };
+				var msg = 'AB: ' + data;
+				var lobj = {id:7, log:msg};
+				db.set_service_log(lobj);
 				res.send(obj);
 			});
 		});

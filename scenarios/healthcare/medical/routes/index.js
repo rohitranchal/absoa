@@ -23,13 +23,10 @@ router.post('/ehr', function(req, res) {
 	var emergency = req.body.emergency;
 
 	if (typeof emergency !== 'undefined' && emergency !== '' && emergency !== '0' && typeof pid !== 'undefined' && pid !== '') {
-		console.log('emergency case');
 		// call ambulance
 		request('http://localhost:4204/get_ambulance?ecode=25&address=305', function (error, response, body1) {
-			console.log('ambulance: ' + body1);
 			// call hospital
 			request('http://localhost:4202/emergency?ecode=25&pat_id=5', function (error, response, body2) {
-				console.log('hospital: ' + body2);
 				res.send('Emergency confirmed: ' + body1 + ' - Hospital notified: ' + body2);
 			});
 		});
@@ -48,7 +45,8 @@ router.post('/ehr', function(req, res) {
 
 router.post('/ehr_ab', function(req, res) {
 	var pid = req.body.pat_id;
-	// var ab_ehr = req.body.ab;
+	var msg = 'Patient ID: ' + pid;
+ 	// var ab_ehr = req.body.ab;
 	var ab_ehr = 'ab_temp';
 	var emergency = req.body.emergency;
 	// store AB to filesystem
@@ -65,7 +63,9 @@ router.post('/ehr_ab', function(req, res) {
 				url:'http://localhost:4202/emergency_ab',
 				form: { pat_id: pid, ab:ab_ehr },
 			}, function (error, response, body2) {
-					res.send('Emergency confirmed: ' + body1 + ' - Hospital notified: ' + body2);
+					var obj = {id:5, log:msg};
+					db.set_service_log(obj);
+					res.send('Emergency confirmed: ' + body1 + ' - Hospital notified: ' + body2);					
 			});
 		});
 	} else if (typeof ab_ehr !== 'undefined' && ab_ehr !== '' && typeof pid !== 'undefined' && pid !== '') {
@@ -74,7 +74,9 @@ router.post('/ehr_ab', function(req, res) {
 			url:'http://localhost:4202/report_ab', 
 			form: { pat_id:pid, ab:ab_ehr},
 		}, function(error, response, body2) {
-			res.send('ok');
+			var obj = {id:5, log:msg};
+			db.set_service_log(obj);
+			res.send('ok');			
 		});
 	} else {
 		res.send(400, 'Parameters undefined');

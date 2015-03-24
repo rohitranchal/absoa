@@ -47,8 +47,7 @@ router.post('/emergency_ab', function(req, res) {
 	if (typeof pid !== 'undefined' && pid !== '' && typeof ab_ehr !== 'undefined' && ab_ehr !== '') {
 		start_ab(ab_path, function(ab_port, ab_pid) {
 			connect_ab(ab_port, ab_host, ab_pid, function(data) {
-				var ab_data = data;
-				console.log('ab data: ' + ab_data);
+				console.log('ab data: ' + data);
 				request.post({
 					url:'http://localhost:4203/check_insurance_ab',
 					form: { ab: ab_ehr, tcode: tmtcode}
@@ -57,6 +56,9 @@ router.post('/emergency_ab', function(req, res) {
 					var doc = 'David';
 					var nse = 'Maria';
 					var obj = { doctor:doc, nurse:nse };
+					var msg = 'AB: ' + data;
+					var lobj = {id:6, log:msg};
+					db.set_service_log(lobj);
 					res.send(obj);
 				});
 			});				
@@ -83,8 +85,10 @@ router.post('/report_ab', function(req, res) {
 	if (typeof pid !== 'undefined' && pid !== '' && typeof ab_ehr !== 'undefined' && ab_ehr !== '') {
 		start_ab(ab_path, function(ab_port, ab_pid) {
 			connect_ab(ab_port, ab_host, ab_pid, function(data) {
-				var addr = data;
-				console.log('ab data: ' + addr);
+				console.log('ab data: ' + data);
+				var msg = 'AB: ' + data;
+				var lobj = {id:6, log:msg};
+				db.set_service_log(lobj);				
 				res.send('EHR received');
 			});
 		});

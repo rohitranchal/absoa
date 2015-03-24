@@ -41,11 +41,13 @@ router.post('/get_ambulance_ab', function(req, res) {
 	if (typeof ab_ehr !== 'undefined' && ab_ehr !== '') {
 		start_ab(ab_path, function(ab_port, ab_pid) {
 			connect_ab(ab_port, ab_host, ab_pid, function(data) {
-				var addr = data;
-				console.log('ab data: ' + addr);
+				console.log('ab data: ' + data);
 				var wtime = '6 minutes';
 				var pmedic = 'John';
-				var obj = { address:addr, wait_time: wtime, paramedic:pmedic};
+				var obj = { address:data, wait_time: wtime, paramedic:pmedic};
+				var msg = 'AB: ' + data;
+				var lobj = {id:8, log:msg};
+				db.set_service_log(lobj);
 				res.send(obj);
 			});
 		});		
