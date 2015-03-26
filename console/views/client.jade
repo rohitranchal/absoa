@@ -75,7 +75,7 @@ block content
 											td=tuple.resource
 											td
 												label(name=tuple.rules id='pol' + tuple.id class='policy_'  + tuple.id placeholder=tuple.policy  style='margin-left:1px' ) Minimum rating: 
-												select(id='req-data' + tuple.id class='dropdown' + tuple.id, style='margin-left:10px; font-size:15px')
+												select(id='req-data' + tuple.id class='dropdown' + tuple.id, style='margin-left:10px')
 											td
 												select(id='srv-name' class='form-control')
 													for srv_name in entries_srv
@@ -83,4 +83,4 @@ block content
 											td
 												if (tuple.id == 1)
 													label(for='credlimit' + tuple.id style='margin-left:5px') Credit Limit
-													input(name='credlimit' + tuple.id type='text' id='credlim' + tuple.id class='credlimit' + tuple.id placeholder=tuple.rules  style='margin-left:5px; font-size:15px')
+													input(name='credlimit' + tuple.id type='text' id='credlim' + tuple.id class='credlimit' + tuple.id placeholder=tuple.rules  style='margin-left:5px')
