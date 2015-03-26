@@ -21,20 +21,25 @@ block content
 					if(message)
 						p=message
 					else
-						label(for='checkbox_all' style='margin-left:570px' ) Select All
-						input(type="checkbox", name='checkbox_all', class='checkboxall', text="Select all data" style='margin-top:10px; margin-left:2px')
-						center
-							//scan through all tuples of the DB 'Service_Data'
-							for entry in entries
-								div(class='col-lg-8')
-									div(class='form-group')
-										label(for='datakey' + entry.id ) Type
-											input(name='datakey' + entry.id type='text' id='datkey' + entry.id class='inputkey' + entry.id placeholder=entry.data_key  style='margin-left:10px')
-										label(for='datavalue' + entry.id style='margin-left:50px') Content
-											input(name='datavalue' + entry.id type='text' id='dataval' + entry.id class='inputval' + entry.id placeholder=entry.data_value style='margin-left:10px')
+						div(class="panel panel-default", id='dat_panel')
+							div(class="panel-body")
+							table(class="table table-striped table-hover")
+								tr
+									th Select All
+										br
+										input(type="checkbox", name='checkbox_all', class='checkboxall', text="Select all data" style='margin-top:10px; margin-left:30px')
+									th Type
+									th Content
+								for entry in entries
+									tr
+										td
 											input(type="checkbox", name='checkbox_' + entry.id, class='checkbox' + entry.id , text="Include record to AB" style='margin-left:30px')
-											//Enable m.b. right to policies, not here. Here we need checkbox 
-						div(class='col-xs-3 top-buffer')
+										td
+											input(name='datakey' + entry.id type='text' id='datkey' + entry.id class='inputkey' + entry.id placeholder=entry.data_key  style='margin-left:1px')
+										td
+											input(name='datavalue' + entry.id type='text' id='dataval' + entry.id class='inputval' + entry.id placeholder=entry.data_value style='margin-left:1px')
+						//div(class='col-xs-3 top-buffer')
+						center
 								button(type='submit' class='btn btn-primary update-service') Generate Active Bundle
 		//Policy section								
 		div(class="panel panel-primary")
@@ -79,22 +84,3 @@ block content
 												if (tuple.id == 1)
 													label(for='credlimit' + tuple.id style='margin-left:5px') Credit Limit
 													input(name='credlimit' + tuple.id type='text' id='credlim' + tuple.id class='credlimit' + tuple.id placeholder=tuple.rules  style='margin-left:5px; font-size:15px')
-							// worked until 20 Mar. Now the same functionality
-							// //is implemented in the table above							
-							// for tuple in entries_pol
-							// 	div(class="panel-heading")
-							// 		h4
-							// 			input(type='checkbox', name='chk_pol' + tuple.id, class='checkboxpol' + tuple.id, text='Enable policy for AB', style='margin-left:20px')
-							// 			//OK 12 Feb. label(name='policy' + tuple.id id='pol' + tuple.id class='policy_'  + tuple.id placeholder=tuple.policy + ' ; ' + tuple.rules style='margin-left:10px; font-size:15px ' ) tuple.policy
-							// 			label(name=tuple.policy  id='polres' + tuple.id class='policy_res_' + tuple.id  placeholder=tuple.resource  style='margin-left:10px; font-size:15px ' ) Policy text
-							// 			label(name=tuple.rules id='pol' + tuple.id class='policy_'  + tuple.id placeholder=tuple.policy  style='margin-left:40px; font-size:15px ' ) Policy rules
-							// 			select(id='req-data' + tuple.id class='dropdown' + tuple.id, style='margin-left:10px; font-size:15px')
-							// 			div(class='form-group')
-							// 				label(for='srv-name' class='col-sm-2 control-label') Subject
-							// 				div(class='col-xs-3')
-							// 					select(id='srv-name' class='form-control')
-							// 						for srv_name in entries_srv
-							// 							option=srv_name.display_name	
-							// 			if (tuple.id == 1)
-							// 				label(for='credlimit' + tuple.id style='margin-left:50px; font-size:15px') Credit Limit
-							// 				input(name='credlimit' + tuple.id type='text' id='credlim' + tuple.id class='credlimit' + tuple.id placeholder=tuple.rules  style='margin-left:5px; font-size:15px')
