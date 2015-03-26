@@ -43,9 +43,10 @@ html(lang='en')
 							div(class='col-md-8')=access_url
 								//draw emergency checkbox and Patient ID textbox only in healthcare scenario
 								//WORKS OK! if (access_url == "http://localhost:4201/ehr")
-								if (name == "Pervasive Healthcare Scenario") 
+								if (name == "Pervasive Healthcare Scenario")
 									label(for='patidtext' style='margin-left:10px') Patient ID
 									input(name='patidtext' type='text' id='inputpid' class='inputpatid' placeholder='0005'  style='margin-left:10px')
+									br
 									input(type="checkbox", name='emcheckbox_' , class='emrgcheckbox' , text="Turn on emergency mode" style='margin-left:10px')
 									label(name=emrg  id='emr' class='emr_text'  placeholder='temp'  style='margin-left:10px' ) Emergency
 							div(class='col-md-4')
