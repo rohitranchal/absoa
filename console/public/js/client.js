@@ -52,8 +52,8 @@ $( document ).ready(function() {
 		*/	
 		var obj = JSON.parse($('.policy_1').attr('name'));
 		//OK 01 Mar. $('#pol1').text($('.policy_1').attr('placeholder') + ' ' + razd);
-		$('#polres1').text($('.policy_res_1').attr('name') + ' ' + razdpol + $('.policy_res_1').attr('placeholder'));
-		$('#pol1').text( razdel  + ' ');
+		///25 Mar. $('#polres1').text($('.policy_res_1').attr('name') + ' ' + razdpol + $('.policy_res_1').attr('placeholder'));
+		///25 Mar. $('#pol1').text( razdel  + ' ');
 		var elem1 = document.getElementById('req-data1');
 		populate_dropdownbox(elem1);
 		rat = obj.rating;
@@ -72,8 +72,8 @@ $( document ).ready(function() {
 			
 		obj = JSON.parse($('.policy_2').attr('name'));
 		//OK $('#pol2').text($('.policy_2').attr('placeholder') + razd + obj.rating);
-		$('#polres2').text($('.policy_res_2').attr('name') + ' ' + razdpol + $('.policy_res_2').attr('placeholder'));
-		$('#pol2').text( razdel  + ' ');
+		///25 Mar.  $('#polres2').text($('.policy_res_2').attr('name') + ' ' + razdpol + $('.policy_res_2').attr('placeholder'));
+		///25 Mar.  $('#pol2').text( razdel  + ' ');
 		//OK 01 Mar. $('#pol2').text($('.policy_2').attr('placeholder') + razd);
 		var elem2 = document.getElementById('req-data2');
 		populate_dropdownbox(elem2);
@@ -92,8 +92,8 @@ $( document ).ready(function() {
 		obj = JSON.parse($('.policy_3').attr('name'));
 		//OK 17 Feb. $('#pol3').text($('.policy_3').attr('placeholder') + razd + obj.rating);
 		//OK 01 Mar. $('#pol3').text($('.policy_3').attr('placeholder') + razd);
-		$('#polres3').text($('.policy_res_3').attr('name') + ' ' + razdpol + $('.policy_res_3').attr('placeholder'));
-		$('#pol3').text( razdel  + ' ');
+		///25 Mar. $('#polres3').text($('.policy_res_3').attr('name') + ' ' + razdpol + $('.policy_res_3').attr('placeholder'));
+		///25 Mar. $('#pol3').text( razdel  + ' ');
 		var elem3 = document.getElementById('req-data3');
 		populate_dropdownbox(elem3);
 		rat = obj.rating;
@@ -110,8 +110,8 @@ $( document ).ready(function() {
 
 		obj = JSON.parse($('.policy_4').attr('name'));
 		//OK 17 Feb. $('#pol4').text($('.policy_4').attr('placeholder') + razd + obj.rating);
-		$('#polres4').text($('.policy_res_4').attr('name') + ' ' + razdpol + $('.policy_res_4').attr('placeholder'));
-		$('#pol4').text( razdel  + ' ');
+		///25 Mar. $('#polres4').text($('.policy_res_4').attr('name') + ' ' + razdpol + $('.policy_res_4').attr('placeholder'));
+		///25 Mar. $('#pol4').text( razdel  + ' ');
 		//OK 01 Mar. $('#pol4').text($('.policy_4').attr('placeholder') + razd );
 		var elem4 = document.getElementById('req-data4');
 		populate_dropdownbox(elem4);
