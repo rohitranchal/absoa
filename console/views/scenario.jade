@@ -22,35 +22,6 @@ html(lang='en')
 				div(class='panel panel-default text-center')
 					h3=name
 			div(class='col-md-8')
-				//new container for Medical scenario configuration - will not use it from APr.3						
-				// if (name == "Pervasive Healthcare Scenario")
-				// 	div(class='panel panel-default')
-				// 		div(class='panel-heading text-center')
-				// 			h4 Scenario Configuration
-				// 		div(class='panel-body')
-				// 			div(class='input-group')
-				// 				for service in services
-				// 					div(class='row top-buffer')
-				// 						div(id=service.status, class='col-md-2 svc_status')=service.status
-				// 						div(id=service.status + '_' + service.id, class='col-md-5 svc_name')=service.display_name
-				// 						div(class='col-md-5')
-				// 							if (service.id == 6)
-				// 								input(name='doctdatakey_a' + service.id type='text' id='doctdatkey_a' + service.id class='doctinputkey_a' + service.id placeholder='test_prescription'  style='margin-left:1px')
-				// 								input(name='doctdatavalue_a' + service.id type='text' id='doctdataval_a' + service.id  class='doctinputval_a' + service.id placeholder='blood_test'  style='margin-left:1px')
-				// 								br
-				// 								input(name='doctdatakey_b' + service.id type='text' id='doctdatkey_b' + service.id class='doctinputkey_b' + service.id placeholder='prescription'  style='margin-left:1px')
-				// 								input(name='doctdatavalue_b' + service.id type='text' id='doctdataval_b' + service.id  class='doctinputval_b' + service.id placeholder='Omeprazole'  style='margin-left:1px')
-				// 							else if (service.id == 7) 
-				// 								input(name='labdatakey' + service.id type='text' id='labdatkey' + service.id class='labinputkey' + service.id placeholder='blood_sugar'  style='margin-left:1px')
-				// 								input(name='labdatavalue' + service.id type='text' id='labdataval' + service.id  class='labinputval' + service.id placeholder='92'  style='margin-left:1px')
-				// 				div(class='row top-buffer')
-				// 					center
-				// 						div(class='col-md-6')
-				// 							div
-				// 								button(id='btn_toggle_svc', class='btn btn-danger svc_toggle') Stop
-				// 						div(class='col-md-6')
-				// 							button(id='btn_update_tl', class='btn btn-default') Update
-
 				//Scenario topology
 				div(class='panel panel-default')
 					div(class='panel-heading text-center')
@@ -64,7 +35,6 @@ html(lang='en')
 											strong=service.trust_level
 										div(id='logid_' + service.id class='log_data')='Logs'
 										div(class='ep')
-			//04 Apr-put new elements to Scenario Configuration container on the right side: 
 			div(class='col-md-4')
 				div(class='panel panel-default')
 					div(class='panel-heading text-center')
@@ -84,22 +54,22 @@ html(lang='en')
 								div(class='row top-buffer')
 									div(id=service.status, class='col-md-2 svc_status')=service.status
 									div(id=service.status + '_' + service.id, class='col-md-5 svc_name')=service.display_name
-									div(class='col-md-9')
-										if (name == "Pervasive Healthcare Scenario")
-											//04 Apr - don't need sliders for trust level in healthcare scenario
-											//div(class='slider', id=service.id value=service.trust_level)
-											if (service.id == 6)
-												input(name='doctdatakey_a' + service.id type='text' id='doctdatkey_a' + service.id class='doctinputkey_a' + service.id placeholder='Test prescription'  style='margin-left:1px')
-												input(name='doctdatavalue_a' + service.id type='text' id='doctdataval_a' + service.id  class='doctinputval_a' + service.id placeholder='blood test'  style='margin-left:1px')
-												br
-												input(name='doctdatakey_b' + service.id type='text' id='doctdatkey_b' + service.id class='doctinputkey_b' + service.id placeholder='Prescription'  style='margin-left:1px')
-												input(name='doctdatavalue_b' + service.id type='text' id='doctdataval_b' + service.id  class='doctinputval_b' + service.id placeholder='Omeprazole'  style='margin-left:1px')
-											else if (service.id == 7) 
-												input(name='labdatakey' + service.id type='text' id='labdatkey' + service.id class='labinputkey' + service.id placeholder='Blood sugar'  style='margin-left:1px')
-												input(name='labdatavalue' + service.id type='text' id='labdataval' + service.id  class='labinputval' + service.id placeholder='92'  style='margin-left:1px')
-											button(type='submit' class='btn btn-primary get-ab' style='margin-left:10px') GET
-											button(type='submit' class='btn btn-primary post-ab-data' style='margin-left:10px') POST
-										if (name == "Online Shopping Scenario")
+									if (name == "Pervasive Healthcare Scenario")
+										button(type='submit' class='btn btn-primary get-ab' style='margin-right:10px') GET
+										button(type='submit' class='btn btn-primary post-ab-data' style='margin-right:10px') POST
+										if (service.id == 6)
+											input(name='doctdatakey_a' + service.id type='text' id='doctdatkey_a' + service.id class='doctinputkey_a' + service.id placeholder='Test prescription'  style='margin-left:20px')
+											input(name='doctdatavalue_a' + service.id type='text' id='doctdataval_a' + service.id  class='doctinputval_a' + service.id placeholder='blood test'  style='margin-left:20px')
+											br
+											input(name='doctdatakey_b' + service.id type='text' id='doctdatkey_b' + service.id class='doctinputkey_b' + service.id placeholder='Prescription'  style='margin-left:20px')
+											input(name='doctdatavalue_b' + service.id type='text' id='doctdataval_b' + service.id  class='doctinputval_b' + service.id placeholder='Omeprazole'  style='margin-left:20px')
+										else if (service.id == 7) 
+											input(name='labdatakey' + service.id type='text' id='labdatkey' + service.id class='labinputkey' + service.id placeholder='Blood sugar'  style='margin-left:20px')
+											input(name='labdatavalue' + service.id type='text' id='labdataval' + service.id  class='labinputval' + service.id placeholder='92'  style='margin-left:20px')
+										hr(style='width: 100%; color: gray; height: 1px; background-color:gray; margin-bottom:1px')
+									//need sliders for trust level only in online shopping scenario
+									if (name == "Online Shopping Scenario")
+										div(class='col-md-5')
 											div(class='slider', id=service.id value=service.trust_level)
 							div(class='row top-buffer')
 								center
