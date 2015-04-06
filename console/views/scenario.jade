@@ -35,15 +35,16 @@ html(lang='en')
 											strong=service.trust_level
 										div(id='logid_' + service.id class='log_data')='Logs'
 										div(class='ep')
-			div(class='col-md-4')
-				div(class='panel panel-default')
-					div(class='panel-heading text-center')
-						h4 Access Endpoints
-					div(class='panel-body')
-						div(class='row')
-							div(class='col-md-8')=access_url
-							div(class='col-md-4')
-								button(class='btn btn-primary try-it', data-link=access_url) Try It
+			if (name == "Online Shopping Scenario")
+				div(class='col-md-4')
+					div(class='panel panel-default')
+						div(class='panel-heading text-center')
+							h4 Access Endpoints
+						div(class='panel-body')
+							div(class='row')
+								div(class='col-md-8')=access_url
+								div(class='col-md-4')
+									button(class='btn btn-primary try-it', data-link=access_url) Try It
 			div(class='col-md-4')
 				div(class='panel panel-default')
 					div(class='panel-heading text-center')
@@ -54,19 +55,18 @@ html(lang='en')
 								div(class='row top-buffer')
 									div(id=service.status, class='col-md-2 svc_status')=service.status
 									div(id=service.status + '_' + service.id, class='col-md-5 svc_name')=service.display_name
-									if (name == "Pervasive Healthcare Scenario")
+									if (name == "Healthcare Scenario")
 										button(type='submit' class='btn btn-primary get-ab' style='margin-right:10px') GET
 										button(type='submit' class='btn btn-primary post-ab-data' style='margin-right:10px') POST
 										if (service.id == 6)
 											input(name='doctdatakey_a' + service.id type='text' id='doctdatkey_a' + service.id class='doctinputkey_a' + service.id placeholder='Test prescription'  style='margin-left:20px')
-											input(name='doctdatavalue_a' + service.id type='text' id='doctdataval_a' + service.id  class='doctinputval_a' + service.id placeholder='blood test'  style='margin-left:20px')
 											br
 											input(name='doctdatakey_b' + service.id type='text' id='doctdatkey_b' + service.id class='doctinputkey_b' + service.id placeholder='Prescription'  style='margin-left:20px')
-											input(name='doctdatavalue_b' + service.id type='text' id='doctdataval_b' + service.id  class='doctinputval_b' + service.id placeholder='Omeprazole'  style='margin-left:20px')
-										else if (service.id == 7) 
+										else if (service.id == 7)
 											input(name='labdatakey' + service.id type='text' id='labdatkey' + service.id class='labinputkey' + service.id placeholder='Blood sugar'  style='margin-left:20px')
-											input(name='labdatavalue' + service.id type='text' id='labdataval' + service.id  class='labinputval' + service.id placeholder='92'  style='margin-left:20px')
-										hr(style='width: 100%; color: gray; height: 1px; background-color:gray; margin-bottom:1px')
+										else if (service.id == 8)
+											input(name='patientdatakey' + service.id type='text' id='patientdatkey' + service.id class='patinputkey' + service.id placeholder='Name'  style='margin-left:20px')
+										hr(style='width: 100%; color: #e0e0e0; height: 1px; background-color:#e0e0e0; margin-bottom:1px')
 									//need sliders for trust level only in online shopping scenario
 									if (name == "Online Shopping Scenario")
 										div(class='col-md-5')
@@ -76,5 +76,6 @@ html(lang='en')
 									div(class='col-md-6')
 										div
 											button(id='btn_toggle_svc', class='btn btn-danger svc_toggle') Stop
-									div(class='col-md-6')
-										button(id='btn_update_tl', class='btn btn-default') Update
+									if (name != "Healthcare Scenario")		
+										div(class='col-md-6')
+											button(id='btn_update_tl', class='btn btn-default') Update
