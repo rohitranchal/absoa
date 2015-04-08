@@ -39,8 +39,6 @@
 		// Invoke service for user
 		$('.try-it').click(function() {
 			var obj;
-			var emrg_check;		//state of the emergency checkbox: 1 (checked) or 0 (unchecked)
-			var p_id;			// Patient ID entered in 'inputpid' editbox
 			var svc_arr = [];
 			$('.svc_name').each(function() {
 				var svc_id = this.id.split('_');
@@ -54,13 +52,7 @@
 
 			if ($(this).data('link').indexOf('ehr') >= 0) {
 				/* healthcare scenario */
-				if ( $('.emrgcheckbox').prop('checked') ) {
-					emrg_check = 1
-				} else {
-					emrg_check = 0;
-				}
-				p_id = document.getElementById('inputpid').value;
-				obj = { link : $(this).data('link'), pat_id : p_id, emergency : emrg_check };
+				obj = { link : $(this).data('link')};
 			} else {
 				obj = { link : $(this).data('link')};
 			}
