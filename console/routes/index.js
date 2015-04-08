@@ -169,7 +169,7 @@ router.post('/healthcare_update', function(req, res) {
 	var patient_id = req.body.patient_id;
 	var prescription = req.body.prescription;
 	var test_prescription = req.body.test_prescription;
-	var test_results = req.body.test_results;
+	var medical_data = req.body.medical_data;
 	var name = req.body.name;
 	var service_link = req.body.link;
 	if (typeof patient_id !== 'undefined' && patient_id !== '') {
@@ -180,8 +180,8 @@ router.post('/healthcare_update', function(req, res) {
 		if (typeof test_prescription !== 'undefined' && test_prescription !== '') {
 			form_obj.test_prescription = test_prescription;
 		}
-		if (typeof test_results !== 'undefined' && test_results !== '') {
-			form_obj.test_results = test_results;
+		if (typeof medical_data !== 'undefined' && medical_data !== '') {
+			form_obj.medical_data = medical_data;
 		}
 		if (typeof name !== 'undefined' && name !== '') {
 			form_obj.name = name;
@@ -193,28 +193,20 @@ router.post('/healthcare_update', function(req, res) {
 			res.send(body);
 		});
 	} else {
-		request(req.body.link, function (error, response, body) {
-			res.send(body)
-		});
+		res.send(400, 'ERROR: patient_id undefined');
 	}
 });
 
-/* GET healthcare get requests */
-router.get('/healthcare_get', function(req, res) {
+/* POST healthcare get requests */
+router.post('/healthcare_get', function(req, res) {
 	var patient_id = req.body.patient_id;
-	var emy = req.body.emergency;
+	var service_link = req.body.link + '?patient_id=' + patient_id;
 	if (typeof patient_id !== 'undefined' && patient_id !== '') {
-		request.post({
-			url:req.body.link, 
-			form: { patient_id:patient_id, emergency:emy }
-		}, function(error, response, body) {
-			console.log('callback from ehr case response');
+		request(service_link, function (error, response, body) {
 			res.send(body);
 		});
-	} else {
-		request(req.body.link, function (error, response, body) {
-			res.send(body)
-		});
+	} else {		
+		res.send(400, 'ERROR: patient_id undefined');
 	}
 });
 
