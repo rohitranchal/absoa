@@ -46,12 +46,21 @@ router.get('/lab_get', function(req, res) {
 });
 
 router.post('/lab_update', function(req, res) {
-	var test_results = req.body.test_results;
+	var medical_data = req.body.medical_data;
+	// if (medical_data.indexOf('x-ray') != -1) {
+	// 	medical_data = medical_data + ' = Fracture';
+	// }
+	// if (medical_data.indexOf('mri') != -1) {
+	// 	medical_data = medical_data + ' = Coronal view';
+	// }
+	// if (medical_data.indexOf('blood test') != -1) {
+	// 	medical_data = medical_data + ' = Cholestrol = 180';
+	// }
 	request.post({
 		url:hospital_host + '/update_ehr',
 		form: { 
 			patient_id: patient_id,
-			test_results: test_results,
+			medical_data: medical_data,
 		}
 	}, function(err, res1, body) {
 		if (err) {

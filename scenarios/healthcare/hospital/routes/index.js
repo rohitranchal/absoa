@@ -49,17 +49,19 @@ router.post('/update_ehr', function(req, res) {
 	var patient_id = req.body.patient_id;
 	var prescription = req.body.prescription;
 	var test_prescription = req.body.test_prescription;
-	var test_results = req.body.test_results;
+	var medical_data = req.body.medical_data;
 	var name = req.body.name;
 	if (typeof patient_id !== 'undefined' && patient_id !== '') {
 		if (typeof prescription !== 'undefined' && prescription !== '') {
+			ab_data['ab.user.history'] = ab_data['ab.user.history'] + ', ' + ab_data['ab.user.prescription'];
 			ab_data['ab.user.prescription'] = prescription;
 		}
 		if (typeof test_prescription !== 'undefined' && test_prescription !== '') {
 			ab_data['ab.user.test_prescription'] = test_prescription;
 		}
-		if (typeof test_results !== 'undefined' && test_results !== '') {
-			ab_data['ab.user.test_results'] = test_results;
+		if (typeof medical_data !== 'undefined' && medical_data !== '') {
+			ab_data['ab.user.history'] = ab_data['ab.user.history'] + ', ' + ab_data['ab.user.medical_data'];
+			ab_data['ab.user.medical_data'] = medical_data;
 		}
 		if (typeof name !== 'undefined' && name !== '') {
 			ab_data['ab.user.name'] = name;
@@ -135,7 +137,7 @@ var encrypt_ab_data = function(cb) {
 	abenc_exec = 'java -jar ' + ab_enc + ' ' + ab_data_file + ' ' + ab_resource_dir + ' ' + cipher_file;
 	ab_proc = exec(abenc_exec);
 	ab_proc.stdout.on('data', function (data) {
-		console.log(data);
+		// console.log(data);
 	});
 	ab_proc.stderr.on('data', function (data) {
 		console.log(data);
@@ -161,7 +163,7 @@ var generate_ab = function(pat_id, cb) {
 	var exec = require('child_process').exec;
 	fs.createReadStream(cipher_file).pipe(fs.createWriteStream(ab_cipher_file));
 	var child_dir = path.resolve(process.cwd(), ab_resource_dir);
-	abgen_exec = 'mvn clean install';
+	abgen_exec = 'mvn clean install -q';
 	ab_proc = exec(abgen_exec, {cwd: child_dir});
 	ab_proc.stdout.on('data', function (data) {
 		console.log(data);
@@ -174,7 +176,6 @@ var generate_ab = function(pat_id, cb) {
 		cb();
 	});	
 };
-
 
 var randomIntInc = function(low, high) {
 	return Math.floor(Math.random() * (high - low + 1) + low);
