@@ -127,34 +127,53 @@
 			});
 		});
 
-		$('.btn').click(function() {
-			var s_id = $('#scenario_id').text();
-
-			var test_prescr;	// test prescription entered by Doctor
-			var prescr;			// prescription entered by Doctor
-			var lab_result;		// test results entered by Lab
-			var pat_name;		// name entered by Patient
-
-			var p_id = 001122;	//Patient ID
-
-			var svc_id = this.id.toString();
-			console.log('Button was pressed, its id = ' + svc_id);
-
-			if ( s_id == 2 ) {
+		$('.hlt-ab').click(function() {
+			var scenario_id = $('#scenario_id').text();
+			if (scenario_id == 2) {
 				/* healthcare scenario */
-				test_prescr = document.getElementById('doctdatkey_a6').value;
-				prescr = document.getElementById('doctdatkey_b6').value;
-				console.log('Doctor entered this test prescription: ' + test_prescr + ' and this prescription: ' + prescr );
-				
-				lab_result = document.getElementById('labdatkey7').value;
-				console.log('Results entered by lab are here: ' + lab_result);
-				
-				pat_name = document.getElementById('patientdatkey8').value;
-				console.log('Patient entered his/her name: ' + pat_name);
-
-				console.log('link =  ' + $(this).data('link'));			
-				obj = { link : $(this).data('link'), test_prescription : test_prescr, prescription : prescr , medical_data : lab_result, name : pat_name, patient_id : p_id };
-			}	
+				var button_id = this.id.toString();
+				var patient_id = 001122;
+				var prescription = document.getElementById('doctdatkey_b6').value;
+				var test_prescription = document.getElementById('doctdatkey_a6').value;
+				var test_results = document.getElementById('labdatkey7').value;
+				var patient_name = document.getElementById('patientdatkey8').value;
+				var obj = { patient_id : patient_id, test_prescription : test_prescription, prescription : prescription, medical_data : test_results };
+				// patient_age, patient_height, patient_weight
+				if (button_id.indexOf('svc_get_6') != -1) {
+					/* Doctor get */
+					obj.link = $(this).data('link') + '/dr_get';
+					operation_url = '/healthcare_get';					
+				}
+				if (button_id.indexOf('svc_post_6') != -1) {
+					/* Doctor update */
+					obj.link = $(this).data('link') + '/dr_update';
+					operation_url = '/healthcare_update';	
+				}
+				if (button_id.indexOf('svc_get_7') != -1) {
+					/* Lab get */
+					obj.link = $(this).data('link') + '/lab_get';
+					operation_url = '/healthcare_get';
+				}
+				if (button_id.indexOf('svc_post_7') != -1) {
+					/* Lab post */
+					obj.link = $(this).data('link') + '/lab_update';
+					operation_url = '/healthcare_update';
+				}
+				if (button_id.indexOf('svc_get_8') != -1) {
+					/* Lab get */
+					obj.link = $(this).data('link') + '/pat_get';
+					operation_url = '/healthcare_get';
+				}
+				if (button_id.indexOf('svc_get_9') != -1) {
+					/* Lab get */
+					obj.link = $(this).data('link') + '/pharm_get';
+					operation_url = '/healthcare_get';
+				}
+				$.post(operation_url, obj, function (data) {
+					alert(data);
+					location.reload();
+				});
+			}
 		});
 
 		// setup some defaults for jsPlumb.
@@ -205,10 +224,9 @@
 					instance.connect({ source:'service' + conn[0], target:'service' + conn[1]});
 				}
 			});
-			/* online shopping scenario */
-			if (s_id == 1) {	
-				// // Positions
-				console.log('proceed with online shopping --> ' + s_id );
+			/* Service container positions */
+			if (s_id == 1) {
+				/* online shopping scenario */
 				var left = 0;
 				var top = 0;
 				var count = 0;
@@ -230,7 +248,7 @@
 					}
 				});
 			} else {
-				console.log('proceed with healthcare --> ' + s_id);
+				/* healthcare scenario */
 				var ileft = 160;
 				var itop = 200;
 				var left = 160;
