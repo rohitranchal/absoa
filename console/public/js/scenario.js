@@ -39,6 +39,7 @@
 		// Invoke service for user
 		$('.try-it').click(function() {
 			var obj;
+			var s_id = $('#scenario_id').text();
 			var svc_arr = [];
 			$('.svc_name').each(function() {
 				var svc_id = this.id.split('_');
@@ -50,10 +51,13 @@
 			/* clear log for each service */
 			$.post(slink);
 
-			if ($(this).data('link').indexOf('ehr') >= 0) {
-				/* healthcare scenario */
-				obj = { link : $(this).data('link')};
+			if ( s_id == 2 ) {
+				/* healthcare scenario does not have 'Try It' button anymore*/
+
+				// obj = { link : $(this).data('link'), test_prescription : test_prescr, prescription : prescr , test_results : lab_result, name : pat_name, patient_id : p_id };
+				//obj = { link : $(this).data('link')};
 			} else {
+				//online shopping scenario
 				obj = { link : $(this).data('link')};
 			}
 			$.post('/try_it', obj, function (data) {
@@ -124,8 +128,33 @@
 		});
 
 		$('.btn').click(function() {
+			var s_id = $('#scenario_id').text();
+
+			var test_prescr;	// test prescription entered by Doctor
+			var prescr;			// prescription entered by Doctor
+			var lab_result;		// test results entered by Lab
+			var pat_name;		// name entered by Patient
+
+			var p_id = 001122;	//Patient ID
+
 			var svc_id = this.id.toString();
 			console.log('Button was pressed, its id = ' + svc_id);
+
+			if ( s_id == 2 ) {
+				/* healthcare scenario */
+				test_prescr = document.getElementById('doctdatkey_a6').value;
+				prescr = document.getElementById('doctdatkey_b6').value;
+				console.log('Doctor entered this test prescription: ' + test_prescr + ' and this prescription: ' + prescr );
+				
+				lab_result = document.getElementById('labdatkey7').value;
+				console.log('Results entered by lab are here: ' + lab_result);
+				
+				pat_name = document.getElementById('patientdatkey8').value;
+				console.log('Patient entered his/her name: ' + pat_name);
+
+				console.log('link =  ' + $(this).data('link'));			
+				obj = { link : $(this).data('link'), test_prescription : test_prescr, prescription : prescr , medical_data : lab_result, name : pat_name, patient_id : p_id };
+			}	
 		});
 
 		// setup some defaults for jsPlumb.
@@ -168,7 +197,8 @@
 				anchor:'Continuous'
 			});
 
-			var s_id = $('#scenario_id').text();
+			//var s_id = $('#scenario_id').text();
+			s_id = $('#scenario_id').text();
 			$.getJSON( '/scenario_topology?s_id=' + s_id, function( data ) {
 				for(var i = 0; i < data.connections.length; i++) {
 					var conn = data.connections[i];
