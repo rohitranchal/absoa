@@ -178,30 +178,66 @@
 					instance.connect({ source:'service' + conn[0], target:'service' + conn[1]});
 				}
 			});
+			/* online shopping scenario */
+			if (s_id == 1) {	
+				// // Positions
+				console.log('proceed with online shopping --> ' + s_id );
+				var left = 0;
+				var top = 0;
+				var count = 0;
+				$('.w').each(function(i) {
+					$(this).css({
+						left: left,
+						top: top
+					});
 
-			// Positions
-			var left = 0;
-			var top = 0;
-			var count = 0;
-			$('.w').each(function(i) {
-				$(this).css({
-					left: left,
-					top: top
+					if(count%2 > 0) {
+						// left += 200;
+						top += 300;
+					} else {
+						left += 300;
+					}
+					count++;
+					if(left > 300) {
+						left = 0;
+					}
 				});
-
-				if(count%2 > 0) {
-					// left += 200;
-					top += 300;
-				} else {
-					left += 300;
-				}
-				count++;
-
-				if(left > 300) {
-					left = 0;
-				}
-			});
-
+			} else {
+				console.log('proceed with healthcare --> ' + s_id);
+				var ileft = 160;
+				var itop = 200;
+				var left = 160;
+				var top = 160;
+				var step = 255;
+				var count = 0;
+				var lflag = 0;
+				var tflag = 0;
+				$('.w').each(function(i) {
+					$(this).css({
+						left: left,
+						top: top
+					});
+					count++;
+					if(count%2 > 0) {
+						if (tflag == 0) {
+							top += step;
+							tflag = 1;
+						} else {
+							left -= step;
+							top -= step;
+						}
+					} else {
+						if (lflag == 0) {
+							left += step;
+							top -= step;
+							lflag = 1;
+						} else {
+							left -= step;
+							top += step;
+						}
+					}
+				});
+			}
 		});
 	});
 })();
