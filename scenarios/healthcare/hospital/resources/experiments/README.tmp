@@ -1,0 +1,35 @@
+1. Start AB using start_ab script (start_ab <ab_file>)
+2. Start Service in scenario/sample
+3. Start apache bench test (test)
+
+Amazon EC2 C3 instances
+
+Test: AB-Service interaction (query)
+(5 runs, each run with 50 reqs)
+
+AB-Code-Tamper-Resistance
+
+1 Policy       - 48.3
+EC2 Large      - 5.296 + 5.387 + 5.211 + 5.166 + 5.270 = 5.2
+XLarge         - 4.418 + 4.402 + 4.424 + 4.386 + 4.341 = 4.5
+XXLarge        - 4.441 + 4.458 + 4.818 + 4.418 + 4.394 = 4.4
+
+2 Policies     - 48.52
+EC2 Large      - 5.174 + 5.266 + 5.187 + 5.225 + 5.163 = 5.2
+XLarge         - 4.475 + 4.392 + 4.348 + 4.315 + 4.424 = 4.7
+XXLarge        - 4.648 + 4.811 + 4.559 + 4.563 + 4.750 = 4.4
+
+4 Policies     - 48.97
+EC2 Large      - 5.505 + 5.347 + 5.528 + 5.324 + 5.406 = 5.3
+XLarge         - 4.428 + 4.391 + 4.371 + 4.409 + 4.458 = 4.5
+XXLarge        - 4.296 + 4.497 + 4.534 + 4.489 + 4.410 = 4.4
+
+8 Policies     - 49.88
+EC2 Large      - 5.131 + 5.295 + 5.270 + 5.403 + 5.111 = 5.3
+XLarge         - 4.385 + 4.427 + 4.453 + 4.376 + 4.359 = 4.5
+XXLarge        - 4.657 + 4.365 + 4.549 + 4.584 + 4.490 = 4.4
+
+16 Policies    - 51.7
+EC2 Large      - 5.375 + 5.341 + 5.132 + 5.199 + 5.348 = 5.4
+XLarge         - 4.473 + 4.433 + 4.429 + 4.466 + 4.475 = 4.5
+XXLarge        - 4.469 + 4.494 + 4.302 + 4.531 + 4.534 = 4.4

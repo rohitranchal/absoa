@@ -1,17 +1,28 @@
-var debug = require('debug')('shopping');
+var debug = require('debug')('hospital');
 var express = require('express');
 var router = express.Router();
 var request = require('request');
 var spawn = require('child_process').spawn;
 var async = require('async');
 var portscanner = require('portscanner');
+var fs = require('fs');
+var path = require('path');
+
 var ab_client = require('../ab_client');
 var db = require('../db');
 
+var ab_data_file = 'resources/data.json';
+var ab_data = JSON.parse(fs.readFileSync(ab_data_file, 'utf8'));
+var ab_resource_dir = 'resources';
+var cipher_file = 'resources/cipher.json';
+var ab_enc = 'resources/AB-Enc.jar';
+var ab_gen = 'resources/AB-Gen.jar';
+var ab_cipher_file = 'resources/src/main/resources/cipher.json';
+var ab_template = 'resources/AB-healthcare.jar';
+var ab_jar = 'resources/target/AB-code-Tamper-Resistance-1.0-SNAPSHOT.jar'
+
 var ab_host = '127.0.0.1';
-var ab_path = 'resources/AB1.jar';
 var ab_lib = 'resources/lib';
-var ab_arg = ab_path + ':./' + ab_lib + '/*:.';
 var ab_class = 'edu.purdue.absoa.Server';
 var req_data = 'ab.user.name';
 
@@ -20,97 +31,64 @@ router.get('/', function(req, res) {
 	res.send('Hospital Service');
 });
 
-router.get('/emergency', function(req, res) {
-	var ecode = req.query.ecode;
-	var pid = req.query.pat_id;
-	if (typeof ecode !== 'undefined' && ecode !== '' && typeof pid !== 'undefined' && pid !== '') {
-
-		request('http://localhost:4203/check_insurance?ins_id=4&pat_name=John&tmt_code=25', function (error, response, body) {
-			console.log(' Ins res: ' + body);
-			var doc = 'David';
-			var nse = 'Maria';
-			var obj = { doctor:doc, nurse:nse };
-			res.send(obj);
-		});		
+/* GET AB for a patient ID */
+router.get('/get_ehr', function(req, res) {
+	var patient_id = req.query.patient_id;
+	if (typeof patient_id !== 'undefined' && patient_id !== '') {
+		var ab_file = ab_resource_dir + '/' +  patient_id + '.jar';
+		var buf = fs.readFileSync(ab_file);
+		var ab_bytes = buf.toString('base64');
+		res.send(ab_bytes);
 	} else {
-		res.send(400, 'Error: Parameters undefined');
+		res.send(400, 'Error: get_ehr parameters undefined');	
 	}
 });
 
-router.post('/emergency_ab', function(req, res) {
-	// var ab_ehr = req.body.ab;
-	var ab_ehr = 'ab';
-	var pid = req.body.pat_id;
-
-	var tmtcode = 33;
-
-	if (typeof pid !== 'undefined' && pid !== '' && typeof ab_ehr !== 'undefined' && ab_ehr !== '') {
-		start_ab(ab_path, function(ab_port, ab_pid) {
-			connect_ab(ab_port, ab_host, ab_pid, function(data) {
-				console.log('ab data: ' + data);
-				request.post({
-					url:'http://localhost:4203/check_insurance_ab',
-					form: { ab: ab_ehr, tcode: tmtcode}
-				}, function (error, response, body) {
-					console.log(' Ins res: ' + body);
-					var doc = 'David';
-					var nse = 'Maria';
-					var obj = { doctor:doc, nurse:nse };
-					var msg = 'AB: ' + data;
-					var lobj = {id:6, log:msg};
-					db.set_service_log(lobj);
-					res.send(obj);
+/* POST data for a patient ID */
+router.post('/update_ehr', function(req, res) {
+	var patient_id = req.body.patient_id;
+	var prescription = req.body.prescription;
+	var test_prescription = req.body.test_prescription;
+	var test_results = req.body.test_results;
+	var name = req.body.name;
+	if (typeof patient_id !== 'undefined' && patient_id !== '') {
+		if (typeof prescription !== 'undefined' && prescription !== '') {
+			ab_data['ab.user.prescription'] = prescription;
+		}
+		if (typeof test_prescription !== 'undefined' && test_prescription !== '') {
+			ab_data['ab.user.test_prescription'] = test_prescription;
+		}
+		if (typeof test_results !== 'undefined' && test_results !== '') {
+			ab_data['ab.user.test_results'] = test_results;
+		}
+		if (typeof name !== 'undefined' && name !== '') {
+			ab_data['ab.user.name'] = name;
+		}
+		var ab_data_str = JSON.stringify(ab_data);
+		fs.writeFile(ab_data_file, ab_data_str, function(err) {
+			if (err) throw err;
+			encrypt_ab_data(function() {
+				generate_ab(patient_id, function() {
+					res.send('EHR updated');
 				});
-			});				
-		});
-	} else {
-		res.send(400, 'Error: Patient ID undefined');
-	}
-});
-
-router.post('/report', function(req, res) {
-	var pid = req.body.pat_id;
-	if (typeof pid !== 'undefined' && pid !== '') {
-		res.send('ok');
-	} else {
-		res.send(400, 'Error: Patient ID undefined');
-	}
-});
-
-router.post('/report_ab', function(req, res) {
-	// var ab_ehr = req.body.ab;
-	var ab_ehr = 'ab';
-	var pid = req.body.pat_id;
-
-	if (typeof pid !== 'undefined' && pid !== '' && typeof ab_ehr !== 'undefined' && ab_ehr !== '') {
-		start_ab(ab_path, function(ab_port, ab_pid) {
-			connect_ab(ab_port, ab_host, ab_pid, function(data) {
-				console.log('ab data: ' + data);
-				var msg = 'AB: ' + data;
-				var lobj = {id:6, log:msg};
-				db.set_service_log(lobj);				
-				res.send('EHR received');
 			});
-		});
+		});	
 	} else {
-		res.send(400, 'Error: Parameters undefined');
+		res.send(400, 'Error: update_ehr parameters undefined');	
 	}
 });
 
 router.get('/test', function(req, res) {
-	start_ab(ab_path, function(ab_port, ab_pid) {
+	start_ab(ab_file, function(ab_port, ab_pid) {
 		connect_ab(ab_port, ab_host, ab_pid, function(data) {
-			ab_data = data;
+			res.send(data);
 		});
 	});
-	// var ab_port = 5555;
-	// var ab_pid = 1111111110;
-	// connect_ab(ab_port, ab_host, ab_pid);
-	res.send('ok');
 });
 
-var start_ab = function(ab_path, cb) {
+var start_ab = function(ab_file, cb) {
 	var ab_port = randomIntInc(10000, 65000);
+	var ab_arg = ab_file + ':./' + ab_lib + '/*:.';
 	var child =	spawn('java', ['-cp', ab_arg, ab_class, ab_port]);
 	console.log('LOG: Started AB on Port: ' + ab_port);
 	var ab_pid = child.pid;
@@ -144,17 +122,62 @@ var connect_ab = function(port, host, pid, cb) {
 				setTimeout(callback, 10);
 			});
 		},
-		function (err) {
-			// AB is running, query the AB for data			
-			ab_client.get_data(req_data, port, function(ab_data) {
+		function (err) {			
+			ab_client.get_data(req_data, port, function(data) {
 				process.kill(pid);
-				cb(ab_data);
+				cb(data);
 			});
 	});
 };
 
-function randomIntInc(low, high) {
+var encrypt_ab_data = function(cb) {
+	var exec = require('child_process').exec;
+	abenc_exec = 'java -jar ' + ab_enc + ' ' + ab_data_file + ' ' + ab_resource_dir + ' ' + cipher_file;
+	ab_proc = exec(abenc_exec);
+	ab_proc.stdout.on('data', function (data) {
+		console.log(data);
+	});
+	ab_proc.stderr.on('data', function (data) {
+		console.log(data);
+	});
+	ab_proc.on('close', function(code, signal) {
+		cb();
+	});
+};
+
+// var generate_ab = function(pat_id, cb) {
+// 	var exec = require('child_process').exec;
+// 	abgen_exec = 'java -jar ' + ab_gen + ' ' + ab_template + ' ' + cipher_file  + ' ' + ab_resource_dir + '/' +  pat_id + '.jar';
+// 	ab_proc = exec(abgen_exec);
+// 	ab_proc.stdout.on('data', function (data) {
+// 		console.log(data);
+// 	});
+// 	ab_proc.stderr.on('data', function (data) {
+// 		console.log(data);
+// 	});
+// 	cb();
+// };
+var generate_ab = function(pat_id, cb) {
+	var exec = require('child_process').exec;
+	fs.createReadStream(cipher_file).pipe(fs.createWriteStream(ab_cipher_file));
+	var child_dir = path.resolve(process.cwd(), ab_resource_dir);
+	abgen_exec = 'mvn clean install';
+	ab_proc = exec(abgen_exec, {cwd: child_dir});
+	ab_proc.stdout.on('data', function (data) {
+		console.log(data);
+	});
+	ab_proc.stderr.on('data', function (data) {
+		console.log(data);
+	});
+	ab_proc.on('close', function(code, signal) {
+		fs.createReadStream(ab_jar).pipe(fs.createWriteStream(ab_resource_dir + '/' + pat_id + '.jar'));
+		cb();
+	});	
+};
+
+
+var randomIntInc = function(low, high) {
 	return Math.floor(Math.random() * (high - low + 1) + low);
-}
+};
 
 module.exports = router;

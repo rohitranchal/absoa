@@ -164,8 +164,61 @@ router.post('/try_it', function(req, res) {
 	}
 });
 
+/* POST healthcare update requests */
+router.post('/healthcare_update', function(req, res) {
+	var patient_id = req.body.patient_id;
+	var prescription = req.body.prescription;
+	var test_prescription = req.body.test_prescription;
+	var test_results = req.body.test_results;
+	var name = req.body.name;
+	var service_link = req.body.link;
+	if (typeof patient_id !== 'undefined' && patient_id !== '') {
+		var form_obj = { patient_id:patient_id };
+		if (typeof prescription !== 'undefined' && prescription !== '') {
+			form_obj.prescription = prescription;
+		}
+		if (typeof test_prescription !== 'undefined' && test_prescription !== '') {
+			form_obj.test_prescription = test_prescription;
+		}
+		if (typeof test_results !== 'undefined' && test_results !== '') {
+			form_obj.test_results = test_results;
+		}
+		if (typeof name !== 'undefined' && name !== '') {
+			form_obj.name = name;
+		}
+		request.post({
+			url:service_link,
+			form: form_obj
+		}, function(error, response, body) {
+			res.send(body);
+		});
+	} else {
+		request(req.body.link, function (error, response, body) {
+			res.send(body)
+		});
+	}
+});
+
+/* GET healthcare get requests */
+router.get('/healthcare_get', function(req, res) {
+	var patient_id = req.body.patient_id;
+	var emy = req.body.emergency;
+	if (typeof patient_id !== 'undefined' && patient_id !== '') {
+		request.post({
+			url:req.body.link, 
+			form: { patient_id:patient_id, emergency:emy }
+		}, function(error, response, body) {
+			console.log('callback from ehr case response');
+			res.send(body);
+		});
+	} else {
+		request(req.body.link, function (error, response, body) {
+			res.send(body)
+		});
+	}
+});
+
 /* POST create ab */
-//OK 01 Feb. router.post('/create', function(req, res) {
 router.post('/client', function(req, res) {
 	var key1 = req.body.datakey1;
 	var value1 = req.body.datavalue1;

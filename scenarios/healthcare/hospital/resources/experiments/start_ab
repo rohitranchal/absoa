@@ -1,0 +1,5 @@
+if [[ $1 ]]; then
+	java -cp $1:./lib/*:. edu.purdue.absoa.Server
+else
+	echo "Usage: start_ab <ab_file>..."
+fi
