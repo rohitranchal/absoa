@@ -123,6 +123,11 @@
 			});
 		});
 
+		$('.btn').click(function() {
+			var svc_id = this.id.toString();
+			console.log('Button was pressed, its id = ' + svc_id);
+		});
+
 		// setup some defaults for jsPlumb.
 		var instance = jsPlumb.getInstance({
 			Endpoint			: ['Dot', {radius:2}],
