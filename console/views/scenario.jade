@@ -56,7 +56,7 @@ html(lang='en')
 									div(id=service.status, class='col-md-2 svc_status')=service.status
 									div(id=service.status + '_' + service.id, class='col-md-5 svc_name')=service.display_name
 									if (name == "Healthcare Scenario")
-										button(type='submit' class='btn btn-primary get-ab' style='margin-right:10px') GET
+										button(type='submit' class='btn btn-primary get-ab' style='margin-right:2px') GET
 										button(type='submit' class='btn btn-primary post-ab-data' style='margin-right:10px') POST
 										if (service.id == 6)
 											input(name='doctdatakey_a' + service.id type='text' id='doctdatkey_a' + service.id class='doctinputkey_a' + service.id placeholder='Test prescription'  style='margin-left:20px')
