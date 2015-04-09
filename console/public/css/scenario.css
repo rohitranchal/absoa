@@ -31,7 +31,7 @@
 	filter:alpha(opacity=80);
 	cursor:move;
 	background-color:white;
-	font-size:12px;
+	font-size:20px;
 	-webkit-transition:background-color 0.25s ease-in;
 	-moz-transition:background-color 0.25s ease-in;
 	transition:background-color 0.25s ease-in;
