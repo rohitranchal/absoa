@@ -136,7 +136,6 @@
 				var prescription = document.getElementById('doctdatkey_b6').value;
 				var test_prescription = document.getElementById('doctdatkey_a6').value;
 				var test_results = document.getElementById('labdatkey7').value;
-				var patient_name = document.getElementById('patientdatkey8').value;
 				var obj = { patient_id : patient_id, test_prescription : test_prescription, prescription : prescription, medical_data : test_results };
 				// patient_age, patient_height, patient_weight
 				if (button_id.indexOf('svc_get_6') != -1) {
@@ -160,12 +159,12 @@
 					operation_url = '/healthcare_update';
 				}
 				if (button_id.indexOf('svc_get_8') != -1) {
-					/* Lab get */
+					/* Patient get */
 					obj.link = $(this).data('link') + '/pat_get';
 					operation_url = '/healthcare_get';
 				}
 				if (button_id.indexOf('svc_get_9') != -1) {
-					/* Lab get */
+					/* Pharmacy get */
 					obj.link = $(this).data('link') + '/pharm_get';
 					operation_url = '/healthcare_get';
 				}
