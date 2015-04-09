@@ -4,5 +4,5 @@
 	"description" : "Healthcare service with a composition of patient service, hospital service, doctor, laboratory and pharmacy services.",
 	"name": "Healthcare Scenario",
 	"services" : [5, 6, 7, 8, 9],
-	"connections" :[ [5, 6], [6, 5], [5, 7], [7, 5], [8, 5], [5, 9] ]
+	"connections" :[ [5, 6], [6, 5], [5, 7], [7, 5], [5, 8], [5, 9] ]
 }

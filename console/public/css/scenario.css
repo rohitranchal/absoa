@@ -11,8 +11,8 @@
 }
 
 .w {
-    min-height: 150px;
-    min-width: 150px;
+    min-height: 200px;
+    min-width: 200px;
     max-height: 200px;
     max-width: 200px;
 	padding:16px;
@@ -31,7 +31,8 @@
 	filter:alpha(opacity=80);
 	cursor:move;
 	background-color:white;
-	font-size:20px;
+	font-size:16px;
+	/*color:red;*/
 	-webkit-transition:background-color 0.25s ease-in;
 	-moz-transition:background-color 0.25s ease-in;
 	transition:background-color 0.25s ease-in;

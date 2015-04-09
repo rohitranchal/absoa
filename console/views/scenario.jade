@@ -30,10 +30,10 @@ html(lang='en')
 						div(id='main')
 							div(id='scenario-container', class='scenario-container')
 								for service in services
-									div(class='w', id='service' + service.id)=service.display_name
+									div(class='w text-info', id='service' + service.id)=service.display_name
 										//div(style='color:red')
 										//	strong=service.trust_level
-										//div(id='logid_' + service.id class='log_data')='Logs'
+										div(id='logid_' + service.id class='log_data')
 										div(class='ep')
 			if (name == "Online Shopping Scenario")
 				div(class='col-md-4')
