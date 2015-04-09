@@ -59,13 +59,17 @@ html(lang='en')
 										button(id="svc_get_" + service.id, type='submit' class='btn btn-primary hlt-ab', data-link=service.url, style='margin-right:4px') GET
 										button(id="svc_post_" + service.id, type='submit' class='btn btn-primary hlt-ab', data-link=service.url, style='') POST
 										if (service.id == 6)
-											input(name='doctdatakey_a' + service.id type='text' id='doctdatkey_a' + service.id class='form-control doctinputkey_a' + service.id placeholder='Test prescription'  style='margin-left:16px; margin-top:4px')
+											div(class='col-md-8')
+												input(name='doctdatakey_a' + service.id type='text' id='doctdatkey_a' + service.id class='form-control doctinputkey_a' + service.id placeholder='Test prescription'  style='margin-left:0px; margin-top:4px;')
 											br
-											input(name='doctdatakey_b' + service.id type='text' id='doctdatkey_b' + service.id class='form-control doctinputkey_b' + service.id placeholder='Prescription'  style='margin-left:16px; margin-top:4px')
+											div(class='col-md-8')
+												input(name='doctdatakey_b' + service.id type='text' id='doctdatkey_b' + service.id class='form-control doctinputkey_b' + service.id placeholder='Prescription'  style='margin-left:0px; margin-top:4px; margin-bottom:4px')
 										else if (service.id == 7)
-											input(name='labdatakey' + service.id type='text' id='labdatkey' + service.id class='form-control labinputkey' + service.id placeholder='Test results'  style='margin-left:16px; margin-top:4px')
+											div(class='col-md-8')
+												input(name='labdatakey' + service.id type='text' id='labdatkey' + service.id class='form-control labinputkey' + service.id placeholder='Test results'  style='margin-left:0px; margin-top:4px; margin-bottom:4px')
 										else if (service.id == 8)
-											input(name='patientdatakey' + service.id type='text' id='patientdatkey' + service.id class='form-control patinputkey' + service.id placeholder='Name'  style='margin-left:16px; margin-top:4px')
+											div(class='col-md-8')
+												input(name='patientdatakey' + service.id type='text' id='patientdatkey' + service.id class='form-control patinputkey' + service.id placeholder='Name'  style='margin-left:0px; margin-top:4px; margin-bottom:4px')
 										hr(style='width: 100%; color: #e0e0e0; height: 1px; background-color:#e0e0e0; margin-bottom:1px')
 									//need sliders for trust level only in online shopping scenario
 									if (name == "Online Shopping Scenario")
