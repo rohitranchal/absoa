@@ -1,17 +1,21 @@
 #!/bin/bash
 
-cd payment
-npm install
+cd doctor
+sudo npm install
 cd -
 
-cd seller
-npm install
+cd hospital
+sudo npm install
 cd -
 
-cd shopping
-npm install
+cd laboratory
+sudo npm install
 cd -
 
-cd shipping
-npm install
+cd paramedic
+sudo npm install
+cd -
+
+cd pharmacy
+sudo npm install
 cd -
