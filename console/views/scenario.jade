@@ -56,7 +56,12 @@ html(lang='en')
 									div(id=service.status, class='col-md-2 svc_status')=service.status
 									div(id=service.status + '_' + service.id, class='col-md-5 svc_name')=service.display_name
 									if (name == "Healthcare Scenario")
+										//not Hospital service
 										if (service.id != 5)
+											div(class='col-md-6')
+												select(id='srv-name-get' + service.id class='form-control')
+													//for srv_name in services
+													//	option=srv_name.display_name
 											button(id="svc_get_" + service.id, type='submit' class='btn btn-primary hlt-ab', data-link=service.url, style='margin-right:4px') GET
 										if (service.id != 5)
 											if (service.id != 8)
@@ -73,7 +78,7 @@ html(lang='en')
 												input(name='labdatakey' + service.id type='text' id='labdatkey' + service.id class='form-control labinputkey' + service.id placeholder='Test results'  style='margin-left:0px; margin-top:4px; margin-bottom:4px')
 										hr(style='width: 100%; color: #e0e0e0; height: 1px; background-color:#e0e0e0; margin-bottom:1px')
 									//need sliders for trust level only in online shopping scenario
-									if (name == "Online Shopping Scenario")
+									if (name != "Healthcare Scenario")
 										div(class='col-md-5')
 											div(class='slider', id=service.id value=service.trust_level)
 							div(class='row top-buffer')
