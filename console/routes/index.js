@@ -14,15 +14,27 @@ var req_data = [ 'name', 'address', 'credit card', 'email'];
 
 /* Load all availbale scenarios */
 console.log('Loading scenarios ... ');
-var files = fs.readdirSync('./scenarios/');
+var files = fs.readdirSync('./scenarios/applications/');
 var scenarios = [];
 for(var i = 0; i < files.length; i++) {
 	console.log('Reading : ' + files[i]);
-	fs.readFile('./scenarios/' + files[i], 'utf8', function(err, data) {
+	fs.readFile('./scenarios/applications/' + files[i], 'utf8', function(err, data) {
 		if(err) {
 			console.log(err);
 		} else {
 			scenarios[scenarios.length] = JSON.parse(data);
+		}		
+	});
+}
+files = fs.readdirSync('./scenarios/models/');
+var models = [];
+for(var i = 0; i < files.length; i++) {
+	console.log('Reading : ' + files[i]);
+	fs.readFile('./scenarios/models/' + files[i], 'utf8', function(err, data) {
+		if(err) {
+			console.log(err);
+		} else {
+			models[models.length] = JSON.parse(data);
 		}		
 	});
 }
@@ -74,27 +86,35 @@ router.get('/service', function(req, res) {
 
 /* GET scenario list page */
 router.get('/scenario_list', function(req, res) {
-	res.render('scenario_list', { title: 'Active Bundle Console', scenario_list: scenarios });
+	res.render('scenario_list', { title: 'Active Bundle Console', scenario_list: scenarios, model_list: models });
 });
 
 /* GET scenario page */
 router.get('/scenario', function(req, res) {
 	var sc_id = req.query.scenario_id;
 	var sc_name = req.query.scenario_name;
-
-	var scenario = null;
-	for(var i = 0; i < scenarios.length; i++) {
-		if(scenarios[i].id == sc_id) {
-			scenario = scenarios[i];
+	var ml_id = req.query.model_id;
+	var ml_name = req.query.model_name;
+	var list = null;
+	if (typeof sc_id !== 'undefined' && sc_id !== '') {
+		for(var i = 0; i < scenarios.length; i++) {
+			if(scenarios[i].id == sc_id) {
+				list = scenarios[i];
+			}
+		}
+	} else if (typeof ml_id !== 'undefined' && ml_id !== '') {
+		for(i = 0; i < models.length; i++) {
+			if(models[i].id == ml_id) {
+				list = models[i];
+			}
 		}
 	}
-	var tmp_s = scenario.services;
-
-	var se_list = scenario.services.join(',');
+	var tmp_s = list.services;
+	var se_list = list.services.join(',');
 	db.get_scenario_services(se_list, function(rows) {
-		scenario.services = rows;
-		res.render('scenario', scenario);
-		scenario.services = tmp_s;
+		list.services = rows;
+		res.render('scenario', list);
+		list.services = tmp_s;
 	});
 });
 

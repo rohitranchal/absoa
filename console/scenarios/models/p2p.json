@@ -1,0 +1,8 @@
+{
+	"id" : 4,
+	"access_url" : "http://localhost:4101/ab_order",
+	"description" : "Information flow in a peer to peer model.",
+	"name": "Peer to Peer",
+	"services" : [10, 11, 12, 13],
+	"connections" :[ [10, 11], [10, 12], [11, 12], [12, 13], [13, 10], [13, 11] ]
+}

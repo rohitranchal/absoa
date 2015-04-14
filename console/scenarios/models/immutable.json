@@ -1,0 +1,8 @@
+{
+	"id" : 6,
+	"access_url" : "http://localhost:4101/ab_order",
+	"description" : "Information flow in an immutable model.",
+	"name": "Immutable",
+	"services" : [10, 11, 12],
+	"connections" :[ [10, 11], [11, 12] ]
+}

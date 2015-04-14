@@ -1,0 +1,8 @@
+{
+	"id" : 5,
+	"access_url" : "http://localhost:4101/ab_order",
+	"description" : "Information flow in a mutable model.",
+	"name": "Mutable",
+	"services" : [10, 11, 12],
+	"connections" :[ [10, 11], [11, 12] ]
+}

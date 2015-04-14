@@ -1,0 +1,8 @@
+{
+	"id" : 3,
+	"access_url" : "http://localhost:4101/ab_order",
+	"description" : "Information flow in a publish subscribe model.",
+	"name": "Publish Subscribe Information Flow",
+	"services" : [10, 11, 12, 13, 14],
+	"connections" :[ [10, 11], [11, 10], [10, 12], [12, 10], [10, 13], [13, 10], [10, 14], [14, 10] ]
+}
