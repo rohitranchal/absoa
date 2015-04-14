@@ -29,7 +29,7 @@ router.get('/pay', function(req, res) {
 		res.send(msg);
 	}
 	var obj = {id:4, log:msg};
-	db.set_service_log(obj, function() {});
+	db.set_service_log(obj);
 });
 
 router.get('/ab_pay', function(req, res) {
@@ -51,7 +51,7 @@ router.get('/ab_pay', function(req, res) {
 				res.send(msg);
 			}
 			var obj = {id:4, log:msg};
-			db.set_service_log(obj, function() {});
+			db.set_service_log(obj);
 		});
 	});		
 });
@@ -75,14 +75,14 @@ var start_ab = function(ab_path, cb) {
 	var ab_pid = child.pid;
 
 	child.stdout.setEncoding('ASCII');
+	child.stderr.setEncoding('ASCII');
 	child.stdout.on('data', function (data) {
 		console.log('LOG(AB): ');
 		console.log(data);
 	});
 	child.stderr.on('data', function (data) {
-		console.log('ERROR(AB): ');
-		// console.log(data);
-		console.log(new Buffer(data, 'base64'));
+		console.log('ERR(AB): ');
+		console.log(data);
 	});
 	child.on('close', function (code, signal) {
 		console.log('LOG: Terminated AB');

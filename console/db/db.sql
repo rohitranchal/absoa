@@ -23,15 +23,15 @@ CREATE TABLE Service (
 ) ENGINE=InnoDB;
 
 INSERT INTO Service(id, name, display_name, rating, trust_level, req_data, host, port, url, params, status, source_path) VALUES
-(1, 'localhost:4101','Shopping', 5.0, 4.0, 'name', 'localhost', 4101, 'http://localhost:4101', '{}', -1, 'scenarios/online-shopping/shopping'),
-(2, 'localhost:4102','Seller', 5.0, 4.0, 'email', 'localhost', 4102, 'http://localhost:4102', '{}', -1, 'scenarios/online-shopping/seller'),
+(1, 'localhost:4101','Shopping', 5.0, 4.0, 'payment_type', 'localhost', 4101, 'http://localhost:4101', '{}', -1, 'scenarios/online-shopping/shopping'),
+(2, 'localhost:4102','Seller', 5.0, 4.0, 'shipping_preference', 'localhost', 4102, 'http://localhost:4102', '{}', -1, 'scenarios/online-shopping/seller'),
 (3, 'localhost:4103','Shipping', 5.0, 4.0, 'address', 'localhost', 4103, 'http://localhost:4103', '{}', -1, 'scenarios/online-shopping/shipping'),
-(4, 'localhost:4104','Payment', 5.0, 4.0, 'credit card', 'localhost', 4104, 'http://localhost:4104', '{}', -1, 'scenarios/online-shopping/payment'),
+(4, 'localhost:4104','Payment', 5.0, 4.0, 'creditcard', 'localhost', 4104, 'http://localhost:4104', '{}', -1, 'scenarios/online-shopping/payment'),
 (5, 'localhost:4201','Hospital', 5.0, 4.0, 'ehr', 'localhost', 4201, 'http://localhost:4201', '{}', -1, 'scenarios/healthcare/hospital'),
-(6, 'localhost:4202','Doctor', 5.0, 4.0, 'name', 'localhost', 4202, 'http://localhost:4202', '{}', -1, 'scenarios/healthcare/doctor'),
-(7, 'localhost:4203','Laboratory', 5.0, 4.0, 'address', 'localhost', 4203, 'http://localhost:4203', '{}', -1, 'scenarios/healthcare/laboratory'),
-(8, 'localhost:4204','Patient', 5.0, 4.0, 'address', 'localhost', 4204, 'http://localhost:4204', '{}', -1, 'scenarios/healthcare/patient'),
-(9, 'localhost:4205','Pharmacy', 5.0, 4.0, 'name', 'localhost', 4205, 'http://localhost:4205', '{}', -1, 'scenarios/healthcare/pharmacy');
+(6, 'localhost:4202','Doctor', 5.0, 4.0, 'ehr', 'localhost', 4202, 'http://localhost:4202', '{}', -1, 'scenarios/healthcare/doctor'),
+(7, 'localhost:4203','Laboratory', 5.0, 4.0, 'test_prescription', 'localhost', 4203, 'http://localhost:4203', '{}', -1, 'scenarios/healthcare/laboratory'),
+(8, 'localhost:4204','Paramedic', 5.0, 4.0, 'medical_data', 'localhost', 4204, 'http://localhost:4204', '{}', -1, 'scenarios/healthcare/paramedic'),
+(9, 'localhost:4205','Pharmacy', 5.0, 4.0, 'prescription', 'localhost', 4205, 'http://localhost:4205', '{}', -1, 'scenarios/healthcare/pharmacy');
 
 CREATE TABLE Service_Log (
         service_id INT PRIMARY KEY,

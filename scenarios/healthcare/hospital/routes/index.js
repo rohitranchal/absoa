@@ -173,8 +173,8 @@ var generate_ab = function(pat_id, cb) {
 	});
 	ab_proc.on('close', function(code, signal) {
 		fs.createReadStream(ab_jar).pipe(fs.createWriteStream(ab_resource_dir + '/' + pat_id + '.jar'));
-		cb();
-	});	
+	});
+	cb();
 };
 
 var randomIntInc = function(low, high) {

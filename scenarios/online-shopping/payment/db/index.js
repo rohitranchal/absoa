@@ -34,6 +34,27 @@ exports.get_service = function(id, cb) {
 	});
 }
 
+//02 Feb. 
+/* Get info from Service_Data table  */
+exports.get_service_data = function(cb) {
+	var query = "SELECT * FROM Service_Data";
+	debug('Get service data: ' + query);
+	connection.query(query, function(err, rows, fields) {
+		if (err) throw err;
+		cb(rows);
+	});
+}
+
+//09 Feb. Get info from Policy table 
+exports.get_policy = function(cb) {
+	var query = "SELECT * FROM Policy";
+	debug('Get policy: ' + query);
+	connection.query(query, function(err, rows, fields) {
+		if (err) throw err;
+		cb(rows);
+	});
+}
+
 /* Update service params */
 exports.update_service = function(obj) {
 	var query = "UPDATE Service SET rating= " + obj.rating + ", trust_level=" + obj.trust + ", req_data='" + obj.data + "' WHERE id=" + obj.sid;
@@ -82,12 +103,11 @@ exports.get_service_log = function(id, cb) {
 }
 
 /* Set latest log for a service */
-exports.set_service_log = function(obj, cb) {
-	var query = "UPDATE Service_Log SET log ='" + obj.log + "' WHERE service_id=" + obj.id;
+exports.set_service_log = function(obj) {
+	var query = "INSERT INTO Service_Log(service_id, log) VALUES('" + obj.id + "','" + obj.log + "')";
 	debug('Set service log: ' + query);
 	connection.query(query, function(err, rows, fields) {
 		if (err) throw err;
-		cb(rows);
 	});
 }
 
@@ -98,6 +118,15 @@ exports.get_service_list_log = function(services, cb) {
 	connection.query(query, function(err, rows, fields) {
 		if (err) throw err;
 		cb(rows);
+	});
+}
+
+/* Delete logs for a list of services */
+exports.clear_service_list_log = function(services) {
+	var query = "DELETE from Service_Log WHERE service_id IN (" + services + ")";
+	debug('Clear service list log: ' + query);
+	connection.query(query, function(err, rows, fields) {
+		if (err) throw err;
 	});
 }
 
