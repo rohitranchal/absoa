@@ -5,9 +5,9 @@ var async = require('async');
 var crypto = require('crypto');
 var fs = require('fs');
 
-var svc_key = fs.readFileSync("ab_client/resources/service1-private.pem");
+var svc_key = fs.readFileSync("ab_client/resources/laboratory-private.pem");
 var private_key = svc_key.toString('ascii');
-var stream = fs.readFileSync("ab_client/resources/service1.pem");
+var stream = fs.readFileSync("ab_client/resources/laboratory.pem");
 var cert = stream.toString('base64');
 var signed_req;
 
