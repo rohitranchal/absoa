@@ -1,7 +1,8 @@
 //Based on http://jsplumbtoolkit.com/demo/statemachine/demo-jquery.js
 ;(function() {
 	jsPlumb.ready(function() {
-
+		/* Get scenario id */
+		var s_id = $('#scenario_id').text();
 		/* Slider initialization */
 		$('.slider').each(function() {
 			var val = $(this).attr('value');
@@ -39,7 +40,7 @@
 		// Invoke service for user
 		$('.try-it').click(function() {
 			var obj;
-			var s_id = $('#scenario_id').text();
+			s_id = $('#scenario_id').text();
 			var svc_arr = [];
 			$('.svc_name').each(function() {
 				var svc_id = this.id.split('_');
@@ -51,7 +52,7 @@
 			/* clear log for each service */
 			$.post(slink);
 
-			if ( s_id == 2 ) {
+			if (s_id == 2) {
 				/* healthcare scenario does not have 'Try It' button anymore*/
 
 				// obj = { link : $(this).data('link'), test_prescription : test_prescr, prescription : prescr , test_results : lab_result, name : pat_name, patient_id : p_id };
@@ -128,22 +129,23 @@
 		});
 
 		/* Dropdown boxes data in Healthcare scenario */
-		var AB_fields = ['patient_id', 'medical_data', 'medical_history', 'test_prescription', 'prescription', 'insurance_id', 'treatment_code'];
-		var populate_dropdownbox = function(combobox) {
-			for(var i = 0; i < AB_fields.length; i++) {
-				var opt = document.createElement('option');
-				opt.innerHTML = AB_fields[i];
-				opt.value = AB_fields[i];
-				combobox.appendChild(opt);
+		if (s_id == 2) {
+			var AB_fields = ['patient_id', 'medical_data', 'medical_history', 'test_prescription', 'prescription', 'insurance_id', 'treatment_code'];
+			var populate_dropdownbox = function(combobox) {
+				for(var i = 0; i < AB_fields.length; i++) {
+					var opt = document.createElement('option');
+					opt.innerHTML = AB_fields[i];
+					opt.value = AB_fields[i];
+					combobox.appendChild(opt);
+				}
+			};
+			for (var j=6; j<10; j++) {
+				populate_dropdownbox(document.getElementById('srv-name-get' + j));	
 			}
-		};
-		for (var j=6; j<10; j++) {
-			populate_dropdownbox(document.getElementById('srv-name-get' + j));	
 		}
 	
 		$('.hlt-ab').click(function() {
-			var scenario_id = $('#scenario_id').text();
-			if (scenario_id == 2) {
+			if (s_id == 2) {
 				/* healthcare scenario */
 				var button_id = this.id.toString();
 				var patient_id = 001122;
@@ -237,7 +239,6 @@
 				anchor:'Continuous'
 			});
 
-			//var s_id = $('#scenario_id').text();
 			s_id = $('#scenario_id').text();
 			$.getJSON( '/scenario_topology?s_id=' + s_id, function( data ) {
 				for(var i = 0; i < data.connections.length; i++) {
@@ -246,8 +247,8 @@
 				}
 			});
 			/* Service container positions */
-			if (s_id == 1) {
-				/* online shopping scenario */
+			if (s_id == 1 || s_id == 4) {
+				/* Online shopping and P2P scenario */
 				var left = 0;
 				var top = 0;
 				var count = 0;
@@ -268,12 +269,12 @@
 						left = 0;
 					}
 				});
-			} else {
-				/* healthcare scenario */
-				var ileft = 160;
-				var itop = 200;
-				var left = 160;
-				var top = 160;
+			} else if (s_id == 2 || s_id == 3) {
+				/* Healthcare and Pub/Sub scenario */
+				var ileft = 180;
+				var itop = 180;
+				var left = 180;
+				var top = 180;
 				var step = 255;
 				var count = 0;
 				var lflag = 0;
@@ -302,6 +303,18 @@
 							top += step;
 						}
 					}
+				});
+			} else if (s_id == 5 || s_id == 6) {
+				/* Immutable and Mutable scenario */
+				var left = -60;
+				var top = 0;
+				var count = 0;
+				$('.w').each(function(i) {
+					$(this).css({
+						left: left,
+						top: top
+					});
+					left += 250;
 				});
 			}
 		});

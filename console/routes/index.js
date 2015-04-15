@@ -121,10 +121,15 @@ router.get('/scenario', function(req, res) {
 /* Return scenario topology to the scenario viewer */
 router.get('/scenario_topology', function(req, res) {
 	var s_id = req.query.s_id;
-
 	for(var i = 0; i < scenarios.length; i++) {
 		if(scenarios[i].id == s_id) {
 			var top = JSON.stringify(scenarios[i]);
+			res.send(top);
+		}
+	}
+	for(var i = 0; i < models.length; i++) {
+		if(models[i].id == s_id) {
+			var top = JSON.stringify(models[i]);
 			res.send(top);
 		}
 	}
