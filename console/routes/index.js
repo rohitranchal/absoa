@@ -220,7 +220,8 @@ router.post('/healthcare_update', function(req, res) {
 /* POST healthcare get requests */
 router.post('/healthcare_get', function(req, res) {
 	var patient_id = req.body.patient_id;
-	var service_link = req.body.link + '?patient_id=' + patient_id;
+	var ab_request = req.body.ab_request;
+	var service_link = req.body.link + '?patient_id=' + patient_id + '&ab_request=' + ab_request;
 	if (typeof patient_id !== 'undefined' && patient_id !== '') {
 		request(service_link, function (error, response, body) {
 			res.send(body);

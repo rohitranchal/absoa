@@ -25,6 +25,9 @@ router.get('/', function(req, res) {
 });
 
 router.get('/pharm_get', function(req, res) {
+	var ab_request = 'ab.user.' + req.query.ab_request;
+	req_key = [];
+	req_key.push(ab_request);
 	request(hospital_host + '/get_ehr?patient_id=' + patient_id, function (error, response, body) {
 		if (error) {
 			res.send('ERROR: Hospital service down');

@@ -127,9 +127,8 @@
 			});
 		});
 
-		//for dropdown boxes in Healthcare scenario to get access to fieldsw of AB
-		var AB_fields = ['Patient ID', 'Medical Data', 'Medical History', 'Medical test prescription', 'Prescription', 'Insurance ID', 'Treatment code'];
-
+		/* Dropdown boxes data in Healthcare scenario */
+		var AB_fields = ['patient_id', 'medical_data', 'medical_history', 'test_prescription', 'prescription', 'insurance_id', 'treatment_code'];
 		var populate_dropdownbox = function(combobox) {
 			for(var i = 0; i < AB_fields.length; i++) {
 				var opt = document.createElement('option');
@@ -138,26 +137,10 @@
 				combobox.appendChild(opt);
 			}
 		};
-		//Doctor
-		if (document.getElementById('srv-name-get6') != null) {
-			var getsrvchoice = document.getElementById('srv-name-get6');
-			populate_dropdownbox(getsrvchoice);
+		for (var j=6; j<10; j++) {
+			populate_dropdownbox(document.getElementById('srv-name-get' + j));	
 		}
-		//Laboratory
-		if (document.getElementById('srv-name-get7') != null) {
-			var getsrvchoice = document.getElementById('srv-name-get7');
-			populate_dropdownbox(getsrvchoice);
-		}
-		//Paramedic
-		if (document.getElementById('srv-name-get8') != null) {
-			var getsrvchoice = document.getElementById('srv-name-get8');
-			populate_dropdownbox(getsrvchoice);
-		}
-		//Pharmacy
-		if (document.getElementById('srv-name-get9') != null) {
-			var getsrvchoice = document.getElementById('srv-name-get9');
-			populate_dropdownbox(getsrvchoice);
-		}	
+	
 		$('.hlt-ab').click(function() {
 			var scenario_id = $('#scenario_id').text();
 			if (scenario_id == 2) {
@@ -172,9 +155,7 @@
 				if (button_id.indexOf('svc_get_6') != -1) {
 					/* Doctor get */
 					var getsrvchoice = document.getElementById('srv-name-get6');
-					var getsrv = getsrvchoice.options[getsrvchoice.selectedIndex].value;
-					console.log('Doctor selected to get the following AB data: ' + getsrv);
-
+					obj.ab_request = getsrvchoice.options[getsrvchoice.selectedIndex].value;
 					obj.link = $(this).data('link') + '/dr_get';
 					operation_url = '/healthcare_get';					
 				}
@@ -186,32 +167,26 @@
 				if (button_id.indexOf('svc_get_7') != -1) {
 					/* Lab get */
 					var getsrvchoice = document.getElementById('srv-name-get7');
-					var getsrv = getsrvchoice.options[getsrvchoice.selectedIndex].value;
-					console.log('Lab selected to get the following AB data: ' + getsrv);
-
+					obj.ab_request = getsrvchoice.options[getsrvchoice.selectedIndex].value;
 					obj.link = $(this).data('link') + '/lab_get';
 					operation_url = '/healthcare_get';
 				}
 				if (button_id.indexOf('svc_post_7') != -1) {
-					/* Lab post */
+					/* Lab update */
 					obj.link = $(this).data('link') + '/lab_update';
 					operation_url = '/healthcare_update';
 				}
 				if (button_id.indexOf('svc_get_8') != -1) {
 					/* Paramedic get */
 					var getsrvchoice = document.getElementById('srv-name-get8');
-					var getsrv = getsrvchoice.options[getsrvchoice.selectedIndex].value;
-					console.log('Paramedic selected to get the following AB data: ' + getsrv);
-
+					obj.ab_request = getsrvchoice.options[getsrvchoice.selectedIndex].value;
 					obj.link = $(this).data('link') + '/pat_get';
 					operation_url = '/healthcare_get';
 				}
 				if (button_id.indexOf('svc_get_9') != -1) {
 					/* Pharmacy get */
 					var getsrvchoice = document.getElementById('srv-name-get9');
-					var getsrv = getsrvchoice.options[getsrvchoice.selectedIndex].value;
-					console.log('Pharmacy selected to get the following AB data: ' + getsrv);
-
+					obj.ab_request = getsrvchoice.options[getsrvchoice.selectedIndex].value;
 					obj.link = $(this).data('link') + '/pharm_get';
 					operation_url = '/healthcare_get';
 				}
@@ -222,7 +197,7 @@
 			}
 		});
 
-		// setup some defaults for jsPlumb.
+		/* Setup some defaults for jsPlumb */
 		var instance = jsPlumb.getInstance({
 			Endpoint			: ['Dot', {radius:2}],
 			HoverPaintStyle		: {strokeStyle:'#1e8151', lineWidth:2 },
