@@ -13,6 +13,8 @@ html(lang='en')
 		script(src='./js/jsplumb/jquery.jsPlumb-1.5.5-min.js')
 		script(src='./js/scenario.js')
 		link(rel='stylesheet', href='./css/scenario.css')
+		link(rel='stylesheet', href='https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css')		
+		script(src='https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js')
 
 	body
 		include nav
@@ -58,9 +60,10 @@ html(lang='en')
 									if (name == "Healthcare Scenario")
 										//not Hospital service
 										if (service.id != 5)
+
 											div(class='col-md-6')
 												select(id='srv-name-get' + service.id class='form-control')
-											button(id="svc_get_" + service.id, type='submit' class='btn btn-primary hlt-ab', data-link=service.url, style='margin-right:4px') GET
+											button(id='svc_get_' + service.id, type='submit' class='btn btn-primary hlt-ab', data-link=service.url, style='margin-right:4px') GET	
 										if (service.id != 5)
 											if (service.id != 8)
 												if (service.id != 9)	
@@ -84,6 +87,7 @@ html(lang='en')
 									div(class='col-md-6')
 										div
 											button(id='btn_toggle_svc', class='btn btn-danger svc_toggle') Stop
+											input(type='checkbox' checked data-toggle='toggle')
 									if (name != "Healthcare Scenario")		
 										div(class='col-md-6')
 											button(id='btn_update_tl', class='btn btn-default') Update
