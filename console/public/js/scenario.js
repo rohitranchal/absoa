@@ -74,6 +74,37 @@
 			});
 		});
 
+		var emergency_status = $.cookie('emergency');
+		var tamper_status = $.cookie('tamper_attack');
+		if (tamper_status == 1) {
+			$('#tamper_attack').bootstrapToggle('on');
+		}
+		if (emergency_status == 1) {
+			$('#emergency').bootstrapToggle('on');
+		}
+
+		$('.emrgcontext').change(function() {
+			var status;
+			if ($('.emrgcontext').prop('checked')) {
+				status = 1;
+			} else {
+				status = 0;
+			}
+			var elem_id = $(this).attr('id');
+			$.cookie(elem_id, status);
+		});
+
+		$('#tamper_attack').change(function() {
+			var status;
+			if ($('#tamper_attack').prop('checked')) {
+				status = 1;
+			} else {
+				status = 0;
+			}
+			var elem_id = $(this).attr('id');
+			$.cookie(elem_id, status);
+		});
+
 		/* Set service toggle button display */
 		$('.svc_status').each(function() {
 			if (this.id == -1) {
@@ -212,25 +243,6 @@
 				});
 			}
 		});
-
-		// $('#tamper_attack').change(function() {
-		// 	var status_val = this.checked;
-		// 	console.log('Clicked on checkbox for tamper attack, state = ' + status_val);
-		// 	console.log('tamper attack state = ' + $('#tamper_attack').prop('checked'));
-		// 	if (this.checked)
-		// 	{
-		// 		console.log('TAMPER ATTACK HAS BEEN ACTIVATED');		
-		// 	}
-		// });
-		// $('#emergency').change(function() {
-		// 	var status_val = (this).checked;
-		// 	console.log('Clicked on checkbox for emergency context, state = ' + status_val);
-		// 	console.log('emergency state = ' + $('.emrgcontext').prop('checked'));
-		// 	if (this.checked)
-		// 	{
-		// 		console.log('EMERGENCY CONTEXT HAS BEEN ACTIVATED');		
-		// 	}
-		// });
 
 		/* Setup some defaults for jsPlumb */
 		var instance = jsPlumb.getInstance({

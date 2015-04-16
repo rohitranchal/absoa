@@ -228,8 +228,6 @@ router.post('/healthcare_get', function(req, res) {
 	var ab_request = req.body.ab_request;
 	var tamper = req.body.tamper;
 	var emergency = req.body.emergency;
-	console.log('Emer: ' + emergency);
-	console.log('Tmpr: ' + tamper);
 	var service_link = req.body.link + '?patient_id=' + patient_id + '&ab_request=' + ab_request + '&tamper=' + tamper + '&emergency=' + emergency;
 	if (typeof patient_id !== 'undefined' && patient_id !== '') {
 		request(service_link, function (error, response, body) {
