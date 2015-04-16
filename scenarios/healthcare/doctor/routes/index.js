@@ -26,6 +26,8 @@ router.get('/', function(req, res) {
 
 router.get('/dr_get', function(req, res) {
 	var ab_request = 'ab.user.' + req.query.ab_request;
+	var emergency = req.query.emergency;
+	var tamper = req.query.tamper;
 	req_key = [];
 	req_key.push(ab_request);
 	request(hospital_host + '/get_ehr?patient_id=' + patient_id, function (error, response, body) {
