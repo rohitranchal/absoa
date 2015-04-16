@@ -82,15 +82,14 @@ html(lang='en')
 										div(class='col-md-5')
 											div(class='slider', id=service.id value=service.trust_level)
 							div(class='row top-buffer')
-								center
-									div(class='col-ms-8')
-										div
-											button(id='btn_toggle_svc', class='btn btn-danger svc_toggle' style='margin-right:10px; margin-bottom:8px') Stop
-											br
-											label(class='checkbox-inline tamper' style='margin-right:7px') Attack
-											input(type='checkbox' id='tamper_attack' class='tamperatck' data-toggle='toggle' data-onstyle='danger')
-											label(class='checkbox-inline emerg' style='margin-right:7px') Emergency
-											input(type='checkbox' id='emergency' class='emrgcontext' data-toggle='toggle' data-onstyle='danger')
-									if (name != "Healthcare Scenario")		
-										div(class='col-md-6')
-											button(id='btn_update_tl', class='btn btn-default') Update
+								div(class='col-md-8')
+									div
+										button(id='btn_toggle_svc', class='btn btn-danger svc_toggle' style='margin-right:10px; margin-bottom:8px') Stop
+										br
+										label(class='checkbox-inline tamper' style='margin-right:7px') Tamper Attack
+										input(type='checkbox' id='tamper_attack' class='tamperatck' data-toggle='toggle' data-onstyle='danger')
+										label(class='checkbox-inline emerg' style='margin-right:7px') Emergency
+										input(type='checkbox' id='emergency' class='emrgcontext' data-toggle='toggle' data-onstyle='danger')
+								if (name != "Healthcare Scenario")		
+									div(class='col-md-6')
+										button(id='btn_update_tl', class='btn btn-default') Update

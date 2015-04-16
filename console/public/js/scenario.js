@@ -58,7 +58,6 @@
 				// obj = { link : $(this).data('link'), test_prescription : test_prescr, prescription : prescr , test_results : lab_result, name : pat_name, patient_id : p_id };
 				//obj = { link : $(this).data('link')};
 			} else {
-				//online shopping scenario
 				obj = { link : $(this).data('link')};
 			}
 			$.post('/try_it', obj, function (data) {
@@ -152,7 +151,22 @@
 				var prescription = document.getElementById('doctdatkey_b6').value;
 				var test_prescription = document.getElementById('doctdatkey_a6').value;
 				var test_results = document.getElementById('labdatkey7').value;
-				var obj = { patient_id : patient_id, test_prescription : test_prescription, prescription : prescription, medical_data : test_results };
+				var emergency = 0, tamper = 0;
+				if ($('#emergency').prop('checked')) {
+					emergency = 1;
+				}
+				if ($('#tamper_attack').prop('checked')) {
+					tamper = 1;
+				}
+				var obj = { 
+					patient_id : patient_id,
+					test_prescription : test_prescription,
+					prescription : prescription,
+					medical_data : test_results, 
+					tamper : tamper,
+					emergency : emergency
+				};
+				console.log('obj: ' + obj.tamper + obj.emergency);
 				// patient_age, patient_height, patient_weight
 				if (button_id.indexOf('svc_get_6') != -1) {
 					/* Doctor get */
@@ -199,22 +213,24 @@
 			}
 		});
 
-		$('#tamper_attack').change(function() {
-			var status_val = (this).checked;
-			console.log('Clicked on checkbox for tamper attack, state = ' + status_val);
-			if (this.checked)
-			{
-				console.log('TAMPER ATTACK HAS BEEN ACTIVATED');		
-			}
-		});
-		$('#emergency').change(function() {
-			var status_val = (this).checked;
-			console.log('Clicked on checkbox for emergency context, state = ' + status_val);
-			if (this.checked)
-			{
-				console.log('EMERGENCY CONTEXT HAS BEEN ACTIVATED');		
-			}
-		});
+		// $('#tamper_attack').change(function() {
+		// 	var status_val = this.checked;
+		// 	console.log('Clicked on checkbox for tamper attack, state = ' + status_val);
+		// 	console.log('tamper attack state = ' + $('#tamper_attack').prop('checked'));
+		// 	if (this.checked)
+		// 	{
+		// 		console.log('TAMPER ATTACK HAS BEEN ACTIVATED');		
+		// 	}
+		// });
+		// $('#emergency').change(function() {
+		// 	var status_val = (this).checked;
+		// 	console.log('Clicked on checkbox for emergency context, state = ' + status_val);
+		// 	console.log('emergency state = ' + $('.emrgcontext').prop('checked'));
+		// 	if (this.checked)
+		// 	{
+		// 		console.log('EMERGENCY CONTEXT HAS BEEN ACTIVATED');		
+		// 	}
+		// });
 
 		/* Setup some defaults for jsPlumb */
 		var instance = jsPlumb.getInstance({
