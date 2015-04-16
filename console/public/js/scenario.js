@@ -199,6 +199,23 @@
 			}
 		});
 
+		$('#tamper_attack').change(function() {
+			var status_val = (this).checked;
+			console.log('Clicked on checkbox for tamper attack, state = ' + status_val);
+			if (this.checked)
+			{
+				console.log('TAMPER ATTACK HAS BEEN ACTIVATED');		
+			}
+		});
+		$('#emergency').change(function() {
+			var status_val = (this).checked;
+			console.log('Clicked on checkbox for emergency context, state = ' + status_val);
+			if (this.checked)
+			{
+				console.log('EMERGENCY CONTEXT HAS BEEN ACTIVATED');		
+			}
+		});
+
 		/* Setup some defaults for jsPlumb */
 		var instance = jsPlumb.getInstance({
 			Endpoint			: ['Dot', {radius:2}],
