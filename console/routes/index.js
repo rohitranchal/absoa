@@ -238,6 +238,21 @@ router.post('/healthcare_get', function(req, res) {
 	}
 });
 
+/* POST tamper requests */
+router.post('/tamper', function(req, res) {
+	var status = req.body.status;
+	var scenario_id = req.body.scenario_id;
+	var service_link;
+	if (scenario_id == 2) {
+		service_link = 'http://localhost:4201/tamper?status=' + status;
+		request(service_link, function (error, response, body) {
+			res.send(body);
+		});
+	} else {
+		res.send(400, 'Tamper Error');
+	}
+});
+
 /* POST create ab */
 router.post('/client', function(req, res) {
 	var key1 = req.body.datakey1;

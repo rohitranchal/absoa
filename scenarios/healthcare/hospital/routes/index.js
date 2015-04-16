@@ -15,9 +15,12 @@ var ab_data_file = 'resources/data.json';
 var ab_data = JSON.parse(fs.readFileSync(ab_data_file, 'utf8'));
 var ab_resource_dir = 'resources';
 var cipher_file = 'resources/cipher.json';
+var policy_file = 'resources/policy-0';
+var policy_tamper_file = 'resources/policy-tampered';
 var ab_enc = 'resources/AB-Enc.jar';
 var ab_gen = 'resources/AB-Gen.jar';
 var ab_cipher_file = 'resources/src/main/resources/cipher.json';
+var ab_policy_file = 'resources/src/main/resources/policy/policy-0';
 var ab_template = 'resources/AB-healthcare.jar';
 var ab_jar = 'resources/target/AB-code-Tamper-Resistance-1.0-SNAPSHOT.jar'
 
@@ -25,6 +28,8 @@ var ab_host = '127.0.0.1';
 var ab_lib = 'resources/lib';
 var ab_class = 'edu.purdue.absoa.Server';
 var req_data = 'ab.user.name';
+
+var patient_id = '001122';
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -77,6 +82,22 @@ router.post('/update_ehr', function(req, res) {
 		});	
 	} else {
 		res.send(400, 'Error: update_ehr parameters undefined');	
+	}
+});
+
+/* GET tamper requests */
+router.get('/tamper', function(req, res) {
+	var status = req.query.status;
+	if (status == 1) {
+		fs.createReadStream(policy_tamper_file).pipe(fs.createWriteStream(ab_policy_file));
+		generate_ab(patient_id, function() {
+			res.send('Active Bundle Tampered');
+		});		
+	} else {
+		fs.createReadStream(policy_file).pipe(fs.createWriteStream(ab_policy_file));
+		generate_ab(patient_id, function() {
+			res.send('Active Bundle Restored');
+		});		
 	}
 });
 
@@ -173,8 +194,8 @@ var generate_ab = function(pat_id, cb) {
 	});
 	ab_proc.on('close', function(code, signal) {
 		fs.createReadStream(ab_jar).pipe(fs.createWriteStream(ab_resource_dir + '/' + pat_id + '.jar'));
+		cb();
 	});
-	cb();
 };
 
 var randomIntInc = function(low, high) {

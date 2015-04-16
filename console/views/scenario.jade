@@ -57,45 +57,44 @@ html(lang='en')
 							for service in services
 								div(class='row top-buffer')
 									div(id=service.status, class='col-md-2 svc_status' style='margin-bottom:0px')=service.status
-									div(id=service.status + '_' + service.id, class='col-md-5 svc_name' style='margin-bottom:0px')=service.display_name
+									div(id=service.status + '_' + service.id, class='col-md-5 svc_name' style='margin-bottom:2px')=service.display_name
 									if (name == "Healthcare Scenario")
-										//not Hospital service
 										if (service.id != 5)
 											br
 											div(class='row')
 												div(class='col-md-6')
-													select(id='srv-name-get' + service.id class='form-control' style='margin-left:52px; margin-top:3px')
+													select(id='srv-name-get' + service.id class='form-control' style='margin-left:52px; margin-top:0px')
 												div(class='col-md-6')
-													button(id='svc_get_' + service.id, type='submit' class='btn btn-primary hlt-ab', data-link=service.url, style='margin-left:45px; margin-top:3px') GET
+													button(id='svc_get_' + service.id, type='submit' class='btn btn-primary hlt-ab', data-link=service.url, style='margin-left:45px; margin-top:0px') GET
 										if (service.id == 6)
 											div(class='row')
 												div(class='col-md-6')
-													input(name='doctdatakey_a' + service.id type='text' id='doctdatkey_a' + service.id class='form-control doctinputkey_a' + service.id placeholder='Test prescription'  style='margin-left:52px; margin-top:8px;')
+													input(name='doctdatakey_a' + service.id type='text' id='doctdatkey_a' + service.id class='form-control doctinputkey_a' + service.id placeholder='Test prescription'  style='margin-left:52px; margin-top:4px;')
 												div(class='col-md-6')
-													button(id="svc_post_" + service.id, type='submit' class='btn btn-primary hlt-ab', data-link=service.url, style='margin-top:8px; margin-left:40px') POST
+													button(id="svc_post_" + service.id, type='submit' class='btn btn-primary hlt-ab', data-link=service.url, style='margin-top:4px; margin-left:40px') POST
 												br
 												div(class='col-md-6')
-													input(name='doctdatakey_b' + service.id type='text' id='doctdatkey_b' + service.id class='form-control doctinputkey_b' + service.id placeholder='Prescription'  style='margin-left:52px; margin-top:4px; margin-bottom:2px')
+													input(name='doctdatakey_b' + service.id type='text' id='doctdatkey_b' + service.id class='form-control doctinputkey_b' + service.id placeholder='Prescription'  style='margin-left:52px; margin-top:4px; margin-bottom:0px')
 										else if (service.id == 7)
 											div(class='row')
 												div(class='col-md-6')
-													input(name='labdatakey' + service.id type='text' id='labdatkey' + service.id class='form-control labinputkey' + service.id placeholder='Test results'  style='margin-left:52px; margin-top:8px; margin-bottom:2px')
+													input(name='labdatakey' + service.id type='text' id='labdatkey' + service.id class='form-control labinputkey' + service.id placeholder='Test results'  style='margin-left:52px; margin-top:4px; margin-bottom:0px')
 												div(class='col-md-6')
-													button(id="svc_post_" + service.id, type='submit' class='btn btn-primary hlt-ab', data-link=service.url, style='margin-top:8px; margin-left:40px; margin-bottom:2px') POST
+													button(id="svc_post_" + service.id, type='submit' class='btn btn-primary hlt-ab', data-link=service.url, style='margin-top:4px; margin-left:40px; margin-bottom:0px') POST
 										hr(style='width: 100%; color: #e0e0e0; height: 1px; background-color:#e0e0e0; margin-bottom:1px')
 									//need sliders for trust level only in online shopping scenario
 									if (name != "Healthcare Scenario")
 										div(class='col-md-5')
 											div(class='slider', id=service.id value=service.trust_level)
-							div(class='row top-buffer')
+							div(class='row' style='margin-top:10px;')
 								div(class='col-md-8')
-									button(id='btn_toggle_svc', class='btn btn-danger svc_toggle' style='margin-right:10px; margin-bottom:20px') Stop
-								div(class='row top-buffer')
+									button(id='btn_toggle_svc', class='btn btn-danger svc_toggle' style='margin-right:10px; margin-bottom:10px') Stop
+								div(class='row' style='margin-top:10px;')
 									div(class='col-md-5')
 										label(class='checkbox-inline tamper' style='margin-left:-5px; margin-top:5px') Tamper  Attack
 									div(class='col-md-4')
 										input(type='checkbox' id='tamper_attack' class='tamperatck' data-toggle='toggle' data-onstyle='danger')
-								div(class='row top-buffer')
+								div(class='row' style='margin-top:10px;')
 									div(class='col-md-5')
 										label(class='checkbox-inline emerg' style='margin-left:-5px; margin-top:5px') Emergency
 									div(class='col-md-4')

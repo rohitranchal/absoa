@@ -52,13 +52,8 @@
 			/* clear log for each service */
 			$.post(slink);
 
-			if (s_id == 2) {
-				/* healthcare scenario does not have 'Try It' button anymore*/
-
-				// obj = { link : $(this).data('link'), test_prescription : test_prescr, prescription : prescr , test_results : lab_result, name : pat_name, patient_id : p_id };
-				//obj = { link : $(this).data('link')};
-			} else {
-				obj = { link : $(this).data('link')};
+			if (s_id == 1) {
+				obj = { link : $(this).data('link') };
 			}
 			$.post('/try_it', obj, function (data) {
 				/* Set log for each service */
@@ -98,8 +93,14 @@
 			var status;
 			if ($('#tamper_attack').prop('checked')) {
 				status = 1;
+				$.post('/tamper', { status : status, scenario_id : s_id }, function (data) {
+					alert(data);
+				});
 			} else {
 				status = 0;
+				$.post('/tamper', { status : status, scenario_id : s_id }, function (data) {
+					alert(data);
+				});
 			}
 			var elem_id = $(this).attr('id');
 			$.cookie(elem_id, status);
@@ -160,7 +161,7 @@
 
 		/* Dropdown boxes data in Healthcare scenario */
 		if (s_id == 2) {
-			var AB_fields = ['patient_id', 'medical_data', 'medical_history', 'test_prescription', 'prescription', 'insurance_id', 'treatment_code'];
+			var AB_fields = ['patient_id', 'medical_data', 'history', 'test_prescription', 'prescription', 'insurance_id', 'treatment_code'];
 			var populate_dropdownbox = function(combobox) {
 				for(var i = 0; i < AB_fields.length; i++) {
 					var opt = document.createElement('option');

@@ -1,0 +1,8 @@
+ab.user.name = Service 1, Doctor, Eve 
+ab.user.patient_id = Service 1, Doctor, Insurance, Pharmacy, Laboratory, Eve
+ab.user.insurance_id = Service 1, Insurance, Eve
+ab.user.medical_data = Service 1, Doctor, Eve
+ab.user.history = Service 1, Doctor, Eve
+ab.user.prescription = Service 1, Pharmacy, Eve 
+ab.user.treatment_code = Service 1, Insurance, Eve 
+ab.user.test_prescription = Service 1, Laboratory, Eve
