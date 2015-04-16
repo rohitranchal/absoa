@@ -15,6 +15,7 @@ html(lang='en')
 		link(rel='stylesheet', href='./css/scenario.css')
 		link(rel='stylesheet', href='https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css')
 		script(src='https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js')
+		script(src='http://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js')
 
 	body
 		include nav
@@ -55,27 +56,32 @@ html(lang='en')
 						div(class='input-group')
 							for service in services
 								div(class='row top-buffer')
-									div(id=service.status, class='col-md-2 svc_status')=service.status
-									div(id=service.status + '_' + service.id, class='col-md-5 svc_name')=service.display_name
+									div(id=service.status, class='col-md-2 svc_status' style='margin-bottom:0px')=service.status
+									div(id=service.status + '_' + service.id, class='col-md-5 svc_name' style='margin-bottom:0px')=service.display_name
 									if (name == "Healthcare Scenario")
 										//not Hospital service
 										if (service.id != 5)
-											div(class='col-md-6')
-												select(id='srv-name-get' + service.id class='form-control')
-											button(id='svc_get_' + service.id, type='submit' class='btn btn-primary hlt-ab', data-link=service.url, style='margin-right:4px') GET	
-										if (service.id != 5)
-											if (service.id != 8)
-												if (service.id != 9)	
-													button(id="svc_post_" + service.id, type='submit' class='btn btn-primary hlt-ab', data-link=service.url, style='') POST
-										if (service.id == 6)
-											div(class='col-md-8')
-												input(name='doctdatakey_a' + service.id type='text' id='doctdatkey_a' + service.id class='form-control doctinputkey_a' + service.id placeholder='Test prescription'  style='margin-left:0px; margin-top:4px;')
 											br
-											div(class='col-md-8')
-												input(name='doctdatakey_b' + service.id type='text' id='doctdatkey_b' + service.id class='form-control doctinputkey_b' + service.id placeholder='Prescription'  style='margin-left:0px; margin-top:4px; margin-bottom:4px')
+											div(class='row')
+												div(class='col-md-6')
+													select(id='srv-name-get' + service.id class='form-control' style='margin-left:52px; margin-top:3px')
+												div(class='col-md-6')
+													button(id='svc_get_' + service.id, type='submit' class='btn btn-primary hlt-ab', data-link=service.url, style='margin-left:45px; margin-top:3px') GET
+										if (service.id == 6)
+											div(class='row')
+												div(class='col-md-6')
+													input(name='doctdatakey_a' + service.id type='text' id='doctdatkey_a' + service.id class='form-control doctinputkey_a' + service.id placeholder='Test prescription'  style='margin-left:52px; margin-top:8px;')
+												div(class='col-md-6')
+													button(id="svc_post_" + service.id, type='submit' class='btn btn-primary hlt-ab', data-link=service.url, style='margin-top:8px; margin-left:40px') POST
+												br
+												div(class='col-md-6')
+													input(name='doctdatakey_b' + service.id type='text' id='doctdatkey_b' + service.id class='form-control doctinputkey_b' + service.id placeholder='Prescription'  style='margin-left:52px; margin-top:4px; margin-bottom:2px')
 										else if (service.id == 7)
-											div(class='col-md-8')
-												input(name='labdatakey' + service.id type='text' id='labdatkey' + service.id class='form-control labinputkey' + service.id placeholder='Test results'  style='margin-left:0px; margin-top:4px; margin-bottom:4px')
+											div(class='row')
+												div(class='col-md-6')
+													input(name='labdatakey' + service.id type='text' id='labdatkey' + service.id class='form-control labinputkey' + service.id placeholder='Test results'  style='margin-left:52px; margin-top:8px; margin-bottom:2px')
+												div(class='col-md-6')
+													button(id="svc_post_" + service.id, type='submit' class='btn btn-primary hlt-ab', data-link=service.url, style='margin-top:8px; margin-left:40px; margin-bottom:2px') POST
 										hr(style='width: 100%; color: #e0e0e0; height: 1px; background-color:#e0e0e0; margin-bottom:1px')
 									//need sliders for trust level only in online shopping scenario
 									if (name != "Healthcare Scenario")
@@ -83,13 +89,17 @@ html(lang='en')
 											div(class='slider', id=service.id value=service.trust_level)
 							div(class='row top-buffer')
 								div(class='col-md-8')
-									div
-										button(id='btn_toggle_svc', class='btn btn-danger svc_toggle' style='margin-right:10px; margin-bottom:8px') Stop
-										br
-										label(class='checkbox-inline tamper' style='margin-right:7px') Tamper Attack
+									button(id='btn_toggle_svc', class='btn btn-danger svc_toggle' style='margin-right:10px; margin-bottom:20px') Stop
+								div(class='row top-buffer')
+									div(class='col-md-5')
+										label(class='checkbox-inline tamper' style='margin-left:-5px; margin-top:5px') Tamper  Attack
+									div(class='col-md-4')
 										input(type='checkbox' id='tamper_attack' class='tamperatck' data-toggle='toggle' data-onstyle='danger')
-										label(class='checkbox-inline emerg' style='margin-right:7px') Emergency
+								div(class='row top-buffer')
+									div(class='col-md-5')
+										label(class='checkbox-inline emerg' style='margin-left:-5px; margin-top:5px') Emergency
+									div(class='col-md-4')
 										input(type='checkbox' id='emergency' class='emrgcontext' data-toggle='toggle' data-onstyle='danger')
-								if (name != "Healthcare Scenario")		
-									div(class='col-md-6')
-										button(id='btn_update_tl', class='btn btn-default') Update
+							if (name != "Healthcare Scenario")
+								div(class='col-md-6')
+									button(id='btn_update_tl', class='btn btn-default') Update
