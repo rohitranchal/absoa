@@ -13,7 +13,7 @@ html(lang='en')
 		script(src='./js/jsplumb/jquery.jsPlumb-1.5.5-min.js')
 		script(src='./js/scenario.js')
 		link(rel='stylesheet', href='./css/scenario.css')
-		link(rel='stylesheet', href='https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css')		
+		link(rel='stylesheet', href='https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap-toggle.min.css')
 		script(src='https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap-toggle.min.js')
 
 	body
@@ -60,7 +60,6 @@ html(lang='en')
 									if (name == "Healthcare Scenario")
 										//not Hospital service
 										if (service.id != 5)
-
 											div(class='col-md-6')
 												select(id='srv-name-get' + service.id class='form-control')
 											button(id='svc_get_' + service.id, type='submit' class='btn btn-primary hlt-ab', data-link=service.url, style='margin-right:4px') GET	
@@ -84,10 +83,14 @@ html(lang='en')
 											div(class='slider', id=service.id value=service.trust_level)
 							div(class='row top-buffer')
 								center
-									div(class='col-md-6')
+									div(class='col-ms-8')
 										div
-											button(id='btn_toggle_svc', class='btn btn-danger svc_toggle') Stop
-											input(type='checkbox' checked data-toggle='toggle')
+											button(id='btn_toggle_svc', class='btn btn-danger svc_toggle' style='margin-right:10px; margin-bottom:8px') Stop
+											br
+											label(class='checkbox-inline tamper' style='margin-right:7px') Attack
+											input(type='checkbox' id='tamper_attack' class='tamperatck' data-toggle='toggle' data-onstyle='danger')
+											label(class='checkbox-inline emerg' style='margin-right:7px') Emergency
+											input(type='checkbox' id='emergency' class='emrgcontext' data-toggle='toggle' data-onstyle='danger')
 									if (name != "Healthcare Scenario")		
 										div(class='col-md-6')
 											button(id='btn_update_tl', class='btn btn-default') Update
