@@ -65,7 +65,7 @@ html(lang='en')
 												div(class='col-md-6')
 													select(id='srv-name-get' + service.id class='form-control' style='margin-left:52px; margin-top:0px')
 												div(class='col-md-6')
-													button(id='svc_get_' + service.id, type='submit' class='btn btn-primary hlt-ab', data-link=service.url, style='margin-left:45px; margin-top:0px') GET
+													button(id='svc_get_' + service.id, type='submit' class='btn btn-primary hlt-ab', data-link=service.url, style='margin-left:40px; margin-top:0px') GET
 										if (service.id == 6)
 											div(class='row')
 												div(class='col-md-6')
@@ -87,18 +87,19 @@ html(lang='en')
 										div(class='col-md-5')
 											div(class='slider', id=service.id value=service.trust_level)
 							div(class='row' style='margin-top:10px;')
-								div(class='col-md-8')
-									button(id='btn_toggle_svc', class='btn btn-danger svc_toggle' style='margin-right:10px; margin-bottom:10px') Stop
-								div(class='row' style='margin-top:10px;')
-									div(class='col-md-5')
-										label(class='checkbox-inline tamper' style='margin-left:-5px; margin-top:5px') Tamper  Attack
-									div(class='col-md-4')
-										input(type='checkbox' id='tamper_attack' class='tamperatck' data-toggle='toggle' data-onstyle='danger')
-								div(class='row' style='margin-top:10px;')
-									div(class='col-md-5')
-										label(class='checkbox-inline emerg' style='margin-left:-5px; margin-top:5px') Emergency
-									div(class='col-md-4')
-										input(type='checkbox' id='emergency' class='emrgcontext' data-toggle='toggle' data-onstyle='danger')
-							if (name != "Healthcare Scenario")
 								div(class='col-md-6')
-									button(id='btn_update_tl', class='btn btn-default') Update
+									button(id='btn_toggle_svc', class='btn btn-danger svc_toggle' style='margin-right:0px; margin-bottom:10px') Stop
+								if (name != "Healthcare Scenario")
+									div(class='col-md-4')
+										button(id='btn_update_tl', class='btn btn-default' style='margin-left:24px;') Update	
+							div(class='row' style='margin-top:6px;')
+								div(class='col-md-5')
+									label(class='checkbox-inline tamper' style='margin-left:-20px; margin-top:5px') Tamper  Attack
+								div(class='col-md-4')
+									input(type='checkbox' id='tamper_attack' class='tamperatck' data-toggle='toggle' data-onstyle='danger')
+							div(class='row' style='margin-top:8px;')
+								div(class='col-md-5')
+									label(class='checkbox-inline emerg' style='margin-left:-20px; margin-top:5px') Emergency
+								div(class='col-md-4')
+									input(type='checkbox' id='emergency' class='emrgcontext' data-toggle='toggle' data-onstyle='danger')
+							

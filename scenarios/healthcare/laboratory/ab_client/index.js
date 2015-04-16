@@ -27,7 +27,11 @@ exports.get_data = function(req_arr, port, callback) {
 		function (callback) {
 			signed_req = signData(req_arr[i]);
 			client.getValue(req_arr[i], signed_req, cert, function(err, data) {
-				ab_data[i] = data;
+				if (typeof data == 'undefined' || data == '') {
+					ab_data[i] = 'Unauthorized access';
+				} else {
+					ab_data[i] = data;
+				}
 				i++;
 				callback();
 			});

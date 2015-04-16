@@ -76,8 +76,9 @@ router.post('/update_ehr', function(req, res) {
 			if (err) throw err;
 			encrypt_ab_data(function() {
 				generate_ab(patient_id, function() {
-					res.send('EHR updated');
+					// res.send('EHR updated');
 				});
+				res.send('EHR updated');
 			});
 		});	
 	} else {
