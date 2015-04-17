@@ -9,8 +9,10 @@ var ab_client = require('../ab_client');
 var db = require('../db');
 
 var ab_host = '127.0.0.1';
-var ab_path = 'resources/AB-New.jar';
-var req_data = ['ab.user.creditcard'];
+var ab_resource_dir = 'resources';
+var ab_lib = 'resources/lib';
+var ab_class = 'edu.purdue.absoa.Server';
+var req_key = ['ab.user.creditcard'];
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -33,24 +35,20 @@ router.get('/pay', function(req, res) {
 });
 
 router.get('/ab_pay', function(req, res) {
-	var ab_data = null;
+	var ab_file = ab_resource_dir + '/' + 'AB1.jar';
 	var msg;
-	var payment = randomIntInc(0, 1);
-	if(payment) {
-		msg = 'Payment done';
-	} else {
-		msg = 'Payment failed';
+	var tamper = req.query.tamper;
+	if (tamper == 1) {
+		ab_file = ab_resource_dir + '/' + 'AB2.jar';
 	}
-	start_ab(ab_path, function(ab_port, ab_pid) {
-		ab_data = connect_ab(ab_port, ab_host, ab_pid, function(data) {
-			ab_data = data;
-			if (ab_data == null) {
-				msg = 'Payment Failed: AB data unavailable';
-				res.send(msg);
+	start_ab(ab_file, function(ab_port, ab_pid) {
+		connect_ab(ab_port, ab_host, ab_pid, req_key, function(data) {
+			if (data[0].indexOf('Unauthorized') != -1) {
+				res.send('Payment failed');
 			} else {
-				res.send(msg);
+				res.send('Payment done');
 			}
-			var obj = {id:4, log:msg};
+			var obj = {id:4, log:data};
 			db.set_service_log(obj);
 		});
 	});		
@@ -68,10 +66,11 @@ router.get('/test', function(req, res) {
 	res.send('ok');
 });
 
-var start_ab = function(ab_path, cb) {
-	var ab_port = randomIntInc(10000, 65000)
-	var child =	spawn('java',['-jar', ab_path, ab_port]);
-	console.log('LOG: Starting AB on Port: ' + ab_port);
+var start_ab = function(ab_file, cb) {
+	var ab_port = randomIntInc(10000, 65000);
+	var ab_arg = ab_file + ':./' + ab_lib + '/*:.';
+	var child =	spawn('java', ['-cp', ab_arg, ab_class, ab_port]);
+	console.log('LOG: Started AB on Port: ' + ab_port);
 	var ab_pid = child.pid;
 
 	child.stdout.setEncoding('ASCII');
@@ -90,7 +89,7 @@ var start_ab = function(ab_path, cb) {
 	cb(ab_port, ab_pid);
 };
 
-var connect_ab = function(port, host, pid, cb) {
+var connect_ab = function(port, host, pid, ab_req, cb) {
 	var ab_start_status = 0;
 	async.whilst(
 		function () { return ab_start_status == 0; },
@@ -105,8 +104,7 @@ var connect_ab = function(port, host, pid, cb) {
 		},
 		function (err) {
 			// AB is running, query the AB for data			
-			ab_client.get_data(req_data, port, function(ab_data) {
-				console.log('abdata: ' + ab_data);
+			ab_client.get_data(ab_req, port, function(ab_data) {
 				process.kill(pid);
 				cb(ab_data);
 			});

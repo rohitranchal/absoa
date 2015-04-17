@@ -9,8 +9,10 @@ var ab_client = require('../ab_client');
 var db = require('../db');
 
 var ab_host = '127.0.0.1';
-var ab_path = 'resources/AB-New.jar';
-var req_data = ['ab.user.name', 'ab.user.payment.type'];
+var ab_resource_dir = 'resources';
+var ab_lib = 'resources/lib';
+var ab_class = 'edu.purdue.absoa.Server';
+var req_key = ['ab.user.payment.type'];
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -47,25 +49,30 @@ router.get('/order', function(req, res) {
 });
 
 router.get('/ab_order', function(req, res) {
+	var tamper = req.query.tamper;
+	var ab_file = ab_resource_dir + '/' + 'AB1.jar';
 	var ab_data = null;
 	var msg;
+	if (tamper == 1) {
+		ab_file = ab_resource_dir + '/' + 'AB2.jar';
+	}	
 
 	async.parallel([
 		function(callback) {
-			start_ab(ab_path, function(ab_port, ab_pid) {
-				connect_ab(ab_port, ab_host, ab_pid, function(data) {
+			start_ab(ab_file, function(ab_port, ab_pid) {
+				connect_ab(ab_port, ab_host, ab_pid, req_key, function(data) {
 					ab_data = data;
 					callback(null);
 				});
 			});			
 		},
 		function(callback) {
-			request('http://localhost:4102/ab_submit_order', function (error, response, body1) {
+			request('http://localhost:4102/ab_submit_order?tamper=' + tamper, function (error, response, body1) {
 				if (body1.search('failed') != -1) {
 					msg = 'Order failed - ' + body1;
 					callback(null);
 				} else {
-					request('http://localhost:4104/ab_pay', function (error, response, body2) {
+					request('http://localhost:4104/ab_pay?tamper=' + tamper, function (error, response, body2) {
 						if (body2.search('failed') != -1) {
 							msg = 'Order failed - ' + body2;
 						} else {
@@ -78,13 +85,12 @@ router.get('/ab_order', function(req, res) {
 		}
 	],
 	function(err, results) {
-		if (ab_data == null) {
-			msg = 'Shopping Failed: AB data unavailable';
-			res.send(msg);
+		if (ab_data[0].indexOf('Unauthorized') != -1) {
+			res.send('Shopping failed');
 		} else {
 			res.send(msg);
 		}
-		var obj = {id:1, log:msg};
+		var obj = {id:1, log:ab_data};
 		db.set_service_log(obj, function() {});
 	});
 });
@@ -101,10 +107,11 @@ router.get('/test', function(req, res) {
 	res.send('ok');
 });
 
-var start_ab = function(ab_path, cb) {
-	var ab_port = randomIntInc(10000, 65000)
-	var child =	spawn('java',['-jar', ab_path, ab_port]);
-	console.log('LOG: Starting AB on Port: ' + ab_port);
+var start_ab = function(ab_file, cb) {
+	var ab_port = randomIntInc(10000, 65000);
+	var ab_arg = ab_file + ':./' + ab_lib + '/*:.';
+	var child =	spawn('java', ['-cp', ab_arg, ab_class, ab_port]);
+	console.log('LOG: Started AB on Port: ' + ab_port);
 	var ab_pid = child.pid;
 
 	child.stdout.setEncoding('ASCII');
@@ -123,7 +130,7 @@ var start_ab = function(ab_path, cb) {
 	cb(ab_port, ab_pid);
 };
 
-var connect_ab = function(port, host, pid, cb) {
+var connect_ab = function(port, host, pid, ab_req, cb) {
 	var ab_start_status = 0;
 	async.whilst(
 		function () { return ab_start_status == 0; },
@@ -137,9 +144,8 @@ var connect_ab = function(port, host, pid, cb) {
 			});
 		},
 		function (err) {
-			// AB is running, query the AB for data
-			ab_client.get_data(req_data, port, function(ab_data) {
-				console.log('abdata: ' + ab_data);
+			// AB is running, query the AB for data			
+			ab_client.get_data(ab_req, port, function(ab_data) {
 				process.kill(pid);
 				cb(ab_data);
 			});

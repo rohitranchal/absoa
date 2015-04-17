@@ -1,17 +1,17 @@
 #!/bin/bash
 
 cd payment
-npm install
+sudo npm install
 cd -
 
 cd seller
-npm install
+sudo npm install
 cd -
 
 cd shopping
-npm install
+sudo npm install
 cd -
 
 cd shipping
-npm install
+sudo npm install
 cd -

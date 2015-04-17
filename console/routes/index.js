@@ -168,22 +168,24 @@ router.get('/scenario_logs', function(req, res) {
 router.post('/scenario_logs', function(req, res) {
 	var slist = JSON.parse(req.query.service_list);
 	db.clear_service_list_log(slist);
+	res.send('OK');
 });
 
 /* POST start a scenario */
 router.post('/try_it', function(req, res) {
 	var pid = req.body.pat_id;
-	var emy = req.body.emergency;
+	var tamper = req.body.tamper;
 	if (typeof pid !== 'undefined' && pid !== '') {
 		request.post({
 			url:req.body.link, 
-			form: { pat_id:pid, emergency:emy }
+			form: { pat_id:pid, tamper:tamper }
 		}, function(error, response, body) {
 			console.log('callback from ehr case response');
 			res.send(body);
 		});
 	} else {
-		request(req.body.link, function (error, response, body) {
+		var service_link = req.body.link + '/?tamper=' + tamper;
+		request(service_link, function (error, response, body) {
 			res.send(body)
 		});
 	}

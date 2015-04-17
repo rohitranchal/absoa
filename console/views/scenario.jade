@@ -34,9 +34,8 @@ html(lang='en')
 							div(id='scenario-container', class='scenario-container')
 								for service in services
 									div(class='w text-info', id='service' + service.id)=service.display_name
-										//div(style='color:red')
 										//	strong=service.trust_level
-										div(id='logid_' + service.id class='log_data')
+										div(id='logid_' + service.id class='log_data' style='color:red;font-size:12px;')
 										div(class='ep')
 			if (name == "Online Shopping Scenario")
 				div(class='col-md-4')
@@ -97,9 +96,10 @@ html(lang='en')
 									label(class='checkbox-inline tamper' style='margin-left:-20px; margin-top:5px') Tamper  Attack
 								div(class='col-md-4')
 									input(type='checkbox' id='tamper_attack' class='tamperatck' data-toggle='toggle' data-onstyle='danger')
-							div(class='row' style='margin-top:8px;')
-								div(class='col-md-5')
-									label(class='checkbox-inline emerg' style='margin-left:-20px; margin-top:5px') Emergency
-								div(class='col-md-4')
-									input(type='checkbox' id='emergency' class='emrgcontext' data-toggle='toggle' data-onstyle='danger')
+							if (name == "Healthcare Scenario")
+								div(class='row' style='margin-top:8px;')
+									div(class='col-md-5')
+										label(class='checkbox-inline emerg' style='margin-left:-20px; margin-top:5px') Emergency
+									div(class='col-md-4')
+										input(type='checkbox' id='emergency' class='emrgcontext' data-toggle='toggle' data-onstyle='danger')
 							

@@ -39,7 +39,7 @@
 
 		// Invoke service for user
 		$('.try-it').click(function() {
-			var obj;
+			var obj = {};
 			s_id = $('#scenario_id').text();
 			var svc_arr = [];
 			$('.svc_name').each(function() {
@@ -50,17 +50,24 @@
 			var slink = '/scenario_logs?service_list=' + slist;
 
 			/* clear log for each service */
-			$.post(slink);
+			$.post(slink, function(data, status) {
+				for (var i=0; i < svc_arr.length; i++) {
+					$('#logid_' + svc_arr[i]).text('');
+				}
+			});
 
+			if ($('#tamper_attack').prop('checked')) {
+				obj.tamper = 1;
+			}
 			if (s_id == 1) {
-				obj = { link : $(this).data('link') };
+				obj.link = $(this).data('link');
 			}
 			$.post('/try_it', obj, function (data) {
 				/* Set log for each service */
 				$.get(slink, function(logs, status) {
 					if (status == 'success') {
 						alert(data);
-						// location.reload();						
+						// location.reload();					
 						for (var s in logs) {
 							$('#logid_' + logs[s].id).text(logs[s].log);
 						}
@@ -69,6 +76,7 @@
 			});
 		});
 
+		/* Scenario toggle buttons for context and attack */
 		var emergency_status = $.cookie('emergency');
 		var tamper_status = $.cookie('tamper_attack');
 		if (tamper_status == 1) {
@@ -93,14 +101,18 @@
 			var status;
 			if ($('#tamper_attack').prop('checked')) {
 				status = 1;
-				$.post('/tamper', { status : status, scenario_id : s_id }, function (data) {
-					alert(data);
-				});
+				if (s_id == 2) {
+					$.post('/tamper', { status : status, scenario_id : s_id }, function (data) {
+						alert(data);
+					});
+				}
 			} else {
 				status = 0;
-				$.post('/tamper', { status : status, scenario_id : s_id }, function (data) {
-					alert(data);
-				});
+				if (s_id == 2) {
+					$.post('/tamper', { status : status, scenario_id : s_id }, function (data) {
+						alert(data);
+					});
+				}
 			}
 			var elem_id = $(this).attr('id');
 			$.cookie(elem_id, status);
@@ -147,7 +159,7 @@
 			}
 		});
 
-		// Handle update service trust levels
+		/* Handle update service trust levels */
 		$('#btn_update_tl').click(function() {
 			var vals = [];
 			$('.slider').each( function() {
@@ -198,7 +210,6 @@
 					tamper : tamper,
 					emergency : emergency
 				};
-				console.log('obj: ' + obj.tamper + obj.emergency);
 				// patient_age, patient_height, patient_weight
 				if (button_id.indexOf('svc_get_6') != -1) {
 					/* Doctor get */
