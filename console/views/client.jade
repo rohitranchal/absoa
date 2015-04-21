@@ -14,45 +14,34 @@ block content
 			div(class="panel-heading")
 				h3(class="panel-title") Data for Active Bundle
 			div(class="panel-body")
-				//30 Jan form(class='form-inline top-buffer' method = "POST" action = "/create")
-				//- handle button event in client.js
-				form(class='form-inline top-buffer' method='post' action='#')
-					//uld 31 Jan. form(class='form-inline top-buffer' name='test' method='post' action='#')
-					if(message)
-						p=message
-					else
-						div(class="panel panel-default", id='dat_panel')
-							div(class="panel-body")
-							table(class="table table-striped table-hover")
+				if(message)
+					p=message
+				else
+					div(class="panel panel-default", id='dat_panel')
+						div(class="panel-body")
+						table(class="table table-striped table-hover")
+							tr
+								th Select All
+									br
+									input(type="checkbox", name='checkbox_all', class='checkboxall', text="Select all data" style='margin-top:10px; margin-left:30px')
+								th Type
+								th Content
+							for entry in entries
 								tr
-									th Select All
-										br
-										input(type="checkbox", name='checkbox_all', class='checkboxall', text="Select all data" style='margin-top:10px; margin-left:30px')
-									th Type
-									th Content
-								for entry in entries
-									tr
-										td
-											input(type="checkbox", name='checkbox_' + entry.id, class='checkbox' + entry.id , text="Include record to AB" style='margin-left:30px')
-										td
-											input(name='datakey' + entry.id type='text' id='datkey' + entry.id class='inputkey' + entry.id placeholder=entry.data_key  style='margin-left:1px')
-										td
-											input(name='datavalue' + entry.id type='text' id='dataval' + entry.id class='inputval' + entry.id placeholder=entry.data_value style='margin-left:1px')
-						//div(class='col-xs-3 top-buffer')
-						center
-								button(type='submit' class='btn btn-primary update-service') Generate Active Bundle
+									td
+										input(type="checkbox", name='checkbox_' + entry.id, class='checkbox' + entry.id , text="Include record to AB" style='margin-left:30px')
+									td
+										input(name='datakey' + entry.id type='text' id='datkey' + entry.id class='inputkey' + entry.id placeholder=entry.data_key  style='margin-left:1px')
+									td
+										input(name='datavalue' + entry.id type='text' id='dataval' + entry.id class='inputval' + entry.id placeholder=entry.data_value style='margin-left:1px')
 		//Policy section								
 		div(class="panel panel-primary")
 			div(class="panel-heading")
 				h3(class="panel-title") Policies for Active Bundle
 			div(class="panel-body" style='margin-top:20px')
-				//11 Feb. Error: Cannot read property 'length' of undefined
-				//form(class='form-inline top-buffer' method='get' action='#')
 				if(message)
 					p=message
 				else
-					//OK button(type="button", class='btn btn-primary pull-up', style='margin-top:10px; margin-bottom:10px' ) Include applicable policies
-					//28 Feb. button(type="button", class='btn btn-primary', style='margin-bottom:10px' ) Include applicable policies
 					div(class="panel-group" id="accordion_p")
 						div(class="panel panel-default", id='pol_panel')
 							//newly added table, 20 Mar. 
@@ -84,3 +73,5 @@ block content
 												if (tuple.id == 1)
 													label(for='credlimit' + tuple.id style='margin-left:5px') Credit Limit
 													input(name='credlimit' + tuple.id type='text' id='credlim' + tuple.id class='credlimit' + tuple.id placeholder=tuple.rules  style='margin-left:5px')
+								center
+									button(type='submit' class='btn btn-primary gen_AB') Generate Active Bundle
