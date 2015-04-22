@@ -57,6 +57,8 @@ html(lang='en')
 								div(class='row top-buffer')
 									div(id=service.status, class='col-md-2 svc_status' style='margin-bottom:0px')=service.status
 									div(id=service.status + '_' + service.id, class='col-md-5 svc_name' style='margin-bottom:2px')=service.display_name
+									div(class='col-md-5')
+										div(class='slider', id=service.id value=service.trust_level style='margin-bottom:14px')
 									if (name == "Healthcare Scenario")
 										if (service.id != 5)
 											br
@@ -80,17 +82,19 @@ html(lang='en')
 													input(name='labdatakey' + service.id type='text' id='labdatkey' + service.id class='form-control labinputkey' + service.id placeholder='Test results'  style='margin-left:52px; margin-top:4px; margin-bottom:0px')
 												div(class='col-md-6')
 													button(id="svc_post_" + service.id, type='submit' class='btn btn-primary hlt-ab', data-link=service.url, style='margin-top:4px; margin-left:40px; margin-bottom:0px') POST
-										hr(style='width: 100%; color: #e0e0e0; height: 1px; background-color:#e0e0e0; margin-bottom:1px')
+										if (service.id == 5)
+											div(class='row' style='margin-bottom:2px')
+										hr(style='width: 100%; color: #e0e0e0; height: 1px; background-color:#e0e0e0; margin-bottom:1px; margin-top:15px')
 									//need sliders for trust level only in online shopping scenario
-									if (name != "Healthcare Scenario")
-										div(class='col-md-5')
-											div(class='slider', id=service.id value=service.trust_level)
+									// if (name != "Healthcare Scenario")
+									// 	div(class='col-md-5')
+									// 		div(class='slider', id=service.id value=service.trust_level)
 							div(class='row' style='margin-top:10px;')
 								div(class='col-md-6')
 									button(id='btn_toggle_svc', class='btn btn-danger svc_toggle' style='margin-right:0px; margin-bottom:10px') Stop
-								if (name != "Healthcare Scenario")
-									div(class='col-md-4')
-										button(id='btn_update_tl', class='btn btn-default' style='margin-left:24px;') Update	
+								//21 Apr. if (name != "Healthcare Scenario")
+								div(class='col-md-4')
+									button(id='btn_update_tl', class='btn btn-default' style='margin-left:24px;') Update	
 							div(class='row' style='margin-top:6px;')
 								div(class='col-md-5')
 									label(class='checkbox-inline tamper' style='margin-left:-20px; margin-top:5px') Tamper  Attack
