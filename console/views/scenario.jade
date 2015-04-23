@@ -58,7 +58,7 @@ html(lang='en')
 									div(id=service.status, class='col-md-2 svc_status' style='margin-bottom:0px')=service.status
 									div(id=service.status + '_' + service.id, class='col-md-5 svc_name' style='margin-bottom:2px')=service.display_name
 									div(class='col-md-5')
-										div(class='slider', id=service.id value=service.trust_level style='margin-bottom:14px')
+										div(class='slider', id=service.id value=service.trust_level style='margin-bottom:14px; margin-left:-30px')
 									if (name == "Healthcare Scenario")
 										if (service.id != 5)
 											br
