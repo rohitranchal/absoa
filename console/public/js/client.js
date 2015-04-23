@@ -221,10 +221,30 @@ $( document ).ready(function() {
 	});
 
 	//Generate AB button
-	$('.btn').click(function() {
+	$('.gen_AB').click(function() {
+		var genABobj = {};
+		var testobj2 = { testing1: 5 };
+		console.log('testobj: ' + testobj2);
+		testobj2.testing2 = 6;
+		console.log('testobj: ' + testobj2);
+
 		console.log('Generate AB button was pressed');
-		console.log(' data_arr = ' + data_arr);
-		$.post('/client', {service_id : 'some'}, function (data) {
+
+		genABobj.key1 = document.getElementById('datkey1').value;
+		genABobj.value1 = document.getElementById('dataval1').value;
+		genABobj.key2 = document.getElementById('datkey2').value;
+		genABobj.value2 = document.getElementById('dataval2').value;
+
+		//Does not work
+		// key1 = document.getElementById('datkey1').value;
+		// genABobj[key1] = document.getElementById('dataval1').value;
+
+		//console.log('obj.key1 = ' + obj.key1 + '  , obj.value1=' + obj.value1);
+		console.log('genABobj = ' + genABobj  );
+		console.log('genABobj.key1 = ' + genABobj.key1 + '  , genABobj.value1=' + genABobj.value1);
+		console.log('genABobj.key2 = ' + genABobj.key2 + '  , genABobj.value2=' + genABobj.value2);
+		$.post('/client', genABobj, function (data) {
+		//before 20 APr. $.post('/client', {service_id : 'some'}, function (data) {
 			console.log('create call');
 			location.reload();
 		});

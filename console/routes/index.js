@@ -257,40 +257,47 @@ router.post('/tamper', function(req, res) {
 
 /* POST create ab */
 router.post('/client', function(req, res) {
-	var key1 = req.body.datakey1;
-	var value1 = req.body.datavalue1;
-	var key2 = req.body.datakey2;
-	var value2 = req.body.datavalue2;
-	var key3 = req.body.datakey3;
-	var value3 = req.body.datavalue3;
-	var key4 = req.body.datakey4;
-	var value4 = req.body.datavalue4;
-	var key5 = req.body.datakey5;
-	var value5 = req.body.datavalue5;
-	var key6 = req.body.datakey6;
-	var value6 = req.body.datavalue6;
+	var val1 = req.body.value1;
+	var k1 = req.body.key1;
+	var val2 = req.body.value2;
+	var k2 = req.body.key2;
 
-	var marked1 = req.body.checkbox_1;
-	var marked2 = req.body.checkbox_2;
-	var marked3 = req.body.checkbox_3;
-	var marked4 = req.body.checkbox_4;
-	var marked5 = req.body.checkbox_5;
-	var marked6 = req.body.checkbox_6;
+	// var val1 = req.body.data_arr;
+	// var key1 = req.body.datakey1;
+	// var value1 = req.body.datavalue1;
+	// var key2 = req.body.datakey2;
+	// var value2 = req.body.datavalue2;
+	// var key3 = req.body.datakey3;
+	// var value3 = req.body.datavalue3;
+	// var key4 = req.body.datakey4;
+	// var value4 = req.body.datavalue4;
+	// var key5 = req.body.datakey5;
+	// var value5 = req.body.datavalue5;
+	// var key6 = req.body.datakey6;
+	// var value6 = req.body.datavalue6;
 
-	console.log('checkbox1 =  ' + marked1);
-	console.log('checkbox2 =  ' + marked2);
-	console.log('checkbox3 =  ' + marked3);
-	console.log('checkbox4 =  ' + marked4);
-	console.log('checkbox5 =  ' + marked5);
-	console.log('checkbox6 =  ' + marked6);
+	// var marked1 = req.body.checkbox_1;
+	// var marked2 = req.body.checkbox_2;
+	// var marked3 = req.body.checkbox_3;
+	// var marked4 = req.body.checkbox_4;
+	// var marked5 = req.body.checkbox_5;
+	// var marked6 = req.body.checkbox_6;
 
-	console.log('Following fields were typed: ');
-	console.log('key1 =  ' + key1 + ' ; value1 = ' + value1);
-	console.log('key2 =  ' + key2 + ' ; value2 = ' + value2);
-	console.log('key3 =  ' + key3 + ' ; value3 = ' + value3);
-	console.log('key4 =  ' + key4 + ' ; value4 = ' + value4);
-	console.log('key5 =  ' + key5 + ' ; value5 = ' + value5);
-	console.log('key6 =  ' + key6 + ' ; value6 = ' + value6);
+	// console.log('checkbox1 =  ' + marked1);
+	// console.log('checkbox2 =  ' + marked2);
+	// console.log('checkbox3 =  ' + marked3);
+	// console.log('checkbox4 =  ' + marked4);
+	// console.log('checkbox5 =  ' + marked5);
+	// console.log('checkbox6 =  ' + marked6);
+
+	console.log('[routes/index.js]: Following fields were typed: ');
+	console.log('key1 =  ' + k1 + ' ; value1 = ' + val1);
+	console.log('key2 =  ' + k2 + ' ; value2 = ' + val2);
+	// console.log('key2 =  ' + key2 + ' ; value2 = ' + value2);
+	// console.log('key3 =  ' + key3 + ' ; value3 = ' + value3);
+	// console.log('key4 =  ' + key4 + ' ; value4 = ' + value4);
+	// console.log('key5 =  ' + key5 + ' ; value5 = ' + value5);
+	// console.log('key6 =  ' + key6 + ' ; value6 = ' + value6);
 
 
 	//01 Feb.: clean ab_data file content to avoid writing previous data from previous file to AB  
@@ -301,64 +308,64 @@ router.post('/client', function(req, res) {
 
 	//01 Feb. if(key1 !== '' && value1 !== '') {
 	//At least one checkbox must be marked to add data to AB
-	if(marked1 == 'on' || marked2 == 'on' || marked3 == 'on' || marked4 == 'on' || marked5 == 'on' || marked6 == 'on') {	
-		//write key and value to ab_data file:  ab.user.<key1> = <value1>
-		if(marked1 == 'on') {	
-			var ab_record = ab_record_begins + key1 + ' = ' + value1 ;
-			fs.writeFile(ab_data, ab_record + "\n", function (err) {
-	  			if (err) return console.log(err);
-	  			console.log('pair 1 ' + ab_record + ' - has been written to file: ' + ab_data);
-			});
-		}	
+	// if(marked1 == 'on' || marked2 == 'on' || marked3 == 'on' || marked4 == 'on' || marked5 == 'on' || marked6 == 'on') {	
+	// 	//write key and value to ab_data file:  ab.user.<key1> = <value1>
+	// 	if(marked1 == 'on') {	
+	// 		var ab_record = ab_record_begins + key1 + ' = ' + value1 ;
+	// 		fs.writeFile(ab_data, ab_record + "\n", function (err) {
+	//   			if (err) return console.log(err);
+	//   			console.log('pair 1 ' + ab_record + ' - has been written to file: ' + ab_data);
+	// 		});
+	// 	}	
 
-		if(marked2 == 'on') {	
-			var ab_record2 = ab_record_begins + key2 + ' = ' + value2 ;
-			fs.appendFile(ab_data, ab_record2 + "\n", function (err) {
-	  			if (err) return console.log(err);
-	  			console.log('pair 2 ' + ab_record2 + ' - has been appended to file: ' + ab_data);
-			});
-		}
+	// 	if(marked2 == 'on') {	
+	// 		var ab_record2 = ab_record_begins + key2 + ' = ' + value2 ;
+	// 		fs.appendFile(ab_data, ab_record2 + "\n", function (err) {
+	//   			if (err) return console.log(err);
+	//   			console.log('pair 2 ' + ab_record2 + ' - has been appended to file: ' + ab_data);
+	// 		});
+	// 	}
 		
-		if(marked3 == 'on') {		
-			var ab_record3 = ab_record_begins + key3 + ' = ' + value3 ;
-			fs.appendFile(ab_data, ab_record3 + "\n", function (err) {
-	  			if (err) return console.log(err);
-	  			console.log('pair 3 ' + ab_record3 + ' - has been appended to file: ' + ab_data);
-			});
-		}
+	// 	if(marked3 == 'on') {		
+	// 		var ab_record3 = ab_record_begins + key3 + ' = ' + value3 ;
+	// 		fs.appendFile(ab_data, ab_record3 + "\n", function (err) {
+	//   			if (err) return console.log(err);
+	//   			console.log('pair 3 ' + ab_record3 + ' - has been appended to file: ' + ab_data);
+	// 		});
+	// 	}
 
-		if(marked4 == 'on') {		
-			var ab_record4 = ab_record_begins + key4 + ' = ' + value4 ;
-			fs.appendFile(ab_data, ab_record4 + "\n", function (err) {
-	  			if (err) return console.log(err);
-	  			console.log('pair 4 ' + ab_record4 + ' - has been appended to file: ' + ab_data);
-			});
-		}
+	// 	if(marked4 == 'on') {		
+	// 		var ab_record4 = ab_record_begins + key4 + ' = ' + value4 ;
+	// 		fs.appendFile(ab_data, ab_record4 + "\n", function (err) {
+	//   			if (err) return console.log(err);
+	//   			console.log('pair 4 ' + ab_record4 + ' - has been appended to file: ' + ab_data);
+	// 		});
+	// 	}
 
-		if(marked5 == 'on') {	
-			var ab_record5 = ab_record_begins + key5 + ' = ' + value5 ;
-			fs.appendFile(ab_data, ab_record5 + "\n", function (err) {
-	  			if (err) return console.log(err);
-	  			console.log('pair 5 ' + ab_record5 + ' - has been appended to file: ' + ab_data);
-			});
-		}
+	// 	if(marked5 == 'on') {	
+	// 		var ab_record5 = ab_record_begins + key5 + ' = ' + value5 ;
+	// 		fs.appendFile(ab_data, ab_record5 + "\n", function (err) {
+	//   			if (err) return console.log(err);
+	//   			console.log('pair 5 ' + ab_record5 + ' - has been appended to file: ' + ab_data);
+	// 		});
+	// 	}
 		
-		if(marked6 == 'on') {		
-			var ab_record6 = ab_record_begins + key6 + ' = ' + value6 ;
-			fs.appendFile(ab_data, ab_record6 + "\n", function (err) {
-	  			if (err) return console.log(err);
-	  			console.log('pair 6 ' + ab_record6 + ' - has been appended to file: ' + ab_data);
-			});
-		}
+	// 	if(marked6 == 'on') {		
+	// 		var ab_record6 = ab_record_begins + key6 + ' = ' + value6 ;
+	// 		fs.appendFile(ab_data, ab_record6 + "\n", function (err) {
+	//   			if (err) return console.log(err);
+	//   			console.log('pair 6 ' + ab_record6 + ' - has been appended to file: ' + ab_data);
+	// 		});
+	// 	}
 
-		generate_ab();
+		//generate_ab();
 		var msg = 'SUCCESS: AB has been generated';
 		res.render('client', {title: 'E-Commerce', message: msg});
-	} else {
-		var msg = 'ERROR: missing data';
-		res.render('client', {title: 'E-Commerce', message: msg});
-		//02 Feb. res.render('error', {title: 'E-Commerce', message: msg});
-	}
+	// } else {
+	// 	var msg = 'ERROR: missing data';
+	// 	res.render('client', {title: 'E-Commerce', message: msg});
+	// 	//02 Feb. res.render('error', {title: 'E-Commerce', message: msg});
+	// }
 	// always maintain path to the recently created AB so update global path to AB here when AB is created
 });
 
