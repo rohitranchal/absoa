@@ -42,8 +42,9 @@
 			var obj = {};
 			s_id = $('#scenario_id').text();
 			var svc_arr = [];
+			var svc_id;
 			$('.svc_name').each(function() {
-				var svc_id = this.id.split('_');
+				svc_id = this.id.split('_');
 				svc_arr.push(svc_id[1]);
 			});
 			var slist = JSON.stringify(svc_arr);
@@ -88,10 +89,23 @@
 
 		$('.emrgcontext').change(function() {
 			var status;
+			var svc_arr = [];
+			var svc_id;
+			$('.svc_name').each(function() {
+				svc_id = this.id.split('_');
+				svc_arr.push(svc_id[1]);
+			});
+			var slist = JSON.stringify(svc_arr);
 			if ($('.emrgcontext').prop('checked')) {
 				status = 1;
+				$.post('/update_scenario_context', { service_list : slist, context : 'emergency' }, function (data) {
+					alert(data);
+				});
 			} else {
 				status = 0;
+				$.post('/update_scenario_context', { service_list : slist, context : 'normal' }, function (data) {
+					alert(data);
+				});
 			}
 			var elem_id = $(this).attr('id');
 			$.cookie(elem_id, status);

@@ -83,10 +83,48 @@ exports.get_scenario_services = function(services, cb) {
 	});
 }
 
+/* Get trust level for a service */
+exports.get_service_trust = function(id, cb) {
+	var query = "SELECT trust_level from Service WHERE id=" + id;
+	debug('Get service trust: ' + query);
+	connection.query(query, function(err, rows, fields) {
+		if (err) throw err;
+		cb(rows);
+	});
+}
+
 /* Update trust level for a service */
 exports.set_service_trust = function(id, trust_level) {
 	var query = "UPDATE Service SET trust_level= " + trust_level + " WHERE id=" + id;
 	debug('Set service trust: ' + query);
+	connection.query(query, function(err, rows, fields) {
+		if (err) throw err;
+	});
+}
+
+/* Get context of a service */
+exports.get_service_context = function(id, cb) {
+	var query = "SELECT context from Service WHERE id=" + id;
+	debug('Get service context: ' + query);
+	connection.query(query, function(err, rows, fields) {
+		if (err) throw err;
+		cb(rows);
+	});
+}
+
+/* Update context of a service */
+exports.set_service_context = function(id, context) {
+	var query = "UPDATE Service SET context= " + context + " WHERE id=" + id;
+	debug('Set service context: ' + query);
+	connection.query(query, function(err, rows, fields) {
+		if (err) throw err;
+	});
+}
+
+/* Update context of a scenario */
+exports.set_scenario_context = function(services, context) {
+	var query = "UPDATE Service SET context='" + context + "' WHERE id IN (" + services + ")";
+	debug('Set scenario context: ' + query);
 	connection.query(query, function(err, rows, fields) {
 		if (err) throw err;
 	});

@@ -4,6 +4,7 @@ node_modules/
 
 # Can ignore specific files
 .DS_Store
+001122.jar
 
 # Use wildcards as well
 *~
