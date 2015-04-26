@@ -83,6 +83,16 @@ exports.get_scenario_services = function(services, cb) {
 	});
 }
 
+/* Get trust level for a service by name */
+exports.get_service_trust_by_name = function(name, cb) {
+	var query = "SELECT trust_level from Service WHERE display_name='" + name + "'";
+	debug('Get service trust by name: ' + query);
+	connection.query(query, function(err, rows, fields) {
+		if (err) throw err;
+		cb(rows);
+	});
+}
+
 /* Get trust level for a service */
 exports.get_service_trust = function(id, cb) {
 	var query = "SELECT trust_level from Service WHERE id=" + id;
@@ -99,6 +109,16 @@ exports.set_service_trust = function(id, trust_level) {
 	debug('Set service trust: ' + query);
 	connection.query(query, function(err, rows, fields) {
 		if (err) throw err;
+	});
+}
+
+/* Get context of a service by name */
+exports.get_service_context_by_name = function(name, cb) {
+	var query = "SELECT context from Service WHERE display_name='" + name + "'";
+	debug('Get service context by name: ' + query);
+	connection.query(query, function(err, rows, fields) {
+		if (err) throw err;
+		cb(rows);
 	});
 }
 

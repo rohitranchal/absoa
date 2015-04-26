@@ -2,7 +2,6 @@ package edu.purdue.absoa;
 
 import java.io.InputStream;
 import java.security.MessageDigest;
-import java.util.Base64.Encoder;
 
 import javassist.ClassPool;
 import javassist.CtClass;

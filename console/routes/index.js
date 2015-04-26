@@ -138,25 +138,48 @@ router.get('/scenario_topology', function(req, res) {
 /* GET trust_level for a service */
 router.get('/get_service_trust', function(req, res) {
 	var service_id = req.query.service_id;
+	var service_name = req.query.service_name;
+	var trust_level = '-1';
 	if (typeof service_id !== 'undefined' && service_id !== '') {
-		db.get_service_trust(service_id, function(rows) {
-			var trust_level = rows[0].trust_level.toString();
+		db.get_service_trust(service_id, function(rows) {			
+			if (rows.length != 0) {
+				trust_level = rows[0].trust_level.toString();				
+			}
+			res.send(trust_level);
+		});
+	} else if (typeof service_name !== 'undefined' && service_name !== '') {
+		db.get_service_trust_by_name(service_name, function(rows) {
+			if (rows.length != 0) {
+				trust_level = rows[0].trust_level.toString();
+			}
 			res.send(trust_level);
 		});
 	} else {
-		res.send(400, 'ERROR: service_id undefined');
+		res.send(400, 'ERROR: service_id or service_name undefined');
 	}
 });
 
 /* GET context for a service */
 router.get('/get_service_context', function(req, res) {
 	var service_id = req.query.service_id;
-	if (typeof service_id !== 'undefined' && service_id !== '') {
+	var service_name = req.query.service_name;
+	var context = 'null';
+	if (typeof service_id !== 'undefined' && service_id !== '') {	
 		db.get_service_context(service_id, function(rows) {
-			res.send(rows[0].context);
+			if (rows.length != 0) {
+				context = rows[0].context;
+			}
+			res.send(context);
+		});
+	} else if (typeof service_name !== 'undefined' && service_name !== '') {
+		db.get_service_context_by_name(service_name, function(rows) {
+			if (rows.length != 0) {
+				context = rows[0].context;
+			}
+			res.send(context);
 		});
 	} else {
-		res.send(400, 'ERROR: service_id undefined');
+		res.send(400, 'ERROR: service_id or service_name undefined');
 	}
 });
 
@@ -174,6 +197,17 @@ router.get('/scenario_logs', function(req, res) {
 		}
 		res.send(logs);
 	});
+});
+
+/* GET view ab */
+router.get('/view_ab', function(req, res) {
+	var exec = require('child_process').exec;
+	var ab_view_path = process.cwd() + '/../scenarios/healthcare/hospital/resources/001122.jar';
+	var ab_view = 'open -a Jarzilla ' + ab_view_path;
+	child = exec(ab_view);
+	child.on('close', function (code, signal) {
+		res.send('OK');
+	});	
 });
 
 /* DELETE logs for services of a scenario */

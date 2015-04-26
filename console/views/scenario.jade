@@ -85,16 +85,13 @@ html(lang='en')
 										if (service.id == 5)
 											div(class='row' style='margin-bottom:2px')
 										hr(style='width: 100%; color: #e0e0e0; height: 1px; background-color:#e0e0e0; margin-bottom:1px; margin-top:15px')
-									//need sliders for trust level only in online shopping scenario
-									// if (name != "Healthcare Scenario")
-									// 	div(class='col-md-5')
-									// 		div(class='slider', id=service.id value=service.trust_level)
 							div(class='row' style='margin-top:10px;')
-								div(class='col-md-6')
-									button(id='btn_toggle_svc', class='btn btn-danger svc_toggle' style='margin-right:0px; margin-bottom:10px') Stop
-								//21 Apr. if (name != "Healthcare Scenario")
 								div(class='col-md-4')
-									button(id='btn_update_tl', class='btn btn-default' style='margin-left:24px;') Update	
+									button(id='btn_toggle_svc', class='btn btn-danger svc_toggle' style='margin-bottom:4px') Stop
+								div(class='col-md-4')
+									button(id='btn_update_tl', class='btn btn-default' style='margin-bottom:4px') Update
+								div(class='col-md-4')
+									button(id='btn_view_ab', class='btn btn-default' style='margin-bottom:4px') AB Viewer
 							div(class='row' style='margin-top:6px;')
 								div(class='col-md-5')
 									label(class='checkbox-inline tamper' style='margin-left:-20px; margin-top:5px') Tamper  Attack

@@ -185,6 +185,13 @@
 			});
 		});
 
+		/* Handle AB viewer */
+		$('#btn_view_ab').click(function() {
+			$.get('/view_ab', function (data) {
+				location.reload();
+			});
+		});
+
 		/* Dropdown boxes data in Healthcare scenario */
 		if (s_id == 2) {
 			var AB_fields = ['patient_id', 'medical_data', 'history', 'test_prescription', 'prescription', 'insurance_id', 'treatment_code'];
