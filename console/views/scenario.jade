@@ -54,7 +54,7 @@ html(lang='en')
 					div(class='panel-body')
 						div(class='input-group')
 							for service in services
-								div(class='row top-buffer')
+								div(class='row' style='margin-top:12px')
 									div(id=service.status, class='col-md-2 svc_status' style='margin-bottom:0px')=service.status
 									div(id=service.status + '_' + service.id, class='col-md-5 svc_name' style='margin-bottom:2px')=service.display_name
 									div(class='col-md-5')
