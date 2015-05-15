@@ -50,6 +50,12 @@
 			var slist = JSON.stringify(svc_arr);
 			var slink = '/scenario_logs?service_list=' + slist;
 
+			/* test: check the value of selected crypto capability */
+			var crypcap_cmbbox = document.getElementById('cryptocap');
+			var crypcap_val = crypcap_cmbbox.options[crypcap_cmbbox.selectedIndex].value;
+			console.log('Crypto capability dropdown box selected data: ' + crypcap_val);
+			/*  end of crypto capability test */
+
 			/* clear log for each service */
 			$.post(slink, function(data, status) {
 				for (var i=0; i < svc_arr.length; i++) {
@@ -91,6 +97,13 @@
 			var status;
 			var svc_arr = [];
 			var svc_id;
+
+			/* test: check the value of selected crypto capability */
+			var crypcap_cmbbox = document.getElementById('cryptocap');
+			var crypcap_val = crypcap_cmbbox.options[crypcap_cmbbox.selectedIndex].value;
+			console.log('Crypto capability dropdown box selected data: ' + crypcap_val);
+			/*  end of crypto capability test */
+
 			$('.svc_name').each(function() {
 				svc_id = this.id.split('_');
 				svc_arr.push(svc_id[1]);
@@ -192,20 +205,31 @@
 			});
 		});
 
+		var populate_dropdownbox = function(combobox, options) {
+			for(var i = 0; i < options.length; i++) {
+				var opt = document.createElement('option');
+				opt.innerHTML = options[i];
+				opt.value = options[i];
+				combobox.appendChild(opt);
+			}
+		};
+
 		/* Dropdown boxes data in Healthcare scenario */
 		if (s_id == 2) {
 			var AB_fields = ['patient_id', 'medical_data', 'history', 'test_prescription', 'prescription', 'insurance_id', 'treatment_code'];
-			var populate_dropdownbox = function(combobox) {
-				for(var i = 0; i < AB_fields.length; i++) {
-					var opt = document.createElement('option');
-					opt.innerHTML = AB_fields[i];
-					opt.value = AB_fields[i];
-					combobox.appendChild(opt);
-				}
-			};
+			var crypto_cap = ['0..2', '3..5', '6..9']; 
 			for (var j=6; j<10; j++) {
-				populate_dropdownbox(document.getElementById('srv-name-get' + j));	
+				populate_dropdownbox(document.getElementById('srv-name-get' + j), AB_fields);
 			}
+
+			/* Populate Dropdown box for Crypto capability in Healthcare scenario */
+			populate_dropdownbox(document.getElementById('cryptocap'), crypto_cap);
+		}
+
+		/* Populate Dropdown box for Crypto capability in online shopping scenario */
+		if (s_id == 1) {
+			var crypto_cap = ['0..2', '3..5', '6..9'];
+			populate_dropdownbox(document.getElementById('cryptocap'), crypto_cap);
 		}
 	
 		$('.hlt-ab').click(function() {
