@@ -217,7 +217,7 @@
 		/* Dropdown boxes data in Healthcare scenario */
 		if (s_id == 2) {
 			var AB_fields = ['patient_id', 'medical_data', 'history', 'test_prescription', 'prescription', 'insurance_id', 'treatment_code'];
-			var crypto_cap = ['0..2', '3..5', '6..9']; 
+			var crypto_cap = ['0-2', '3-5', '6-9']; 
 			for (var j=6; j<10; j++) {
 				populate_dropdownbox(document.getElementById('srv-name-get' + j), AB_fields);
 			}
@@ -228,7 +228,7 @@
 
 		/* Populate Dropdown box for Crypto capability in online shopping scenario */
 		if (s_id == 1) {
-			var crypto_cap = ['0..2', '3..5', '6..9'];
+			var crypto_cap = ['0-2', '3-5', '6-9'];
 			populate_dropdownbox(document.getElementById('cryptocap'), crypto_cap);
 		}
 	
